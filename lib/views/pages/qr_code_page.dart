@@ -46,7 +46,7 @@ class _QRCodePageState extends State<QRCodePage> {
           const Spacer(),
           // Conteúdo principal
           Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(26.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -56,9 +56,10 @@ class _QRCodePageState extends State<QRCodePage> {
                     'Mostre esse QR Code à bibliotecária, e assim que ela aprovar, seu empréstimo será concluído!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       color: Color(0xFF5C2E3E),
-                      height: 1.5,
+                      height: 1.2,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
