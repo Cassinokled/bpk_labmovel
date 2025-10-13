@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'qr_code_page.dart';
+import '../widgets/circular_close_button.dart';
+import '../widgets/app_logo.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,13 +13,8 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          Center(
-            child: Image.asset(
-              'assets/pics/logos/logo_bpk.png',
-              width: 161,
-              height: 45,
-              fit: BoxFit.contain,
-            ),
+          const Center(
+            child: AppLogo(),
           ),
           const Spacer(),
           Padding(
@@ -32,7 +29,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5C2E3E),
+                backgroundColor: const Color.fromARGB(255, 86, 22, 36),
                 foregroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 60),
                 shape: RoundedRectangleBorder(
@@ -51,18 +48,9 @@ class HomePage extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           Center(
-            child: Container(
-              width: 62,
-              height: 62,
-              decoration: BoxDecoration(
-                color: const Color(0xFF5C2E3E),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 32,
-              ),
+            child: CircularCloseButton(
+              backgroundColor: Color.fromARGB(255, 86, 22, 36),
+              onPressed: () {},
             ),
           ),
           const SizedBox(height: 26),

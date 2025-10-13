@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import '../../models/emprestimo_model.dart';
+import '../widgets/app_logo.dart';
+import '../widgets/qr_code_display.dart';
+import '../widgets/circular_close_button.dart';
 
 class QRCodePage extends StatefulWidget {
   const QRCodePage({super.key});
@@ -34,17 +36,10 @@ class _QRCodePageState extends State<QRCodePage> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          // Logo centralizada
-          Center(
-            child: Image.asset(
-              'assets/pics/logos/logo_bpk.png',
-              width: 161,
-              height: 45,
-              fit: BoxFit.contain,
-            ),
+          const Center(
+            child: AppLogo(),
           ),
           const Spacer(),
-          // Conteúdo principal
           Padding(
             padding: const EdgeInsets.all(26.0),
             child: Column(
@@ -57,7 +52,7 @@ class _QRCodePageState extends State<QRCodePage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      color: Color(0xFF5C2E3E),
+                      color: Color.fromARGB(255, 86, 22, 36),
                       height: 1.2,
                       fontWeight: FontWeight.w500,
                     ),
@@ -65,49 +60,16 @@ class _QRCodePageState extends State<QRCodePage> {
                 ),
                 const SizedBox(height: 40),
                 // QR Code
-                Container(
-                  padding: const EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: const Color(0xFF5C2E3E),
-                      width: 11,
-                    ),
-                  ),
-                  child: QrImageView(
-                    data: _qrData,
-                    version: QrVersions.auto,
-                    size: 266.0,
-                    backgroundColor: Colors.white,
-                  ),
-                ),
+                QRCodeDisplay(qrData: _qrData),
               ],
             ),
           ),
           const Spacer(),
           // Botão de voltar
-          Padding(
-            padding: const EdgeInsets.only(bottom: 26.0),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 26.0),
             child: Center(
-              child: Container(
-                width: 62,
-                height: 62,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF5C2E3E),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
+              child: CircularCloseButton(),
             ),
           ),
         ],
