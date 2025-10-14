@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'views/pages/home_page.dart';
+import 'views/pages/login.dart';
 import 'providers/carrinho_emprestimo_provider.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const HomePage(),
       ),
+      home: const LoginPage(),
     );
   }
 }
