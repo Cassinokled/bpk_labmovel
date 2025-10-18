@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "284813872429",
+    "project_id": "bpklabmovel",
+    "storage_bucket": "bpklabmovel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284813872429:android:1e15f8bd0c8cec6fdb57a4",
+        "android_client_info": {
+          "package_name": "com.example.bpk_labmovel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMmee7ezuI-SXrCkEo5IzW4ki7hDkzNlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
