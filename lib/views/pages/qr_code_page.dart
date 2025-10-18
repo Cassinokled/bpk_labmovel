@@ -5,7 +5,9 @@ import '../widgets/qr_code_display.dart';
 import '../widgets/circular_close_button.dart';
 
 class QRCodePage extends StatefulWidget {
-  const QRCodePage({super.key});
+  final EmprestimoModel? emprestimo;
+  
+  const QRCodePage({super.key, this.emprestimo});
 
   @override
   State<QRCodePage> createState() => _QRCodePageState();
@@ -18,8 +20,7 @@ class _QRCodePageState extends State<QRCodePage> {
   @override
   void initState() {
     super.initState();
-    // Carrega dados de exemplo (futuramente virá informações do leitor de barras e informações mais especificas do usuario)
-    _emprestimo = EmprestimoModel.exemplo();
+    _emprestimo = widget.emprestimo ?? EmprestimoModel.exemplo();
     _generateQRCode();
   }
 
