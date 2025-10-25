@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../pages/login_page.dart';
+import '../pages/perfil_page.dart';
 import '../pages/barras_scanner_page.dart';
 
 class NavBar extends StatefulWidget {
@@ -63,11 +63,11 @@ class _NavBarState extends State<NavBar> {
       return;
     }
     
-    // Login por enquanto para teste (depois vai ser o perfil do usuario)
+    // Perfil do usuário
     if (index == 4) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(builder: (context) => const PerfilPage()),
       );
       return;
     }

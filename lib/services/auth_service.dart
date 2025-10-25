@@ -1,51 +1,88 @@
-import 'dart:math';
-
-import '../models/usuario_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  Usuario? _usuarioLogado;
-  String? _token;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //Banco de dados simulado
-  final List<Usuario> _usuarios = [
-    Usuario(id: '1', nome: 'Vitor', ra: '20244759', senha: '1234'),
-    Usuario(id: '2', nome: 'Maria', ra: '20244760', senha: '1234'),
-    Usuario(id: '3', nome: 'Izadora', ra: '20244761', senha: '1234'),
-    Usuario(id: '4', nome: 'Ruan', ra: '20244762', senha: '1234'),
-    Usuario(id: '5', nome: 'Herick', ra: '20244763', senha: '1234'),
-  ];
+  User? get currentUser => _auth.currentUser;
 
-  //Simula login e retorna o token
-  Future<String?> login(String ra, String senha) async {
-    await Future.delayed(const Duration(seconds: 1));
+  bool get isLoggedIn => _auth.currentUser != null;
 
-    final usuario = _usuarios.firstWhere(
-      (u) => u.ra == ra && u.senha == senha,
-      orElse: () => Usuario(id: '', nome: '', ra: '', senha: ''),
-    );
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-    if (usuario.id.isEmpty) return null;
+  // Login
+  Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    _usuarioLogado = usuario;
-    _token = _gerarTokenFake(usuario);
-    return _token;
+      return {
+        'success': true,
+        'user': userCredential.user,
+        'message': 'Login realizado com sucesso',
+      };
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'Usuário não encontrado';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Senha incorreta';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Email inválido';
+          break;
+        case 'user-disabled':
+          errorMessage = 'Usuário desabilitado';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Muitas tentativas. Tente novamente mais tarde';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'Credenciais inválidas';
+          break;
+        default:
+          errorMessage = 'Erro ao fazer login: ${e.message}';
+      }
+
+      return {
+        'success': false,
+        'message': errorMessage,
+      };
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Erro inesperado: $e',
+      };
+    }
   }
 
-  //Simula logout
-  void logout() {
-    _usuarioLogado = null;
-    _token = null;
+  // Logout
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      throw Exception('Erro ao fazer logout: $e');
+    }
   }
 
-  bool get estaLogado => _usuarioLogado != null;
-
-  String? get token => _token;
-
-  Usuario? get usuario => _usuarioLogado;
-
-  //Gerar token fake (vai ser implementado JWT quando tiver o banco)
-  String _gerarTokenFake(Usuario usuario) {
-    final random = Random();
-    return "${usuario.id}-${random.nextInt(999999)}-${DateTime.now()}";
+  // token do usuário
+  Future<String?> getToken() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        return await user.getIdToken();
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
+
 }
