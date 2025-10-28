@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Model de Usuário com suporte a múltiplos tipos
+// model de usuario com suporte a multiplos tipos
 class UserModel {
   final String uid;
   final String email;
   
-  // Dados básicos (obrigatórios)
+  // dados basicos obrigatorios
   final String nome;
   final String sobrenome;
   final String nomeCompleto;
@@ -13,13 +13,13 @@ class UserModel {
   final List<String> tiposUsuario; // ["user", "atendente", "admin"]
   final bool ativo;
   
-  // Dados acadêmicos/funcionais (opcionais)
-  final String? registroAcademico; // RA - alunos
-  final String? numCracha; // Funcionários (admin/atendente/professores)
-  final String? curso; // Alunos
-  final int? semestre; // Alunos
+  // dados academicos/funcionais opcionais
+  final String? registroAcademico; // RA alunos
+  final String? numCracha; // funcionarios admin/atendente/professores
+  final String? curso; // alunos
+  final int? semestre; // alunos
   
-  // Metadados
+  // metadados
   final DateTime? createdAt;
   final DateTime? lastLogin;
 
@@ -40,16 +40,16 @@ class UserModel {
     this.lastLogin,
   });
 
-  /// Criar UserModel a partir do Firestore
+  // criar usermodel a partir do firestore
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     
-    // Converte tipos_usuario para List<String>
+    // converte tipos_usuario para list<string>
     List<String> tipos = [];
     if (data['tipos_usuario'] != null) {
       tipos = List<String>.from(data['tipos_usuario']);
     } else {
-      tipos = ['user']; // padrão se não existir
+      tipos = ['user']; // padrao se nao existir
     }
     
     return UserModel(
@@ -70,7 +70,7 @@ class UserModel {
     );
   }
 
-  /// Criar a partir de um Map
+  // criar a partir de um map
   factory UserModel.fromMap(Map<String, dynamic> data, String uid) {
     List<String> tipos = [];
     if (data['tipos_usuario'] != null) {
@@ -97,7 +97,7 @@ class UserModel {
     );
   }
 
-  /// Converter para Map para salvar no Firestore
+  // converter map para salvar no firestore
   Map<String, dynamic> toMap() {
     return {
       'email': email,
@@ -120,22 +120,22 @@ class UserModel {
     };
   }
 
-  /// Helpers para verificar tipos de usuário
+  // helpers para verificar tipos de usuario
   bool get isAdmin => tiposUsuario.contains('admin');
   bool get isAtendente => tiposUsuario.contains('atendente');
   bool get isUser => tiposUsuario.contains('user');
   
-  /// Permissões baseadas em tipos
+  // permissoes baseadas em tipos
   bool get canManageEquipments => isAdmin || isAtendente;
   bool get canManageUsers => isAdmin;
   bool get canMakeLoans => isUser || isAtendente || isAdmin;
   
-  /// Identificação de perfis
+  // identificacao de perfis
   bool get isAluno => isUser && curso != null && semestre != null;
   bool get isProfessor => isUser && numCracha != null && curso == null;
   bool get isFuncionario => isAdmin || isAtendente;
   
-  /// Tipo principal (para exibição)
+  // tipo principal para exibicao
   String get tipoPrincipal {
     if (isAdmin) return 'Administrador';
     if (isAtendente && isUser) return 'Atendente/Aluno';
@@ -145,7 +145,7 @@ class UserModel {
     return 'Usuário';
   }
 
-  /// Copiar com alterações
+  // copiar com alteracoes
   UserModel copyWith({
     String? uid,
     String? email,
