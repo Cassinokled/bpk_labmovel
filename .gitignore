@@ -15,6 +15,9 @@ migrate_working_dir/
 # Scripts locais
 limpar_build.ps1
 
+# Environment variables
+.env
+
 # IntelliJ related
 *.iml
 *.ipr
