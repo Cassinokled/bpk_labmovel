@@ -133,4 +133,4 @@ class EquipamentoConfPage extends StatelessWidget {
       bottomNavigationBar: const NavBar(selectedIndex: 2),
     );
   }
-}
+  }

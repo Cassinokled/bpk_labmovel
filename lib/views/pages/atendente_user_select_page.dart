@@ -6,6 +6,7 @@ import '../../models/user_model.dart';
 import '../widgets/app_logo.dart';
 import 'home_page.dart';
 import 'atendente_home_page.dart';
+import 'atendente_page.dart';
 
 class AtendenteUserSelectPage extends StatefulWidget {
   const AtendenteUserSelectPage({super.key});
@@ -202,7 +203,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                             // entrar como atendente
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => AtendenteHomePage(user: _currentUser)),
+                               MaterialPageRoute(builder: (_) => AtendentePage(user: _currentUser?.nome))
                             );
                           },
                           child: Column(
