@@ -14,19 +14,19 @@ class BarrasScannerPage extends StatefulWidget {
 class _BarcodeScannerPageState extends State<BarrasScannerPage> {
   String _scannedCode = '';
   bool _hasScanned = false;
+  late Function() _stopScanner;
 
   void _onBarcodeScanned(String code) {
-    if (!_hasScanned) {
+    if (!_hasScanned && mounted) {
       setState(() {
         _scannedCode = code;
         _hasScanned = true;
       });
-      
-      // pagina de confirmacao
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EquipamentoConfPage(bookCode: code),
+
+      Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EquipamentoConfPage(bookCode: code),
         ),
       );
     }
@@ -39,9 +39,7 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          const Center(
-            child: AppLogo(),
-          ),
+          const Center(child: AppLogo()),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(26.0),
@@ -61,10 +59,12 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
-                // Scanner de código de barras
+                 const SizedBox(height: 40),
                 BarcodeScanner(
                   onBarcodeScanned: _onBarcodeScanned,
+                  onScannerCreated: (stop) {
+                    _stopScanner = stop;
+                  },
                 ),
                 if (_scannedCode.isNotEmpty) ...[
                   const SizedBox(height: 20),
@@ -83,7 +83,17 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
           const Spacer(),
         ],
       ),
-      bottomNavigationBar: const NavBar(selectedIndex: 2),
+      bottomNavigationBar: NavBar(
+  selectedIndex: 2,
+  useQrScanner: false,
+  onBackFromScanner: () {
+    print("Botão X pressionado!");
+    if (mounted) {
+      _stopScanner();
+      Navigator.pop(context);
+    }
+  },
+),
     );
   }
-}
+  }

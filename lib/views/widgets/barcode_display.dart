@@ -3,10 +3,12 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 class BarcodeScanner extends StatefulWidget {
   final Function(String) onBarcodeScanned;
+  final Function(Function())? onScannerCreated;
 
   const BarcodeScanner({
     super.key,
     required this.onBarcodeScanned,
+    this.onScannerCreated,
   });
 
   @override
@@ -14,7 +16,24 @@ class BarcodeScanner extends StatefulWidget {
 }
 
 class _BarcodeScannerState extends State<BarcodeScanner> {
-  final MobileScannerController controller = MobileScannerController();
+  late final MobileScannerController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = MobileScannerController(
+      formats: [
+        BarcodeFormat.code128,
+        BarcodeFormat.ean13,
+        BarcodeFormat.ean8,
+        BarcodeFormat.upcA,
+        BarcodeFormat.upcE,
+      ],
+    );
+
+    // Envia função para parar o scanner
+    widget.onScannerCreated?.call(() => controller.stop());
+  }
 
   @override
   void dispose() {
@@ -33,18 +52,15 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         ),
       ),
       clipBehavior: Clip.hardEdge,
-      child: SizedBox(
+      child: SizedBox( // REMOVA O const AQUI
         width: 300,
         height: 300,
         child: MobileScanner(
           controller: controller,
-          onDetect: (BarcodeCapture capture) {
-            final List<Barcode> barcodes = capture.barcodes;
-            for (final barcode in barcodes) {
-              if (barcode.rawValue != null) {
-                widget.onBarcodeScanned(barcode.rawValue!);
-                break;
-              }
+          onDetect: (capture) {
+            final barcode = capture.barcodes.first;
+            if (barcode.rawValue != null) {
+              widget.onBarcodeScanned(barcode.rawValue!);
             }
           },
         ),

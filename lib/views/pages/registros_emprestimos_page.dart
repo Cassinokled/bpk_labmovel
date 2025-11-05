@@ -37,7 +37,10 @@ class RegistrosEmprestimosPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar(),
-    );
+      bottomNavigationBar: const NavBar(
+      selectedIndex: 3,
+      useQrScanner: true, 
+),
+    );  
   }
 }
