@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
+import '../widgets/navbar.dart';
+import '../widgets/app_logo.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
@@ -32,14 +34,10 @@ class _PerfilPageState extends State<PerfilPage> {
           _isLoading = false;
         });
       } else {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
       }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
@@ -49,152 +47,112 @@ class _PerfilPageState extends State<PerfilPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9F5),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF8F9F5),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color.fromARGB(255, 86, 22, 36),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.logout,
-              color: Color.fromARGB(255, 86, 22, 36),
-            ),
-            tooltip: 'Sair',
-            onPressed: () => _handleLogout(context, _authService),
+      body: Column(
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _buildPerfilContent(user),
           ),
         ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Email do usuário
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.email_outlined,
-                            color: Color.fromARGB(255, 86, 22, 36),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            user?.email ?? 'Email não disponível',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 86, 22, 36),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // tipos de usuario
-                    if (_userData != null && _userData!.tiposUsuario.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(width: 12),
-                            Text(
-                              _userData!.tiposUsuario.join('|'),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 86, 22, 36),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
+      bottomNavigationBar: const NavBar(),
     );
   }
 
-  Future<void> _handleLogout(BuildContext context, AuthService authService) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirmar saída'),
-        content: const Text('Deseja realmente sair?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
+  Widget _buildHeader() {
+    return const Column(
+      children: [
+        SizedBox(height: 60),
+        Center(child: AppLogo()),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildPerfilContent(user) {
+    return Column(
+      children: [
+        // Parte superior: Avatar + nome
+        Expanded(
+          flex: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 48,
+                backgroundColor: Color.fromARGB(255, 200, 200, 200),
+                child: Icon(Icons.person, size: 48, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                _userData?.nome ?? 'Usuário',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 22, 36),
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Sair',
-              style: TextStyle(color: Colors.red),
+        ),
+
+        // Parte inferior: Email, Telefone, RA, Tipo de Usuário
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildInfoTile(Icons.email_outlined, user?.email ?? '—'),
+                const SizedBox(height: 12),
+                _buildInfoTile(Icons.badge_outlined, _userData?.registroAcademico ?? '—'),
+                const SizedBox(height: 12),
+                _buildInfoTile(
+                  Icons.verified_user,
+                  (_userData?.tiposUsuario.isNotEmpty ?? false)
+                      ? _userData!.tiposUsuario.join(' | ')
+                      : 'Tipo não informado',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoTile(IconData icon, String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color.fromARGB(255, 86, 22, 36)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 86, 22, 36),
+              ),
             ),
           ),
         ],
       ),
     );
-
-    if (confirmed == true) {
-      try {
-        await authService.logout();
-        // authchecker detecta e manda pra login
-        if (context.mounted) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        }
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    }
   }
 }
