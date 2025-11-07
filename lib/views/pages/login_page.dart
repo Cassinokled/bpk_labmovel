@@ -140,39 +140,11 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-              ),
-                // botao atendente
-              ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AtendentePage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[200],
-                foregroundColor: const Color.fromARGB(255, 86, 22, 36),
-                minimumSize: const Size(double.infinity, 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(
-                    color: Color.fromARGB(255, 86, 22, 36),
-                    width: 2,
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Atendente',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+               ),
             ],
           ),
         ),
       ),
     );
   }
-}
+  }
