@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/equipamento.dart';
+import '../models/emprestimo_model.dart';
 
 class CarrinhoEmprestimo extends ChangeNotifier {
   final List<Equipamento> _equipamentos = [];
@@ -35,5 +36,16 @@ class CarrinhoEmprestimo extends ChangeNotifier {
 
   bool contemCodigo(String codigo) {
     return _equipamentos.any((e) => e.codigo == codigo);
+  }
+
+  /// gera o modelo de emprestimo pro qr code
+  /// recebe o id do usuario e retorna um emprestimomodel
+  EmprestimoModel gerarEmprestimo(String userId) {
+    final codigosEquipamentos = _equipamentos.map((e) => e.codigo).toList();
+    return EmprestimoModel(
+      userId: userId,
+      codigosEquipamentos: codigosEquipamentos,
+      confirmado: null, // inicia como pendente (null)
+    );
   }
 }

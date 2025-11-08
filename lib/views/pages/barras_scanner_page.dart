@@ -3,6 +3,8 @@ import '../widgets/app_logo.dart';
 import '../widgets/barcode_display.dart';
 import '../widgets/navbar.dart';
 import 'equipamento_conf_page.dart';
+import '../../services/equipamento_service.dart';
+import '../../models/equipamento.dart';
 
 class BarrasScannerPage extends StatefulWidget {
   const BarrasScannerPage({super.key});
@@ -14,6 +16,7 @@ class BarrasScannerPage extends StatefulWidget {
 class _BarcodeScannerPageState extends State<BarrasScannerPage> {
   String _scannedCode = '';
   bool _hasScanned = false;
+  final EquipamentoService _equipamentoService = EquipamentoService();
 
   void _onBarcodeScanned(String code) {
     if (!_hasScanned) {
@@ -22,14 +25,129 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
         _hasScanned = true;
       });
       
-      // pagina de confirmacao
+      // verifica o equipamento no banco antes de prosseguir
+      _verificarEquipamento(code);
+    }
+  }
+
+  Future<void> _verificarEquipamento(String codigo) async {
+    // mostra um loading enquanto verifica
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // verifica a disponibilidade do equipamento
+    final resultado = await _equipamentoService.verificarDisponibilidade(codigo);
+
+    // fecha o loading
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+
+    // verifica o resultado
+    final bool existe = resultado['existe'] ?? false;
+    final bool disponivel = resultado['disponivel'] ?? false;
+
+    if (!mounted) return;
+
+    if (existe && disponivel) {
+      // equipamento existe e esta disponivel - prossegue pra pagina de confirmacao
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => EquipamentoConfPage(bookCode: code),
+          builder: (context) => EquipamentoConfPage(bookCode: codigo),
         ),
       );
+    } else {
+      // equipamento nao existe ou nao esta disponivel - mostra erro
+      _mostrarErro(resultado);
     }
+  }
+
+  void _mostrarErro(Map<String, dynamic> resultado) {
+    final bool existe = resultado['existe'] ?? false;
+    final String mensagem = resultado['mensagem'] ?? '';
+    final Equipamento? equipamento = resultado['equipamento'];
+
+    Color titleColor = existe ? Colors.orange : Colors.red;
+    IconData icon = existe ? Icons.warning_amber_rounded : Icons.error_outline;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(icon, color: titleColor, size: 28),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                existe ? 'Equipamento Indisponível' : 'Não Encontrado',
+                style: TextStyle(color: titleColor),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                mensagem,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              if (equipamento != null) ...[
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 8),
+                Text(
+                  'Código: ${equipamento.codigo}',
+                  style: const TextStyle(fontSize: 14),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Nome: ${equipamento.nome}',
+                  style: const TextStyle(fontSize: 14),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Bloco: ${equipamento.bloco}',
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ],
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Reseta o estado para permitir nova leitura
+              setState(() {
+                _hasScanned = false;
+                _scannedCode = '';
+              });
+            },
+            child: const Text('Tentar Novamente'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Volta para a página anterior
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancelar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

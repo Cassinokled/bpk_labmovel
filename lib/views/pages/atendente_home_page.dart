@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../models/user_model.dart';
 import '../widgets/app_logo.dart';
+import '../widgets/navbar.dart';
 
 class AtendenteHomePage extends StatelessWidget {
   final UserModel? user;
@@ -79,6 +80,7 @@ class AtendenteHomePage extends StatelessWidget {
           const SizedBox(height: 20),
         ],
       ),
+      bottomNavigationBar: const NavBar(isAtendente: true),
     );
   }
 }

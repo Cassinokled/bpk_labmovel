@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../models/emprestimo_model.dart';
 import '../../providers/carrinho_emprestimo_provider.dart';
+import '../../services/auth_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/home_action_buttons.dart';
 import '../widgets/home_empty_state.dart';
 import '../widgets/home_equipamentos_list.dart';
 import '../widgets/navbar.dart';
+import '../widgets/test_qr_button.dart';
 import 'qr_code_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -35,6 +37,9 @@ class HomePage extends StatelessWidget {
         SizedBox(height: 60),
         Center(child: AppLogo()),
         SizedBox(height: 20),
+        // botao de teste pra gerar qr code
+        TestQRButton(),
+        SizedBox(height: 16),
       ],
     );
   }
@@ -66,41 +71,22 @@ class HomePage extends StatelessWidget {
   }
 
   void _handleConcluir(BuildContext context, CarrinhoEmprestimo carrinho) {
-    final emprestimo = _criarEmprestimo(carrinho);
-    _navegarParaQRCode(context, emprestimo, carrinho);
-  }
-
-  EmprestimoModel _criarEmprestimo(CarrinhoEmprestimo carrinho) {
-    // Emprestimo com dados do carrinho
-    final now = DateTime.now();
+    // obtem o id do usuario logado
+    final userId = AuthService().currentUser?.uid;
     
-    return EmprestimoModel(
-      ra: '000001', // depois tem que fazer para obter o ra do usuário logado
-      nome: 'user_name', // depois tem que fazer para obter o nome do usuário logado
-      itens: _converterEquipamentosParaItens(carrinho.equipamentos),
-      data: _formatarData(now),
-      horario: _formatarHorario(now),
-    );
-  }
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro: Usuário não identificado'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
 
-  List<ItemEmprestimo> _converterEquipamentosParaItens(List equipamentos) {
-    return equipamentos
-        .map((e) => ItemEmprestimo(
-              cod: e.codigo,
-              descricao: e.nome,
-            ))
-        .toList();
-  }
-
-  String _formatarData(DateTime dateTime) {
-    return '${dateTime.day.toString().padLeft(2, '0')}-'
-        '${dateTime.month.toString().padLeft(2, '0')}-'
-        '${dateTime.year}';
-  }
-
-  String _formatarHorario(DateTime dateTime) {
-    return '${dateTime.hour.toString().padLeft(2, '0')}:'
-        '${dateTime.minute.toString().padLeft(2, '0')}';
+    // gera o emprestimo com userid e codigos de barras
+    final emprestimo = carrinho.gerarEmprestimo(userId);
+    _navegarParaQRCode(context, emprestimo, carrinho);
   }
 
   void _navegarParaQRCode(
