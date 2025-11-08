@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_logo.dart'; // Seu widget de logo
 import '../../services/auth_service.dart';
-import 'package:bpk_labmovel/views/pages/atendente_page.dart';
 
 
 

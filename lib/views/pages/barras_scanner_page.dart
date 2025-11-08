@@ -206,7 +206,6 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
   selectedIndex: 2,
   isAtendente: false,
   onBackFromScanner: () {
-    print("Botão X pressionado!");
     if (mounted) {
       _stopScanner();
       Navigator.pop(context);

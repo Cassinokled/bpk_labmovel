@@ -5,7 +5,6 @@ import '../../services/user_service.dart';
 import '../../models/user_model.dart';
 import '../widgets/app_logo.dart';
 import 'home_page.dart';
-import 'atendente_home_page.dart';
 import 'atendente_page.dart';
 
 class AtendenteUserSelectPage extends StatefulWidget {
