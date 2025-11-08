@@ -1,77 +1,100 @@
-//modelo apenas para verificar a criacao do qrcode
-//tem que verificar depois as tabelas do banco e
-//ver quais dados serao precisos para gerar o qr
-//mas ja esta encaminhado
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-
+// modelo de emprestimo para gerar qr code
 class EmprestimoModel {
-  final String ra;
-  final String nome;
-  final List<ItemEmprestimo> itens;
-  final String data;
-  final String horario;
+  final String? id; // id no firestore (gera automatico)
+  final String userId; // id do usuario
+  final List<String> codigosEquipamentos; // lista de codigos
+  final bool? confirmado; // null = pendente, true = confirmado, false = recusado
+  final DateTime criadoEm; // data de criacao
+  final DateTime? confirmedoEm; // data de confirmacao/recusa
+  final String? motivoRecusa; // motivo da recusa se houver
 
   EmprestimoModel({
-    required this.ra,
-    required this.nome,
-    required this.itens,
-    required this.data,
-    required this.horario,
-  });
+    this.id,
+    required this.userId,
+    required this.codigosEquipamentos,
+    this.confirmado,
+    DateTime? criadoEm,
+    this.confirmedoEm,
+    this.motivoRecusa,
+  }) : criadoEm = criadoEm ?? DateTime.now();
+  
+  // helpers verificar status
+  bool get isPendente => confirmado == null;
+  bool get isConfirmado => confirmado == true;
+  bool get isRecusado => confirmado == false;
 
-  // Converte para JSON
+  // converte json pra salvar no firestore
   Map<String, dynamic> toJson() {
     return {
-      'ra': ra,
-      'nome': nome,
-      'itens': itens.map((item) => item.toJson()).toList(),
-      'data': data,
-      'horario': horario,
+      'userId': userId,
+      'equipamentos': codigosEquipamentos,
+      'confirmado': confirmado,
+      'criadoEm': Timestamp.fromDate(criadoEm),
+      'confirmedoEm': confirmedoEm != null ? Timestamp.fromDate(confirmedoEm!) : null,
+      'motivoRecusa': motivoRecusa,
     };
   }
 
-  // Converte para String JSON formatada para o QR Code
+  // converte string json pro qr code
   String toQrString() {
-    return '''
-{
-  "ra": "$ra",
-  "nome": "$nome",
-  "itens": [
-${itens.map((item) => '    {"cod": "${item.cod}", "descricao": "${item.descricao}"}').join(',\n')}
-  ],
-  "data": "$data",
-  "horario": "$horario"
-}''';
+    return jsonEncode({
+      'emprestimoId': id,
+      'userId': userId,
+    });
+  }
+
+  // cria a partir do json do firestore
+  factory EmprestimoModel.fromJson(Map<String, dynamic> json, {String? docId}) {
+    return EmprestimoModel(
+      id: docId ?? json['id'],
+      userId: json['userId'],
+      codigosEquipamentos: List<String>.from(json['equipamentos'] ?? []),
+      confirmado: json['confirmado'],
+      criadoEm: (json['criadoEm'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      confirmedoEm: (json['confirmedoEm'] as Timestamp?)?.toDate(),
+      motivoRecusa: json['motivoRecusa'],
+    );
+  }
+
+  // cria a partir da string json (pra ler qr code)
+  factory EmprestimoModel.fromQrString(String qrString) {
+    final json = jsonDecode(qrString);
+    return EmprestimoModel(
+      id: json['emprestimoId'],
+      userId: json['userId'],
+      codigosEquipamentos: [],
+    );
+  }
+
+  // cria copia com campos atualizados
+  EmprestimoModel copyWith({
+    String? id,
+    String? userId,
+    List<String>? codigosEquipamentos,
+    bool? confirmado,
+    DateTime? criadoEm,
+    DateTime? confirmedoEm,
+    String? motivoRecusa,
+  }) {
+    return EmprestimoModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      codigosEquipamentos: codigosEquipamentos ?? this.codigosEquipamentos,
+      confirmado: confirmado ?? this.confirmado,
+      criadoEm: criadoEm ?? this.criadoEm,
+      confirmedoEm: confirmedoEm ?? this.confirmedoEm,
+      motivoRecusa: motivoRecusa ?? this.motivoRecusa,
+    );
   }
 
   // Dados de exemplo
   factory EmprestimoModel.exemplo() {
     return EmprestimoModel(
-      ra: '000001',
-      nome: 'Fulano',
-      itens: [
-        ItemEmprestimo(cod: '00001', descricao: 'Notebook Dell Inspiron'),
-        ItemEmprestimo(cod: '00002', descricao: 'Régua de carregamento'),
-      ],
-      data: 'dd-mm-yyyy',
-      horario: 'hh:mm',
+      userId: 'user123abc',
+      codigosEquipamentos: ['5815', '5820', '5825'],
     );
-  }
-}
-
-class ItemEmprestimo {
-  final String cod;
-  final String descricao;
-
-  ItemEmprestimo({
-    required this.cod,
-    required this.descricao,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'cod': cod,
-      'descricao': descricao,
-    };
   }
 }

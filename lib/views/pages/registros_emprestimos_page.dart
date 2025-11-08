@@ -39,7 +39,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
       ),
       bottomNavigationBar: const NavBar(
       selectedIndex: 3,
-      useQrScanner: true, 
+      isAtendente: true, 
 ),
     );  
   }

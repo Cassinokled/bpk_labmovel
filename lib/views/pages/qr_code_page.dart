@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import '../../models/emprestimo_model.dart';
+import '../../services/emprestimo_service.dart';
 import '../widgets/app_logo.dart';
-import '../widgets/qr_code_display.dart';
 import '../widgets/circular_close_button.dart';
+import '../widgets/qr_code/qr_status_widget.dart';
 
 class QRCodePage extends StatefulWidget {
   final EmprestimoModel? emprestimo;
@@ -14,19 +16,103 @@ class QRCodePage extends StatefulWidget {
 }
 
 class _QRCodePageState extends State<QRCodePage> {
+  final EmprestimoService _emprestimoService = EmprestimoService();
   String _qrData = '';
-  late EmprestimoModel _emprestimo;
+  EmprestimoModel? _emprestimo;
+  StreamSubscription? _emprestimoSubscription;
+  bool _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    _emprestimo = widget.emprestimo ?? EmprestimoModel.exemplo();
-    _generateQRCode();
+    _initializeEmprestimo();
   }
 
-  void _generateQRCode() {
-    setState(() {
-      _qrData = _emprestimo.toQrString();
+  @override
+  void dispose() {
+    _emprestimoSubscription?.cancel();
+    super.dispose();
+  }
+
+  // inicializa o emprestimo: cria no firestore e monitora mudancas
+  Future<void> _initializeEmprestimo() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      // cria o emprestimo no firestore
+      final emprestimoInicial = widget.emprestimo ?? EmprestimoModel.exemplo();
+      final emprestimoSalvo = await _emprestimoService.criarEmprestimo(emprestimoInicial);
+      
+      setState(() {
+        _emprestimo = emprestimoSalvo;
+        _qrData = emprestimoSalvo.toQrString();
+        _isLoading = false;
+      });
+
+      // monitora mudancas no emprestimo
+      _monitorarEmprestimo(emprestimoSalvo.id!);
+    } catch (e) {
+      setState(() {
+        _error = 'Erro ao gerar QR Code: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  // monitora o status do emprestimo em tempo real
+  void _monitorarEmprestimo(String emprestimoId) {
+    _emprestimoSubscription = _emprestimoService
+        .monitorarEmprestimo(emprestimoId)
+        .listen((emprestimoAtualizado) {
+      if (emprestimoAtualizado == null) {
+        return;
+      }
+
+      setState(() {
+        _emprestimo = emprestimoAtualizado;
+      });
+
+      // se foi confirmado, fecha a pagina apos 1 segundo
+      if (emprestimoAtualizado.isConfirmado) {
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.of(context).pop();
+            // mostra mensagem de sucesso
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Empréstimo confirmado com sucesso!'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+        });
+      }
+      
+      // se foi recusado, fecha a pagina apos 1 segundo
+      if (emprestimoAtualizado.isRecusado) {
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.of(context).pop();
+            // mostra mensagem de recusa
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  emprestimoAtualizado.motivoRecusa != null
+                      ? 'Empréstimo recusado: ${emprestimoAtualizado.motivoRecusa}'
+                      : 'Empréstimo recusado pela atendente',
+                ),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 4),
+              ),
+            );
+          }
+        });
+      }
     });
   }
 
@@ -43,38 +129,31 @@ class _QRCodePageState extends State<QRCodePage> {
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(26.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'Mostre esse QR Code à bibliotecária, e assim que ela aprovar, seu empréstimo será concluído!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromARGB(255, 86, 22, 36),
-                      height: 1.2,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                // QR Code
-                QRCodeDisplay(qrData: _qrData),
-              ],
-            ),
+            child: _buildContent(),
           ),
           const Spacer(),
-          // Botão de voltar
-          const Padding(
-            padding: EdgeInsets.only(bottom: 26.0),
-            child: Center(
-              child: CircularCloseButton(),
+          // Botão de voltar (só mostra se estiver pendente)
+          if (_emprestimo?.isPendente == true)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 26.0),
+              child: Center(
+                child: CircularCloseButton(),
+              ),
             ),
-          ),
+          if (_emprestimo?.isPendente != true)
+            const SizedBox(height: 80),
         ],
       ),
+    );
+  }
+
+  Widget _buildContent() {
+    return QRStatusWidget(
+      isLoading: _isLoading,
+      error: _error,
+      emprestimo: _emprestimo,
+      qrData: _qrData,
+      onRetry: _initializeEmprestimo,
     );
   }
 }

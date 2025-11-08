@@ -12,9 +12,10 @@ class UserModel {
   final String dataNasc; // formato: "YYYY-MM-DD"
   final List<String> tiposUsuario; // ["user", "atendente", "admin"]
   final bool ativo;
+  final String? foto; // url ou nome da foto do usuario
   
   // dados academicos/funcionais opcionais
-  final String? registroAcademico; // RA alunos
+  final String? registroAcademico; // ra alunos
   final String? numCracha; // funcionarios admin/atendente/professores
   final String? curso; // alunos
   final int? semestre; // alunos
@@ -36,6 +37,7 @@ class UserModel {
     this.numCracha,
     this.curso,
     this.semestre,
+    this.foto,
     this.createdAt,
     this.lastLogin,
   });
@@ -61,6 +63,7 @@ class UserModel {
       dataNasc: data['data_nasc'] ?? '',
       tiposUsuario: tipos,
       ativo: data['ativo'] ?? true,
+      foto: data['foto'],
       registroAcademico: data['registro_academico'],
       numCracha: data['num_cracha'],
       curso: data['curso'],
@@ -88,6 +91,7 @@ class UserModel {
       dataNasc: data['data_nasc'] ?? '',
       tiposUsuario: tipos,
       ativo: data['ativo'] ?? true,
+      foto: data['foto'],
       registroAcademico: data['registro_academico'],
       numCracha: data['num_cracha'],
       curso: data['curso'],
@@ -107,6 +111,7 @@ class UserModel {
       'data_nasc': dataNasc,
       'tipos_usuario': tiposUsuario,
       'ativo': ativo,
+      'foto': foto,
       'registro_academico': registroAcademico,
       'num_cracha': numCracha,
       'curso': curso,
@@ -155,6 +160,7 @@ class UserModel {
     String? dataNasc,
     List<String>? tiposUsuario,
     bool? ativo,
+    String? foto,
     String? registroAcademico,
     String? numCracha,
     String? curso,
@@ -171,6 +177,7 @@ class UserModel {
       dataNasc: dataNasc ?? this.dataNasc,
       tiposUsuario: tiposUsuario ?? this.tiposUsuario,
       ativo: ativo ?? this.ativo,
+      foto: foto ?? this.foto,
       registroAcademico: registroAcademico ?? this.registroAcademico,
       numCracha: numCracha ?? this.numCracha,
       curso: curso ?? this.curso,

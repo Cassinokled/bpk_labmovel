@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../pages/perfil_page.dart';
 import '../pages/barras_scanner_page.dart';
-import '../pages/qr_code_atendente.dart';
+import '../pages/qr_scanner_page.dart';
 import 'circular_close_button.dart';
 
 class NavBar extends StatefulWidget {
   final int selectedIndex;
-  final bool useQrScanner;
+  final bool isAtendente;
   final VoidCallback? onBackFromScanner;
 
   const NavBar({
     super.key,
     this.selectedIndex = 0,
-    this.useQrScanner = false,
+    this.isAtendente = false,
     this.onBackFromScanner,
   });
 
@@ -54,16 +54,20 @@ class _NavBarState extends State<NavBar> {
   ];
 
   void _onItemTapped(int index) {
+    // botao "+" - scanner (barras pra usuario, qr pra atendente)
     if (index == 2) {
+      // se ja esta na pagina do scanner/confirmacao volta home
       if (_selectedIndex == 2) {
-        widget.onBackFromScanner?.call(); // FUNCIONA PARA QR E BARRAS
+        widget.onBackFromScanner?.call();
         return;
       }
 
-      if (widget.useQrScanner) {
+      // atendente: scanner de qr code
+      // usuario: scanner de codigo de barras
+      if (widget.isAtendente) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const QRScanPage()),
+          MaterialPageRoute(builder: (context) => const QRScannerPage()),
         );
       } else {
         Navigator.push(
@@ -73,7 +77,8 @@ class _NavBarState extends State<NavBar> {
       }
       return;
     }
-
+    
+    // perfil do usuario
     if (index == 4) {
       Navigator.push(
         context,
