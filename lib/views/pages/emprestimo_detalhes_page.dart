@@ -4,6 +4,7 @@ import '../../models/equipamento.dart';
 import '../../services/equipamento_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar.dart';
+import 'qr_code_devolucao_page.dart';
 
 class EmprestimoDetalhesPage extends StatefulWidget {
   final EmprestimoModel emprestimo;
@@ -160,6 +161,10 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             final equipamento = entry.value;
             return _buildEquipamentoItem(equipamento, index + 1);
           }),
+          const SizedBox(height: 24),
+
+          // botao de gerar qr para devolucao
+          _buildDevolucaoButton(),
           const SizedBox(height: 100),
         ],
       ),
@@ -168,10 +173,10 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
 
   Widget _buildInfoCard() {
     final prazo = widget.emprestimo.prazoLimiteDevolucao;
-    final isAtrasado = widget.emprestimo.isDevolvido 
-        ? widget.emprestimo.atrasado 
+    final isAtrasado = widget.emprestimo.isDevolvido
+        ? widget.emprestimo.atrasado
         : widget.emprestimo.isAtrasadoAtual;
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -204,8 +209,8 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isAtrasado 
-                  ? Colors.red.withOpacity(0.1) 
+              color: isAtrasado
+                  ? Colors.red.withOpacity(0.1)
                   : Colors.orange.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
@@ -245,7 +250,9 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                       if (!isAtrasado) ...[
                         const SizedBox(height: 2),
                         Text(
-                          _formatarTempoRestante(widget.emprestimo.tempoRestante),
+                          _formatarTempoRestante(
+                            widget.emprestimo.tempoRestante,
+                          ),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -274,10 +281,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             children: [
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
               Text(
                 value,
@@ -331,7 +335,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             ),
           ),
           const SizedBox(width: 16),
-          
+
           // informacoes
           Expanded(
             child: Column(
@@ -348,10 +352,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                 const SizedBox(height: 4),
                 Text(
                   'CÓD: ${equipamento?.codigo ?? '—'}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -363,8 +364,18 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
 
   String _formatarDataCompleta(DateTime data) {
     final meses = [
-      'jan', 'fev', 'mar', 'abr', 'mai', 'jun',
-      'jul', 'ago', 'set', 'out', 'nov', 'dez'
+      'jan',
+      'fev',
+      'mar',
+      'abr',
+      'mai',
+      'jun',
+      'jul',
+      'ago',
+      'set',
+      'out',
+      'nov',
+      'dez',
     ];
     return '${data.day} ${meses[data.month - 1]} ${data.year} às ${data.hour.toString().padLeft(2, '0')}:${data.minute.toString().padLeft(2, '0')}';
   }
@@ -379,5 +390,36 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
     } else {
       return 'Menos de 1 minuto';
     }
+  }
+
+  Widget _buildDevolucaoButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  QRCodeDevolucaoPage(emprestimo: widget.emprestimo),
+            ),
+          );
+        },
+        icon: const Icon(Icons.qr_code_2, size: 24),
+        label: const Text(
+          'Gerar QR para Devolução',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 3,
+        ),
+      ),
+    );
   }
 }

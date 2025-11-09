@@ -27,7 +27,14 @@ class BrasiliaTime {
   }
 
   // cria um datetime especifico no horario de brasilia
-  static DateTime create(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0]) {
+  static DateTime create(
+    int year,
+    int month,
+    int day, [
+    int hour = 0,
+    int minute = 0,
+    int second = 0,
+  ]) {
     initialize();
     final saoPaulo = tz.getLocation('America/Sao_Paulo');
     return tz.TZDateTime(saoPaulo, year, month, day, hour, minute, second);

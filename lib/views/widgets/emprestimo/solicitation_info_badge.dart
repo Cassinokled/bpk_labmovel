@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 class SolicitationInfoBadge extends StatelessWidget {
   final DateTime dateTime;
 
-  const SolicitationInfoBadge({
-    super.key,
-    required this.dateTime,
-  });
+  const SolicitationInfoBadge({super.key, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +13,12 @@ class SolicitationInfoBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.blue.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.blue.withOpacity(0.3),
-          width: 1,
-        ),
+        border: Border.all(color: Colors.blue.withOpacity(0.3), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.access_time,
-            color: Colors.blue,
-            size: 20,
-          ),
+          const Icon(Icons.access_time, color: Colors.blue, size: 20),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +49,6 @@ class SolicitationInfoBadge extends StatelessWidget {
 
   String _formatDateTime(DateTime dateTime) {
     return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} às '
-           '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 }

@@ -52,8 +52,8 @@ class _HomePageState extends State<HomePage> {
 
   bool get _canGoBackToSelection {
     // verifica se o usuario eh atendente e user ao mesmo tempo
-    return _currentUser?.isAtendente == true && 
-           _currentUser?.tiposUsuario.contains('user') == true;
+    return _currentUser?.isAtendente == true &&
+        _currentUser?.tiposUsuario.contains('user') == true;
   }
 
   @override
@@ -63,9 +63,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           _buildHeader(),
-          Expanded(
-            child: _buildBody(),
-          ),
+          Expanded(child: _buildBody()),
         ],
       ),
       bottomNavigationBar: const NavBar(),
@@ -92,9 +90,7 @@ class _HomePageState extends State<HomePage> {
               )
             else
               const SizedBox(width: 56),
-            const Expanded(
-              child: Center(child: AppLogo()),
-            ),
+            const Expanded(child: Center(child: AppLogo())),
             const SizedBox(width: 56),
           ],
         ),
@@ -122,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     const EmprestimosLista(),
-                    
+
                     if (temItensNoCarrinho) ...[
                       const SizedBox(height: 16),
                       HomeEquipamentosList(carrinho: carrinho),
@@ -135,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            
+
             if (temItensNoCarrinho)
               HomeActionButtons(
                 onCancelar: () => _handleCancelar(carrinho),
@@ -154,7 +150,7 @@ class _HomePageState extends State<HomePage> {
   void _handleConcluir(BuildContext context, CarrinhoEmprestimo carrinho) {
     // obtem o id do usuario logado
     final userId = AuthService().currentUser?.uid;
-    
+
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

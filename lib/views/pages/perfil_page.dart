@@ -43,8 +43,8 @@ class _PerfilPageState extends State<PerfilPage> {
 
   bool get _canGoBackToSelection {
     // verifica se o usuario eh atendente e user ao mesmo tempo
-    return _userData?.isAtendente == true && 
-           _userData?.tiposUsuario.contains('user') == true;
+    return _userData?.isAtendente == true &&
+        _userData?.tiposUsuario.contains('user') == true;
   }
 
   Future<void> _logout() async {
@@ -60,10 +60,7 @@ class _PerfilPageState extends State<PerfilPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Sair',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text('Sair', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -133,9 +130,7 @@ class _PerfilPageState extends State<PerfilPage> {
               )
             else
               const SizedBox(width: 56),
-            const Expanded(
-              child: Center(child: AppLogo()),
-            ),
+            const Expanded(child: Center(child: AppLogo())),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: IconButton(
@@ -191,7 +186,10 @@ class _PerfilPageState extends State<PerfilPage> {
               children: [
                 _buildInfoTile(Icons.email_outlined, user?.email ?? '—'),
                 const SizedBox(height: 12),
-                _buildInfoTile(Icons.badge_outlined, _userData?.registroAcademico ?? '—'),
+                _buildInfoTile(
+                  Icons.badge_outlined,
+                  _userData?.registroAcademico ?? '—',
+                ),
                 const SizedBox(height: 12),
                 _buildInfoTile(
                   Icons.verified_user,

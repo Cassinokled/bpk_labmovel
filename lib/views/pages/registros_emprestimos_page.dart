@@ -5,7 +5,7 @@ import '../widgets/navbar.dart';
 class RegistrosEmprestimosPage extends StatelessWidget {
   final String nomeBloco;
 
-  const RegistrosEmprestimosPage ({super.key, required this.nomeBloco});
+  const RegistrosEmprestimosPage({super.key, required this.nomeBloco});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +37,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar(
-      selectedIndex: 3,
-      isAtendente: true, 
-),
-    );  
+      bottomNavigationBar: const NavBar(selectedIndex: 3, isAtendente: true),
+    );
   }
 }

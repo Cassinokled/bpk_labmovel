@@ -5,10 +5,7 @@ import 'equipamento_excluir_card.dart';
 class HomeEquipamentosList extends StatelessWidget {
   final CarrinhoEmprestimo carrinho;
 
-  const HomeEquipamentosList({
-    super.key,
-    required this.carrinho,
-  });
+  const HomeEquipamentosList({super.key, required this.carrinho});
 
   @override
   Widget build(BuildContext context) {

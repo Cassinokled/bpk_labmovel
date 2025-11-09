@@ -16,7 +16,7 @@ class EmprestimoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final numeroFormatado = numero.toString().padLeft(3, '0');
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -50,7 +50,7 @@ class EmprestimoCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            
+
             // informacoes do emprestimo
             Expanded(
               child: Column(
@@ -67,10 +67,7 @@ class EmprestimoCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '${emprestimo.codigosEquipamentos.length} ${emprestimo.codigosEquipamentos.length == 1 ? 'equipamento' : 'equipamentos'}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -78,15 +75,21 @@ class EmprestimoCard extends StatelessWidget {
                       Icon(
                         Icons.schedule,
                         size: 14,
-                        color: _isAtrasado(emprestimo) ? Colors.red : Colors.grey[600],
+                        color: _isAtrasado(emprestimo)
+                            ? Colors.red
+                            : Colors.grey[600],
                       ),
                       const SizedBox(width: 4),
                       Text(
                         _formatarPrazo(emprestimo),
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: _isAtrasado(emprestimo) ? FontWeight.bold : FontWeight.normal,
-                          color: _isAtrasado(emprestimo) ? Colors.red : Colors.grey[600],
+                          fontWeight: _isAtrasado(emprestimo)
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: _isAtrasado(emprestimo)
+                              ? Colors.red
+                              : Colors.grey[600],
                         ),
                       ),
                     ],
@@ -94,7 +97,7 @@ class EmprestimoCard extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const Icon(
               Icons.chevron_right,
               color: Color.fromARGB(255, 86, 22, 36),
@@ -116,9 +119,9 @@ class EmprestimoCard extends StatelessWidget {
     if (_isAtrasado(emprestimo)) {
       return 'ATRASADO - Devolver até 22:30';
     }
-    
+
     final tempoRestante = emprestimo.tempoRestante;
-    
+
     if (tempoRestante.inHours > 0) {
       return 'Devolver até 22:30 (${tempoRestante.inHours}h restantes)';
     } else if (tempoRestante.inMinutes > 0) {

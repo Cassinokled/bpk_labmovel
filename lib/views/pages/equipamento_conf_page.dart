@@ -8,10 +8,7 @@ import '../../services/equipamento_service.dart';
 class EquipamentoConfPage extends StatefulWidget {
   final String bookCode;
 
-  const EquipamentoConfPage({
-    super.key,
-    required this.bookCode,
-  });
+  const EquipamentoConfPage({super.key, required this.bookCode});
 
   @override
   State<EquipamentoConfPage> createState() => _EquipamentoConfPageState();
@@ -31,8 +28,10 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
 
   Future<void> _verificarDisponibilidade() async {
     try {
-      final resultado = await _equipamentoService.verificarDisponibilidade(widget.bookCode);
-      
+      final resultado = await _equipamentoService.verificarDisponibilidade(
+        widget.bookCode,
+      );
+
       setState(() {
         _isLoading = false;
         if (resultado['existe'] == false) {
@@ -57,9 +56,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
         children: [
           const SizedBox(height: 60),
 
-          const Center(
-            child: AppLogo(),
-          ),
+          const Center(child: AppLogo()),
 
           const Spacer(),
 
@@ -69,10 +66,10 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
             child: _isLoading
                 ? _buildLoading()
                 : _errorMessage != null
-                    ? _buildError()
-                    : _isEmprestado
-                        ? _buildEmprestado()
-                        : _buildConfirmacao(),
+                ? _buildError()
+                : _isEmprestado
+                ? _buildEmprestado()
+                : _buildConfirmacao(),
           ),
 
           const Spacer(),
@@ -85,9 +82,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
   Widget _buildLoading() {
     return const Column(
       children: [
-        CircularProgressIndicator(
-          color: Color.fromARGB(255, 86, 22, 36),
-        ),
+        CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
         SizedBox(height: 20),
         Text(
           'Verificando disponibilidade...',
@@ -103,20 +98,12 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
   Widget _buildError() {
     return Column(
       children: [
-        const Icon(
-          Icons.error_outline,
-          size: 64,
-          color: Colors.red,
-        ),
+        const Icon(Icons.error_outline, size: 64, color: Colors.red),
         const SizedBox(height: 20),
         Text(
           _errorMessage!,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.red,
-            height: 1.4,
-          ),
+          style: const TextStyle(fontSize: 18, color: Colors.red, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
@@ -159,11 +146,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           ),
         ),
         const SizedBox(height: 20),
-        const Icon(
-          Icons.block,
-          size: 64,
-          color: Colors.red,
-        ),
+        const Icon(Icons.block, size: 64, color: Colors.red),
         const SizedBox(height: 20),
         const Text(
           'Este equipamento já está emprestado!',
@@ -179,11 +162,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
         const Text(
           'Por favor, escolha outro equipamento.',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-            height: 1.4,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
@@ -229,25 +208,26 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
         const Text(
           'Deseja adicionar o equipamento referente a esse código?',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black87,
-            height: 1.4,
-          ),
+          style: TextStyle(fontSize: 18, color: Colors.black87, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () async {
-              final carrinho = Provider.of<CarrinhoEmprestimo>(context, listen: false);
-              
+              final carrinho = Provider.of<CarrinhoEmprestimo>(
+                context,
+                listen: false,
+              );
+
               // Verifica se o item já está no carrinho
               if (carrinho.contemCodigo(widget.bookCode)) {
                 // Mostra mensagem que o item já foi adicionado
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Este equipamento já foi adicionado ao carrinho!'),
+                    content: Text(
+                      'Este equipamento já foi adicionado ao carrinho!',
+                    ),
                     backgroundColor: Color.fromARGB(255, 86, 22, 36),
                     duration: Duration(seconds: 2),
                   ),
@@ -257,7 +237,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               } else {
                 // Adiciona o equipamento ao carrinho
                 await carrinho.adicionarEquipamento(widget.bookCode);
-                
+
                 // Volta home
                 if (context.mounted) {
                   Navigator.pop(context);

@@ -11,7 +11,8 @@ class AtendenteUserSelectPage extends StatefulWidget {
   const AtendenteUserSelectPage({super.key});
 
   @override
-  State<AtendenteUserSelectPage> createState() => _AtendenteUserSelectPageState();
+  State<AtendenteUserSelectPage> createState() =>
+      _AtendenteUserSelectPageState();
 }
 
 class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
@@ -56,10 +57,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Sair',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text('Sair', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -88,11 +86,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -107,9 +101,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                 icon: const Icon(Icons.arrow_back, color: Color(0xFFF8F9F5)),
                 onPressed: null, // nao faz nada
               ),
-              Expanded(
-                child: Center(child: AppLogo()),
-              ),
+              Expanded(child: Center(child: AppLogo())),
               IconButton(
                 icon: const Icon(Icons.logout),
                 tooltip: 'Sair',
@@ -121,9 +113,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
             ],
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: _buildSelectorBody(context),
-          ),
+          Expanded(child: _buildSelectorBody(context)),
         ],
       ),
     );
@@ -138,9 +128,9 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
           const SizedBox(height: 8),
           Text(
             'Selecione como deseja entrar',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -159,7 +149,12 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            foregroundColor: const Color.fromARGB(255, 86, 22, 36),
+                            foregroundColor: const Color.fromARGB(
+                              255,
+                              86,
+                              22,
+                              36,
+                            ),
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -169,15 +164,28 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                             // entrar como usuario normal
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const HomePage()),
+                              MaterialPageRoute(
+                                builder: (_) => const HomePage(),
+                              ),
                             );
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.person, size: 48, color: Color.fromARGB(255, 86, 22, 36)),
+                              const Icon(
+                                Icons.person,
+                                size: 48,
+                                color: Color.fromARGB(255, 86, 22, 36),
+                              ),
                               const SizedBox(height: 8),
-                              Text('Usuário', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, fontFamily: 'Avignon')),
+                              Text(
+                                'Usuário',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Avignon',
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -191,7 +199,12 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              86,
+                              22,
+                              36,
+                            ),
                             foregroundColor: Colors.white,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
@@ -202,15 +215,29 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                             // entrar como atendente
                             Navigator.push(
                               context,
-                               MaterialPageRoute(builder: (_) => AtendentePage(user: _currentUser?.nome))
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    AtendentePage(user: _currentUser?.nome),
+                              ),
                             );
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.support_agent, size: 48, color: Colors.white),
+                              const Icon(
+                                Icons.support_agent,
+                                size: 48,
+                                color: Colors.white,
+                              ),
                               const SizedBox(height: 8),
-                              Text('Atendente', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, fontFamily: 'Avignon')),
+                              Text(
+                                'Atendente',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Avignon',
+                                ),
+                              ),
                             ],
                           ),
                         ),

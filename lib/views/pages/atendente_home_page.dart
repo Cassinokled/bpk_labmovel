@@ -22,10 +22,7 @@ class AtendenteHomePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Sair',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text('Sair', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -66,9 +63,7 @@ class AtendenteHomePage extends StatelessWidget {
                 tooltip: 'Voltar',
                 onPressed: () => Navigator.pop(context),
               ),
-              Expanded(
-                child: Center(child: AppLogo()),
-              ),
+              Expanded(child: Center(child: AppLogo())),
               IconButton(
                 icon: const Icon(Icons.logout),
                 tooltip: 'Sair',

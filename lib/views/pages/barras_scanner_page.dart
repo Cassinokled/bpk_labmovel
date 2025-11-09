@@ -22,7 +22,7 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
         _scannedCode = code;
         _hasScanned = true;
       });
-      
+
       // verifica o equipamento no banco antes de prosseguir
       _verificarEquipamento(code);
     }
@@ -30,7 +30,7 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
 
   Future<void> _verificarEquipamento(String codigo) async {
     if (!mounted) return;
-    
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -38,8 +38,6 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
                     ),
                   ),
                 ),
-                 const SizedBox(height: 40),
+                const SizedBox(height: 40),
                 BarcodeScanner(
                   onBarcodeScanned: _onBarcodeScanned,
                   onScannerCreated: (stop) {
@@ -93,15 +91,15 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
         ],
       ),
       bottomNavigationBar: NavBar(
-  selectedIndex: 2,
-  isAtendente: false,
-  onBackFromScanner: () {
-    if (mounted) {
-      _stopScanner();
-      Navigator.pop(context);
-    }
-  },
-),
+        selectedIndex: 2,
+        isAtendente: false,
+        onBackFromScanner: () {
+          if (mounted) {
+            _stopScanner();
+            Navigator.pop(context);
+          }
+        },
+      ),
     );
   }
-  }
+}

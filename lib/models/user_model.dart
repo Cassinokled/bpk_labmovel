@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String uid;
   final String email;
-  
+
   // dados basicos obrigatorios
   final String nome;
   final String sobrenome;
@@ -13,13 +13,13 @@ class UserModel {
   final List<String> tiposUsuario; // ["user", "atendente", "admin"]
   final bool ativo;
   final String? foto; // url ou nome da foto do usuario
-  
+
   // dados academicos/funcionais opcionais
   final String? registroAcademico; // ra alunos
   final String? numCracha; // funcionarios admin/atendente/professores
   final String? curso; // alunos
   final int? semestre; // alunos
-  
+
   // metadados
   final DateTime? createdAt;
   final DateTime? lastLogin;
@@ -45,7 +45,7 @@ class UserModel {
   // criar usermodel a partir do firestore
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    
+
     // converte tipos_usuario para list<string>
     List<String> tipos = [];
     if (data['tipos_usuario'] != null) {
@@ -53,13 +53,14 @@ class UserModel {
     } else {
       tipos = ['user']; // padrao se nao existir
     }
-    
+
     return UserModel(
       uid: doc.id,
       email: data['email'] ?? '',
       nome: data['nome'] ?? '',
       sobrenome: data['sobrenome'] ?? '',
-      nomeCompleto: data['nome_completo'] ?? '${data['nome']} ${data['sobrenome']}',
+      nomeCompleto:
+          data['nome_completo'] ?? '${data['nome']} ${data['sobrenome']}',
       dataNasc: data['data_nasc'] ?? '',
       tiposUsuario: tipos,
       ativo: data['ativo'] ?? true,
@@ -81,13 +82,14 @@ class UserModel {
     } else {
       tipos = ['user'];
     }
-    
+
     return UserModel(
       uid: uid,
       email: data['email'] ?? '',
       nome: data['nome'] ?? '',
       sobrenome: data['sobrenome'] ?? '',
-      nomeCompleto: data['nome_completo'] ?? '${data['nome']} ${data['sobrenome']}',
+      nomeCompleto:
+          data['nome_completo'] ?? '${data['nome']} ${data['sobrenome']}',
       dataNasc: data['data_nasc'] ?? '',
       tiposUsuario: tipos,
       ativo: data['ativo'] ?? true,
@@ -116,11 +118,11 @@ class UserModel {
       'num_cracha': numCracha,
       'curso': curso,
       'semestre': semestre,
-      'createdAt': createdAt != null 
-          ? Timestamp.fromDate(createdAt!) 
+      'createdAt': createdAt != null
+          ? Timestamp.fromDate(createdAt!)
           : FieldValue.serverTimestamp(),
-      'lastLogin': lastLogin != null 
-          ? Timestamp.fromDate(lastLogin!) 
+      'lastLogin': lastLogin != null
+          ? Timestamp.fromDate(lastLogin!)
           : FieldValue.serverTimestamp(),
     };
   }
@@ -129,17 +131,17 @@ class UserModel {
   bool get isAdmin => tiposUsuario.contains('admin');
   bool get isAtendente => tiposUsuario.contains('atendente');
   bool get isUser => tiposUsuario.contains('user');
-  
+
   // permissoes baseadas em tipos
   bool get canManageEquipments => isAdmin || isAtendente;
   bool get canManageUsers => isAdmin;
   bool get canMakeLoans => isUser || isAtendente || isAdmin;
-  
+
   // identificacao de perfis
   bool get isAluno => isUser && curso != null && semestre != null;
   bool get isProfessor => isUser && numCracha != null && curso == null;
   bool get isFuncionario => isAdmin || isAtendente;
-  
+
   // tipo principal para exibicao
   String get tipoPrincipal {
     if (isAdmin) return 'Administrador';

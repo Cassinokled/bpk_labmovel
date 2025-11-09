@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import '../widgets/app_logo.dart'; // Seu widget de logo
 import '../../services/auth_service.dart';
 
-
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -44,10 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final result = await _authService.login(
-        email: email,
-        password: password,
-      );
+      final result = await _authService.login(email: email, password: password);
 
       setState(() {
         _isLoading = false;
@@ -139,11 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-               ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-  }
+}

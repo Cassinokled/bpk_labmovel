@@ -27,7 +27,7 @@ class AuthService {
       };
     } on FirebaseAuthException catch (e) {
       String errorMessage;
-      
+
       switch (e.code) {
         case 'user-not-found':
           errorMessage = 'Usuário não encontrado';
@@ -51,15 +51,9 @@ class AuthService {
           errorMessage = 'Erro ao fazer login: ${e.message}';
       }
 
-      return {
-        'success': false,
-        'message': errorMessage,
-      };
+      return {'success': false, 'message': errorMessage};
     } catch (e) {
-      return {
-        'success': false,
-        'message': 'Erro inesperado: $e',
-      };
+      return {'success': false, 'message': 'Erro inesperado: $e'};
     }
   }
 
@@ -84,5 +78,4 @@ class AuthService {
       return null;
     }
   }
-
 }

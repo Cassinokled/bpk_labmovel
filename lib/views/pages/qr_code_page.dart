@@ -8,7 +8,7 @@ import '../widgets/qr_code/qr_status_widget.dart';
 
 class QRCodePage extends StatefulWidget {
   final EmprestimoModel? emprestimo;
-  
+
   const QRCodePage({super.key, this.emprestimo});
 
   @override
@@ -45,8 +45,10 @@ class _QRCodePageState extends State<QRCodePage> {
 
       // cria o emprestimo no firestore
       final emprestimoInicial = widget.emprestimo ?? EmprestimoModel.exemplo();
-      final emprestimoSalvo = await _emprestimoService.criarEmprestimo(emprestimoInicial);
-      
+      final emprestimoSalvo = await _emprestimoService.criarEmprestimo(
+        emprestimoInicial,
+      );
+
       setState(() {
         _emprestimo = emprestimoSalvo;
         _qrData = emprestimoSalvo.toQrString();
@@ -68,46 +70,46 @@ class _QRCodePageState extends State<QRCodePage> {
     _emprestimoSubscription = _emprestimoService
         .monitorarEmprestimo(emprestimoId)
         .listen((emprestimoAtualizado) {
-      if (emprestimoAtualizado == null) {
-        return;
-      }
+          if (emprestimoAtualizado == null) {
+            return;
+          }
 
-      setState(() {
-        _emprestimo = emprestimoAtualizado;
-      });
+          setState(() {
+            _emprestimo = emprestimoAtualizado;
+          });
 
-      if (emprestimoAtualizado.isConfirmado) {
-        Future.delayed(const Duration(seconds: 1), () {
-          if (mounted) {
-            Navigator.of(context).pop();
-            // mostra mensagem de sucesso
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Empréstimo confirmado com sucesso!'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 3),
-              ),
-            );
+          if (emprestimoAtualizado.isConfirmado) {
+            Future.delayed(const Duration(seconds: 1), () {
+              if (mounted) {
+                Navigator.of(context).pop();
+                // mostra mensagem de sucesso
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Empréstimo confirmado com sucesso!'),
+                    backgroundColor: Colors.green,
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              }
+            });
+          }
+
+          if (emprestimoAtualizado.isRecusado) {
+            Future.delayed(const Duration(seconds: 1), () {
+              if (mounted) {
+                Navigator.of(context).pop();
+                // mostra mensagem de recusa
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Empréstimo recusado pela atendente'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 4),
+                  ),
+                );
+              }
+            });
           }
         });
-      }
-      
-      if (emprestimoAtualizado.isRecusado) {
-        Future.delayed(const Duration(seconds: 1), () {
-          if (mounted) {
-            Navigator.of(context).pop();
-            // mostra mensagem de recusa
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Empréstimo recusado pela atendente'),
-                backgroundColor: Colors.red,
-                duration: Duration(seconds: 4),
-              ),
-            );
-          }
-        });
-      }
-    });
   }
 
   @override
@@ -117,25 +119,17 @@ class _QRCodePageState extends State<QRCodePage> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          const Center(
-            child: AppLogo(),
-          ),
+          const Center(child: AppLogo()),
           const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(26.0),
-            child: _buildContent(),
-          ),
+          Padding(padding: const EdgeInsets.all(26.0), child: _buildContent()),
           const Spacer(),
           // Botão de voltar (só mostra se estiver pendente)
           if (_emprestimo?.isPendente == true)
             const Padding(
               padding: EdgeInsets.only(bottom: 26.0),
-              child: Center(
-                child: CircularCloseButton(),
-              ),
+              child: Center(child: CircularCloseButton()),
             ),
-          if (_emprestimo?.isPendente != true)
-            const SizedBox(height: 80),
+          if (_emprestimo?.isPendente != true) const SizedBox(height: 80),
         ],
       ),
     );

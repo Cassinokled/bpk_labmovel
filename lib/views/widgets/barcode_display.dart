@@ -52,7 +52,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         ),
       ),
       clipBehavior: Clip.hardEdge,
-      child: SizedBox( // REMOVA O const AQUI
+      child: SizedBox(
+        // REMOVA O const AQUI
         width: 300,
         height: 300,
         child: MobileScanner(

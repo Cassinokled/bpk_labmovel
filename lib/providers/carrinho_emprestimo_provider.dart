@@ -16,7 +16,7 @@ class CarrinhoEmprestimo extends ChangeNotifier {
   Future<void> adicionarEquipamento(String codigo) async {
     // busca o equipamento do banco
     final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
-    
+
     if (equipamento != null) {
       _equipamentos.add(equipamento);
       notifyListeners();

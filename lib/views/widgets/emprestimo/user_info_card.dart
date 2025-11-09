@@ -6,10 +6,7 @@ import 'user_photo_widget.dart';
 class UserInfoCard extends StatelessWidget {
   final UserModel? usuario;
 
-  const UserInfoCard({
-    super.key,
-    required this.usuario,
-  });
+  const UserInfoCard({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +20,10 @@ class UserInfoCard extends StatelessWidget {
   }
 
   Widget _buildUserName() {
-    final nomeCompleto = usuario != null 
+    final nomeCompleto = usuario != null
         ? '${usuario!.nome} ${usuario!.sobrenome}'
         : 'Nome do Usuário';
-    
+
     return Column(
       children: [
         Text(

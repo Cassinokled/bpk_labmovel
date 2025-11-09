@@ -15,7 +15,7 @@ class EquipamentoCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoaded = equipamento != null;
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -53,9 +53,7 @@ class EquipamentoCardWidget extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: isLoaded 
-            ? const Color.fromARGB(255, 86, 22, 36) 
-            : Colors.red,
+        color: isLoaded ? const Color.fromARGB(255, 86, 22, 36) : Colors.red,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
@@ -96,10 +94,7 @@ class EquipamentoCardWidget extends StatelessWidget {
       children: [
         Icon(icon, size: 14, color: Colors.grey),
         const SizedBox(width: 6),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 13, color: Colors.grey),
-        ),
+        Text(text, style: const TextStyle(fontSize: 13, color: Colors.grey)),
       ],
     );
   }

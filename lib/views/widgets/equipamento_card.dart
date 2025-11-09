@@ -5,11 +5,7 @@ class EquipamentoCard extends StatelessWidget {
   final Equipamento equipamento;
   final VoidCallback? onRemove;
 
-  const EquipamentoCard({
-    super.key,
-    required this.equipamento,
-    this.onRemove,
-  });
+  const EquipamentoCard({super.key, required this.equipamento, this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +48,11 @@ class EquipamentoCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'CÓD: ${equipamento.codigo}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.black87),
                 ),
                 Text(
                   'Bloco: ${equipamento.bloco}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.black87),
                 ),
               ],
             ),

@@ -20,7 +20,7 @@ class EquipamentoService {
 
       final doc = querySnapshot.docs.first;
       final data = doc.data() as Map<String, dynamic>;
-      
+
       return Equipamento.fromJson(data);
     } catch (e) {
       print('Erro ao buscar equipamento: $e');

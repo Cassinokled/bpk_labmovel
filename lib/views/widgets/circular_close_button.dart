@@ -21,16 +21,9 @@ class CircularCloseButton extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
       child: IconButton(
-        icon: Icon(
-          Icons.close,
-          color: iconColor,
-          size: iconSize,
-        ),
+        icon: Icon(Icons.close, color: iconColor, size: iconSize),
         onPressed: onPressed ?? () => Navigator.pop(context),
       ),
     );

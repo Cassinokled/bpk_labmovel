@@ -9,6 +9,7 @@ class QRStatusWidget extends StatelessWidget {
   final EmprestimoModel? emprestimo;
   final String qrData;
   final VoidCallback? onRetry;
+  final bool isDevolucao;
 
   const QRStatusWidget({
     super.key,
@@ -17,6 +18,7 @@ class QRStatusWidget extends StatelessWidget {
     this.emprestimo,
     required this.qrData,
     this.onRetry,
+    this.isDevolucao = false,
   });
 
   @override
@@ -29,6 +31,15 @@ class QRStatusWidget extends StatelessWidget {
       return _buildError();
     }
 
+    // se for devolucao
+    if (isDevolucao) {
+      if (emprestimo?.isDevolvido == true) {
+        return _buildDevolvido();
+      }
+      return _buildPendenteDevolucao();
+    }
+
+    // se for emprestimo normal
     if (emprestimo?.isConfirmado == true) {
       return _buildConfirmado();
     }
@@ -44,9 +55,7 @@ class QRStatusWidget extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircularProgressIndicator(
-          color: Color.fromARGB(255, 86, 22, 36),
-        ),
+        CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
         SizedBox(height: 20),
         Text(
           'Gerando QR Code...',
@@ -63,19 +72,12 @@ class QRStatusWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 64,
-        ),
+        const Icon(Icons.error_outline, color: Colors.red, size: 64),
         const SizedBox(height: 20),
         Text(
           error!,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.red,
-          ),
+          style: const TextStyle(fontSize: 16, color: Colors.red),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
@@ -90,11 +92,7 @@ class QRStatusWidget extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.check_circle,
-          color: Colors.green,
-          size: 80,
-        ),
+        Icon(Icons.check_circle, color: Colors.green, size: 80),
         SizedBox(height: 20),
         Text(
           'Empréstimo confirmado!',
@@ -122,11 +120,7 @@ class QRStatusWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(
-          Icons.cancel,
-          color: Colors.red,
-          size: 80,
-        ),
+        const Icon(Icons.cancel, color: Colors.red, size: 80),
         const SizedBox(height: 20),
         const Text(
           'Empréstimo recusado',
@@ -191,6 +185,80 @@ class QRStatusWidget extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPendenteDevolucao() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            'Mostre esse QR Code à bibliotecária para devolver os equipamentos!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Color.fromARGB(255, 86, 22, 36),
+              height: 1.2,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const SizedBox(height: 40),
+        QRCodeDisplay(qrData: qrData),
+        const SizedBox(height: 20),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Color.fromARGB(255, 86, 22, 36),
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Aguardando confirmação da devolução...',
+              style: TextStyle(
+                fontSize: 14,
+                color: Color.fromARGB(255, 86, 22, 36),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDevolvido() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.assignment_turned_in, color: Colors.green, size: 80),
+        SizedBox(height: 20),
+        Text(
+          'Devolução confirmada!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.green,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Redirecionando...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            color: Color.fromARGB(255, 86, 22, 36),
+          ),
         ),
       ],
     );

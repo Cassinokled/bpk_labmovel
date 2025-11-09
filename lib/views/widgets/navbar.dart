@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../pages/perfil_page.dart';
 import '../pages/barras_scanner_page.dart';
 import '../pages/qr_scanner_page.dart';
+import '../pages/historico_user_page.dart';
 import 'circular_close_button.dart';
 
 class NavBar extends StatefulWidget {
@@ -54,12 +55,12 @@ class _NavBarState extends State<NavBar> {
   ];
 
   void _onItemTapped(int index) {
-    if (index != 2 && widget.selectedIndex == index) {
-      return;
-    }
-
+    // botao home (index 0) - volta pra home removendo todas as rotas
     if (index == 0) {
-      Navigator.pop(context);
+      if (widget.selectedIndex == 0) {
+        return; // ja esta na home
+      }
+      Navigator.popUntil(context, (route) => route.isFirst);
       return;
     }
 
@@ -86,17 +87,32 @@ class _NavBarState extends State<NavBar> {
       }
       return;
     }
-    
+
+    // historico (index 1) - apenas para usuarios
+    if (index == 1 && !widget.isAtendente) {
+      if (widget.selectedIndex == 1) {
+        return; // ja esta no historico
+      }
+      // volta pra home primeiro, depois vai pro historico
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HistoricoUserPage()),
+      );
+      return;
+    }
+
     // perfil do usuario
     if (index == 4) {
+      if (widget.selectedIndex == 4) {
+        return; // ja esta no perfil
+      }
+      // volta pra home primeiro, depois vai pro perfil
+      Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const PerfilPage()),
-      ).then((_) {
-        setState(() {
-          _selectedIndex = widget.selectedIndex;
-        });
-      });
+      );
       return;
     }
 
@@ -115,7 +131,9 @@ class _NavBarState extends State<NavBar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(_navItems.length, (index) {
           final isAddButton = index == 2;
-          final isSelected = isAddButton ? _selectedIndex == 2 : _selectedIndex == index;
+          final isSelected = isAddButton
+              ? _selectedIndex == 2
+              : _selectedIndex == index;
           final item = _navItems[index];
           final iconSize = isAddButton ? 62.0 : 25.0;
 
@@ -124,13 +142,17 @@ class _NavBarState extends State<NavBar> {
             return GestureDetector(
               onTap: () => _onItemTapped(index),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: CircularCloseButton(
                   size: 56,
                   backgroundColor: const Color.fromARGB(255, 86, 22, 36),
                   iconColor: Colors.white,
                   iconSize: 28,
-                  onPressed: widget.onBackFromScanner ?? () => Navigator.pop(context),
+                  onPressed:
+                      widget.onBackFromScanner ?? () => Navigator.pop(context),
                 ),
               ),
             );

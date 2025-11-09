@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widgets/app_logo.dart'; 
+import '../widgets/app_logo.dart';
 import 'registros_emprestimos_page.dart';
 
 class AtendentePage extends StatelessWidget {
   final String? user;
 
-  const AtendentePage({super.key, this.user}); 
+  const AtendentePage({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +18,7 @@ class AtendentePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Tela do Atendente',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         backgroundColor: const Color.fromARGB(255, 86, 22, 36),
         centerTitle: true,
@@ -30,18 +27,18 @@ class AtendentePage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: screenWidth * 0.05, // margem lateral proporcional
-            vertical: screenHeight * 0.03,  // margem vertical proporcional
+            vertical: screenHeight * 0.03, // margem vertical proporcional
           ),
           child: Column(
             children: [
               SizedBox(height: screenHeight * 0.05),
-              
+
               // Logo centralizada e responsiva
               SizedBox(
                 height: screenHeight * 0.15,
                 child: const Center(child: AppLogo()),
               ),
-              
+
               SizedBox(height: screenHeight * 0.05),
 
               // Título acima dos botões
@@ -71,7 +68,11 @@ class AtendentePage extends StatelessWidget {
   }
 
   // Botão responsivo
-  Widget _buildBlocoButton(BuildContext context, String bloco, double screenWidth) {
+  Widget _buildBlocoButton(
+    BuildContext context,
+    String bloco,
+    double screenWidth,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
@@ -82,11 +83,11 @@ class AtendentePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-          onPressed: () {
+        onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RegistrosEmprestimosPage(nomeBloco: bloco)
+              builder: (context) => RegistrosEmprestimosPage(nomeBloco: bloco),
             ),
           );
         },

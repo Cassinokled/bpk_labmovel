@@ -21,7 +21,7 @@ class UserService {
   }) async {
     try {
       final nomeCompleto = '$nome $sobrenome';
-      
+
       await _db.collection(_collection).doc(uid).set({
         'email': email,
         'nome': nome,
@@ -47,7 +47,7 @@ class UserService {
   Future<UserModel?> getUser(String uid) async {
     try {
       DocumentSnapshot doc = await _db.collection(_collection).doc(uid).get();
-      
+
       if (doc.exists) {
         return UserModel.fromFirestore(doc);
       }
@@ -60,16 +60,18 @@ class UserService {
 
   /// Stream do usuário
   Stream<UserModel?> streamUser(String uid) {
-    return _db.collection(_collection).doc(uid).snapshots().map(
-      (doc) => doc.exists ? UserModel.fromFirestore(doc) : null,
-    );
+    return _db
+        .collection(_collection)
+        .doc(uid)
+        .snapshots()
+        .map((doc) => doc.exists ? UserModel.fromFirestore(doc) : null);
   }
 
   /// Verificar tipos
   Future<List<String>> getUserTypes(String uid) async {
     try {
       DocumentSnapshot doc = await _db.collection(_collection).doc(uid).get();
-      
+
       if (doc.exists) {
         final data = doc.data() as Map<String, dynamic>;
         if (data['tipos_usuario'] != null) {
@@ -113,11 +115,11 @@ class UserService {
       final user = await getUser(uid);
       if (user != null && user.tiposUsuario.contains(type)) {
         final newTypes = user.tiposUsuario.where((t) => t != type).toList();
-        
+
         if (newTypes.isEmpty) {
           newTypes.add('user');
         }
-        
+
         await _db.collection(_collection).doc(uid).update({
           'tipos_usuario': newTypes,
         });
@@ -133,8 +135,7 @@ class UserService {
       await _db.collection(_collection).doc(uid).update({
         'lastLogin': FieldValue.serverTimestamp(),
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /// Atualizar dados
@@ -148,7 +149,7 @@ class UserService {
           data['nome_completo'] = '$nome $sobrenome';
         }
       }
-      
+
       await _db.collection(_collection).doc(uid).update(data);
     } catch (e) {
       rethrow;
@@ -164,9 +165,7 @@ class UserService {
           .where('ativo', isEqualTo: true)
           .get();
 
-      return snapshot.docs
-          .map((doc) => UserModel.fromFirestore(doc))
-          .toList();
+      return snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();
     } catch (e) {
       rethrow;
     }
@@ -238,9 +237,7 @@ class UserService {
   /// Desativar usuário
   Future<void> deactivateUser(String uid) async {
     try {
-      await _db.collection(_collection).doc(uid).update({
-        'ativo': false,
-      });
+      await _db.collection(_collection).doc(uid).update({'ativo': false});
     } catch (e) {
       rethrow;
     }
@@ -249,9 +246,7 @@ class UserService {
   /// Reativar usuário
   Future<void> activateUser(String uid) async {
     try {
-      await _db.collection(_collection).doc(uid).update({
-        'ativo': true,
-      });
+      await _db.collection(_collection).doc(uid).update({'ativo': true});
     } catch (e) {
       rethrow;
     }

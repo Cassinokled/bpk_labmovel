@@ -6,11 +6,7 @@ class UserPhotoWidget extends StatelessWidget {
   final UserModel? usuario;
   final double size;
 
-  const UserPhotoWidget({
-    super.key,
-    required this.usuario,
-    this.size = 120,
-  });
+  const UserPhotoWidget({super.key, required this.usuario, this.size = 120});
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +22,16 @@ class UserPhotoWidget extends StatelessWidget {
         ),
       ),
       child: ClipOval(
-        child: usuario?.foto != null ? _buildUserImage() : _buildDefaultAvatar(),
+        child: usuario?.foto != null
+            ? _buildUserImage()
+            : _buildDefaultAvatar(),
       ),
     );
   }
 
   Widget _buildUserImage() {
     final foto = usuario!.foto!;
-    
+
     // se comeca com http ou https, e uma url
     if (foto.startsWith('http://') || foto.startsWith('https://')) {
       return Image.network(
@@ -46,7 +44,8 @@ class UserPhotoWidget extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                  ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
                   : null,
               strokeWidth: 2,
               color: const Color.fromARGB(255, 86, 22, 36),
@@ -58,7 +57,7 @@ class UserPhotoWidget extends StatelessWidget {
         },
       );
     }
-    
+
     // caso contrario, tenta carregar como asset local
     return Image.asset(
       'assets/pics/$foto',

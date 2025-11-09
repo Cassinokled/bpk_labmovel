@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/qr_code_scanner.dart';
 import '../widgets/navbar.dart';
 import 'confirmar_emprestimo_page.dart';
+import 'confirmar_devolucao_page.dart';
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -25,7 +27,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
         _scannedCode = code;
         _hasScanned = true;
       });
-      
+
       _processQRCode(code);
     }
   }
@@ -37,51 +39,34 @@ class _QRScannerPageState extends State<QRScannerPage> {
     });
 
     try {
-      // decodifica o qr code
-      final emprestimoQR = EmprestimoModel.fromQrString(qrCode);
-      
-      if (emprestimoQR.id == null) {
+      // tenta decodificar o json do qr code
+      final Map<String, dynamic> qrData = jsonDecode(qrCode);
+      final tipo = qrData['tipo'] as String?;
+      final emprestimoId = qrData['emprestimoId'] as String?;
+
+      if (emprestimoId == null) {
         _showError('QR Code inválido');
         _resetScanner();
         return;
       }
 
       // busca os detalhes completos do emprestimo
-      final emprestimo = await _emprestimoService.buscarEmprestimo(emprestimoQR.id!);
-      
+      final emprestimo = await _emprestimoService.buscarEmprestimo(
+        emprestimoId,
+      );
+
       if (emprestimo == null) {
         _showError('Empréstimo não encontrado');
         _resetScanner();
         return;
       }
 
-      if (emprestimo.isConfirmado) {
-        _showError('Este empréstimo já foi confirmado');
-        _resetScanner();
-        return;
-      }
-
-      if (emprestimo.isRecusado) {
-        _showError('Este empréstimo já foi recusado');
-        _resetScanner();
-        return;
-      }
-
-      // navega pra pagina de confirmacao
-      if (mounted) {
-        final result = await Navigator.push<bool>(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfirmarEmprestimoPage(emprestimo: emprestimo),
-          ),
-        );
-
-        // se confirmou com sucesso, mostra mensagem e reseta scanner
-        if (result == true) {
-          _showSuccess('Empréstimo confirmado!');
-        }
-        
-        _resetScanner();
+      // verifica se é QR de devolução
+      if (tipo == 'devolucao') {
+        await _processarDevolucao(emprestimo);
+      } else {
+        // é QR de empréstimo normal
+        await _processarEmprestimo(emprestimo);
       }
     } catch (e) {
       _showError('Erro ao processar QR Code: $e');
@@ -90,6 +75,70 @@ class _QRScannerPageState extends State<QRScannerPage> {
       setState(() {
         _isProcessing = false;
       });
+    }
+  }
+
+  // processa qr de emprestimo
+  Future<void> _processarEmprestimo(EmprestimoModel emprestimo) async {
+    if (emprestimo.isConfirmado) {
+      _showError('Este empréstimo já foi confirmado');
+      _resetScanner();
+      return;
+    }
+
+    if (emprestimo.isRecusado) {
+      _showError('Este empréstimo já foi recusado');
+      _resetScanner();
+      return;
+    }
+
+    // navega pra pagina de confirmacao
+    if (mounted) {
+      final result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConfirmarEmprestimoPage(emprestimo: emprestimo),
+        ),
+      );
+
+      // se confirmou com sucesso, mostra mensagem e reseta scanner
+      if (result == true) {
+        _showSuccess('Empréstimo confirmado!');
+      }
+
+      _resetScanner();
+    }
+  }
+
+  // processa qr de devolucao
+  Future<void> _processarDevolucao(EmprestimoModel emprestimo) async {
+    if (!emprestimo.isAtivo) {
+      _showError('Este empréstimo não está ativo');
+      _resetScanner();
+      return;
+    }
+
+    if (emprestimo.isDevolvido) {
+      _showError('Este empréstimo já foi devolvido');
+      _resetScanner();
+      return;
+    }
+
+    // navega pra pagina de confirmacao de devolucao
+    if (mounted) {
+      final result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConfirmarDevolucaoPage(emprestimo: emprestimo),
+        ),
+      );
+
+      // se confirmou com sucesso, mostra mensagem e reseta scanner
+      if (result == true) {
+        _showSuccess('Devolução confirmada!');
+      }
+
+      _resetScanner();
     }
   }
 
@@ -108,7 +157,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   // mostra mensagem de erro
   void _showError(String message) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -127,7 +176,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   // mostra mensagem de sucesso
   void _showSuccess(String message) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -150,9 +199,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          const Center(
-            child: AppLogo(),
-          ),
+          const Center(child: AppLogo()),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(26.0),
@@ -174,9 +221,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                 ),
                 const SizedBox(height: 40),
                 // Scanner de QR Code
-                QRCodeScanner(
-                  onQRCodeScanned: _onQRCodeScanned,
-                ),
+                QRCodeScanner(onQRCodeScanned: _onQRCodeScanned),
                 const SizedBox(height: 20),
                 // Status do scanner
                 if (_isProcessing) ...[

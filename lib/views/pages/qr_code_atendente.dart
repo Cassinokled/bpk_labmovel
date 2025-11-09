@@ -36,7 +36,7 @@ class _QRScanPageState extends State<QRScanPage> {
     try {
       // decodifica o qr code
       final emprestimoQR = EmprestimoModel.fromQrString(qrCode);
-      
+
       if (emprestimoQR.id == null) {
         _showError('QR Code inválido');
         _resetScanner();
@@ -44,8 +44,10 @@ class _QRScanPageState extends State<QRScanPage> {
       }
 
       // busca os detalhes completos do emprestimo
-      final emprestimo = await _emprestimoService.buscarEmprestimo(emprestimoQR.id!);
-      
+      final emprestimo = await _emprestimoService.buscarEmprestimo(
+        emprestimoQR.id!,
+      );
+
       if (emprestimo == null) {
         _showError('Empréstimo não encontrado');
         _resetScanner();
@@ -72,7 +74,8 @@ class _QRScanPageState extends State<QRScanPage> {
         final result = await Navigator.push<bool>(
           context,
           MaterialPageRoute(
-            builder: (context) => ConfirmarEmprestimoPage(emprestimo: emprestimo),
+            builder: (context) =>
+                ConfirmarEmprestimoPage(emprestimo: emprestimo),
           ),
         );
 
@@ -80,7 +83,7 @@ class _QRScanPageState extends State<QRScanPage> {
         if (result == true) {
           _showSuccess('Empréstimo confirmado!');
         }
-        
+
         _resetScanner();
       }
     } catch (e) {
@@ -109,7 +112,7 @@ class _QRScanPageState extends State<QRScanPage> {
   // mostra mensagem de erro
   void _showError(String message) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -128,7 +131,7 @@ class _QRScanPageState extends State<QRScanPage> {
   // mostra mensagem de sucesso
   void _showSuccess(String message) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -165,38 +168,40 @@ class _QRScanPageState extends State<QRScanPage> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 20),
-                  Expanded(
-                    child: Center(
-                      child: SizedBox(
-                        width: size.width * 0.8,
-                        height: size.width * 0.8,
-                        child: QRView(
-                          key: qrKey,
-                          onQRViewCreated: (controller) {
-                            this.controller = controller;
-                            controller.scannedDataStream.listen((scanData) {
-                              if (isScanning && scanData.code != null && !_isProcessing) {
-                                setState(() {
-                                  qrText = scanData.code;
-                                  isScanning = false;
-                                });
-                                // processa o qr code lido
-                                _processQRCode(scanData.code!);
-                              }
+              Expanded(
+                child: Center(
+                  child: SizedBox(
+                    width: size.width * 0.8,
+                    height: size.width * 0.8,
+                    child: QRView(
+                      key: qrKey,
+                      onQRViewCreated: (controller) {
+                        this.controller = controller;
+                        controller.scannedDataStream.listen((scanData) {
+                          if (isScanning &&
+                              scanData.code != null &&
+                              !_isProcessing) {
+                            setState(() {
+                              qrText = scanData.code;
+                              isScanning = false;
                             });
-                          },
-                          overlay: QrScannerOverlayShape(
-                            borderColor: Colors.deepPurple,
-                            borderRadius: 12,
-                            borderLength: 30,
-                            borderWidth: 5,
-                            cutOutSize: size.width * 0.8,
-                            overlayColor: Colors.black.withOpacity(0.5),
-                          ),
-                        ),
+                            // processa o qr code lido
+                            _processQRCode(scanData.code!);
+                          }
+                        });
+                      },
+                      overlay: QrScannerOverlayShape(
+                        borderColor: Colors.deepPurple,
+                        borderRadius: 12,
+                        borderLength: 30,
+                        borderWidth: 5,
+                        cutOutSize: size.width * 0.8,
+                        overlayColor: Colors.black.withOpacity(0.5),
                       ),
                     ),
                   ),
+                ),
+              ),
               const SizedBox(height: 20),
               // Status do scanner
               if (_isProcessing) ...[

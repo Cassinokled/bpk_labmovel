@@ -74,21 +74,22 @@ class EmprestimoModel {
       'equipamentos': codigosEquipamentos,
       'confirmado': confirmado,
       'criadoEm': Timestamp.fromDate(criadoEm),
-      'confirmedoEm': confirmedoEm != null ? Timestamp.fromDate(confirmedoEm!) : null,
+      'confirmedoEm': confirmedoEm != null
+          ? Timestamp.fromDate(confirmedoEm!)
+          : null,
       'atendenteEmprestimoId': atendenteEmprestimoId,
       'atendenteDevolucaoId': atendenteDevolucaoId,
       'atrasado': atrasado,
       'devolvido': devolvido,
-      'devolvidoEm': devolvidoEm != null ? Timestamp.fromDate(devolvidoEm!) : null,
+      'devolvidoEm': devolvidoEm != null
+          ? Timestamp.fromDate(devolvidoEm!)
+          : null,
     };
   }
 
   // converte string json pro qr code
   String toQrString() {
-    return jsonEncode({
-      'emprestimoId': id,
-      'userId': userId,
-    });
+    return jsonEncode({'emprestimoId': id, 'userId': userId});
   }
 
   // cria a partir do json do firestore
@@ -98,7 +99,8 @@ class EmprestimoModel {
       userId: json['userId'],
       codigosEquipamentos: List<String>.from(json['equipamentos'] ?? []),
       confirmado: json['confirmado'],
-      criadoEm: (json['criadoEm'] as Timestamp?)?.toDate() ?? BrasiliaTime.now(),
+      criadoEm:
+          (json['criadoEm'] as Timestamp?)?.toDate() ?? BrasiliaTime.now(),
       confirmedoEm: (json['confirmedoEm'] as Timestamp?)?.toDate(),
       atendenteEmprestimoId: json['atendenteEmprestimoId'],
       atendenteDevolucaoId: json['atendenteDevolucaoId'],
@@ -139,7 +141,8 @@ class EmprestimoModel {
       confirmado: confirmado ?? this.confirmado,
       criadoEm: criadoEm ?? this.criadoEm,
       confirmedoEm: confirmedoEm ?? this.confirmedoEm,
-      atendenteEmprestimoId: atendenteEmprestimoId ?? this.atendenteEmprestimoId,
+      atendenteEmprestimoId:
+          atendenteEmprestimoId ?? this.atendenteEmprestimoId,
       atendenteDevolucaoId: atendenteDevolucaoId ?? this.atendenteDevolucaoId,
       atrasado: atrasado ?? this.atrasado,
       devolvido: devolvido ?? this.devolvido,

@@ -25,11 +25,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
         ),
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 20),
-        child: const Icon(
-          Icons.delete,
-          color: Colors.white,
-          size: 32,
-        ),
+        child: const Icon(Icons.delete, color: Colors.white, size: 32),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),

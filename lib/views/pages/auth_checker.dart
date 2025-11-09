@@ -56,7 +56,7 @@ class AuthChecker extends StatelessWidget {
               }
 
               final user = userSnapshot.data;
-              
+
               // se nao encontrou dados do usuario vai pra login
               if (user == null) {
                 return const LoginPage();
@@ -64,7 +64,9 @@ class AuthChecker extends StatelessWidget {
 
               // verifica tipo de usuario e redireciona
               // se for atendente vai pra pagina de selecao
-              if (user.isAtendente && !(user.tiposUsuario.length == 1 && user.tiposUsuario.contains('user'))) {
+              if (user.isAtendente &&
+                  !(user.tiposUsuario.length == 1 &&
+                      user.tiposUsuario.contains('user'))) {
                 return const AtendenteUserSelectPage();
               }
 
@@ -79,4 +81,4 @@ class AuthChecker extends StatelessWidget {
       },
     );
   }
-  }
+}
