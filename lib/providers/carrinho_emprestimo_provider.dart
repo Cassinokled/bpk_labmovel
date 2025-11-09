@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import '../models/equipamento.dart';
 import '../models/emprestimo_model.dart';
+import '../services/equipamento_service.dart';
 
 class CarrinhoEmprestimo extends ChangeNotifier {
   final List<Equipamento> _equipamentos = [];
+  final EquipamentoService _equipamentoService = EquipamentoService();
 
   List<Equipamento> get equipamentos => List.unmodifiable(_equipamentos);
 
@@ -11,10 +13,14 @@ class CarrinhoEmprestimo extends ChangeNotifier {
 
   bool get temItens => _equipamentos.isNotEmpty;
 
-  void adicionarEquipamento(String codigo) {
-    final equipamento = Equipamento.fromCodigo(codigo);
-    _equipamentos.add(equipamento);
-    notifyListeners();
+  Future<void> adicionarEquipamento(String codigo) async {
+    // busca o equipamento do banco
+    final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
+    
+    if (equipamento != null) {
+      _equipamentos.add(equipamento);
+      notifyListeners();
+    }
   }
 
   void removerEquipamento(int index) {

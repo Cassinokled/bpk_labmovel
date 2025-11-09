@@ -76,7 +76,7 @@ class EquipamentoCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          equipamento.nome,
+          equipamento.displayName,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -84,43 +84,10 @@ class EquipamentoCardWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        if (equipamento.categoria != null) ...[
-          _buildCategoriaBadge(equipamento.categoria!),
-          const SizedBox(height: 6),
-        ],
         _buildInfoRow(Icons.qr_code_2, 'Código: ${equipamento.codigo}'),
         const SizedBox(height: 4),
         _buildInfoRow(Icons.location_on, 'Local: ${equipamento.bloco}'),
       ],
-    );
-  }
-
-  Widget _buildCategoriaBadge(String categoria) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 86, 22, 36).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.category,
-            size: 12,
-            color: Color.fromARGB(255, 86, 22, 36),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            categoria,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color.fromARGB(255, 86, 22, 36),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

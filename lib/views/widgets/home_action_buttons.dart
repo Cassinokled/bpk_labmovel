@@ -12,19 +12,22 @@ class HomeActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final buttonWidth = screenWidth * 0.9;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         children: [
           SizedBox(
-            width: double.infinity,
+            width: buttonWidth,
             child: ElevatedButton(
               onPressed: onCancelar,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFEDEDED),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 elevation: 2,
                 shadowColor: Colors.black.withOpacity(0.5),
@@ -41,14 +44,14 @@ class HomeActionButtons extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           SizedBox(
-            width: double.infinity,
+            width: buttonWidth,
             child: ElevatedButton(
               onPressed: onConcluir,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 86, 22, 36),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 elevation: 2,
               ),

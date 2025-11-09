@@ -13,6 +13,9 @@ class Equipamento {
     this.estadoEmprestado = false,
   });
 
+  // retorna categoria else nome
+  String get displayName => categoria ?? nome;
+
   factory Equipamento.fromCodigo(String codigo) {
     // depois tem que adicionar logica pra buscar no banco
     return Equipamento(

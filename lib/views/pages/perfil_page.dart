@@ -41,6 +41,54 @@ class _PerfilPageState extends State<PerfilPage> {
     }
   }
 
+  bool get _canGoBackToSelection {
+    // verifica se o usuario eh atendente e user ao mesmo tempo
+    return _userData?.isAtendente == true && 
+           _userData?.tiposUsuario.contains('user') == true;
+  }
+
+  Future<void> _logout() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar saída'),
+        content: const Text('Deseja realmente sair?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              'Sair',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await _authService.logout();
+        // authchecker detecta e manda pro login
+        if (mounted) {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erro ao sair: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = _authService.currentUser;
@@ -57,16 +105,51 @@ class _PerfilPageState extends State<PerfilPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBar(selectedIndex: 4),
     );
   }
 
   Widget _buildHeader() {
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: 60),
-        Center(child: AppLogo()),
-        SizedBox(height: 20),
+        const SizedBox(height: 60),
+        // logo com botao de voltar (se for atendente + user) e logout
+        Row(
+          children: [
+            if (_canGoBackToSelection)
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Color.fromARGB(255, 86, 22, 36),
+                  ),
+                  tooltip: 'Voltar para seleção',
+                  onPressed: () {
+                    // volta pra pagina de selecao (2 paginas atras)
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                ),
+              )
+            else
+              const SizedBox(width: 56),
+            const Expanded(
+              child: Center(child: AppLogo()),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                  color: Color.fromARGB(255, 86, 22, 36),
+                ),
+                tooltip: 'Sair',
+                onPressed: _logout,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
       ],
     );
   }

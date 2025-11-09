@@ -66,7 +66,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      equipamento.nome,
+                      equipamento.displayName,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

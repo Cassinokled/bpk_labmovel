@@ -54,6 +54,15 @@ class _NavBarState extends State<NavBar> {
   ];
 
   void _onItemTapped(int index) {
+    if (index != 2 && widget.selectedIndex == index) {
+      return;
+    }
+
+    if (index == 0) {
+      Navigator.pop(context);
+      return;
+    }
+
     // botao "+" - scanner (barras pra usuario, qr pra atendente)
     if (index == 2) {
       // se ja esta na pagina do scanner/confirmacao volta home
@@ -83,7 +92,11 @@ class _NavBarState extends State<NavBar> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const PerfilPage()),
-      );
+      ).then((_) {
+        setState(() {
+          _selectedIndex = widget.selectedIndex;
+        });
+      });
       return;
     }
 

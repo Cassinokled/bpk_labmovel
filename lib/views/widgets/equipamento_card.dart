@@ -42,7 +42,7 @@ class EquipamentoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  equipamento.nome,
+                  equipamento.displayName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

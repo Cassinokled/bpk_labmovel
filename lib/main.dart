@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'views/pages/auth_checker.dart';
 import 'providers/carrinho_emprestimo_provider.dart';
 import 'firebase_options.dart';
+import 'utils/brasilia_time.dart';
 
 Future <void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +13,9 @@ Future <void> main() async{
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+  // timezone de brasilia
+  BrasiliaTime.initialize();
 
   runApp(const MyApp());
 }

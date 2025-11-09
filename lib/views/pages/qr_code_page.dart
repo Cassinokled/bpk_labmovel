@@ -76,7 +76,6 @@ class _QRCodePageState extends State<QRCodePage> {
         _emprestimo = emprestimoAtualizado;
       });
 
-      // se foi confirmado, fecha a pagina apos 1 segundo
       if (emprestimoAtualizado.isConfirmado) {
         Future.delayed(const Duration(seconds: 1), () {
           if (mounted) {
@@ -93,21 +92,16 @@ class _QRCodePageState extends State<QRCodePage> {
         });
       }
       
-      // se foi recusado, fecha a pagina apos 1 segundo
       if (emprestimoAtualizado.isRecusado) {
         Future.delayed(const Duration(seconds: 1), () {
           if (mounted) {
             Navigator.of(context).pop();
             // mostra mensagem de recusa
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  emprestimoAtualizado.motivoRecusa != null
-                      ? 'Empréstimo recusado: ${emprestimoAtualizado.motivoRecusa}'
-                      : 'Empréstimo recusado pela atendente',
-                ),
+              const SnackBar(
+                content: Text('Empréstimo recusado pela atendente'),
                 backgroundColor: Colors.red,
-                duration: const Duration(seconds: 4),
+                duration: Duration(seconds: 4),
               ),
             );
           }

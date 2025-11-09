@@ -137,20 +137,6 @@ class QRStatusWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        if (emprestimo?.motivoRecusa != null) ...[
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'Motivo: ${emprestimo!.motivoRecusa}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.red,
-              ),
-            ),
-          ),
-        ],
         const SizedBox(height: 10),
         const Text(
           'Redirecionando...',

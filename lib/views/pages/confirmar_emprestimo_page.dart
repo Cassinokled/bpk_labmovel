@@ -5,6 +5,7 @@ import '../../models/equipamento.dart';
 import '../../services/emprestimo_service.dart';
 import '../../services/user_service.dart';
 import '../../services/equipamento_service.dart';
+import '../../services/auth_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_info_card.dart';
 import '../widgets/emprestimo/solicitation_info_badge.dart';
@@ -28,6 +29,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
   final EmprestimoService _emprestimoService = EmprestimoService();
   final UserService _userService = UserService();
   final EquipamentoService _equipamentoService = EquipamentoService();
+  final AuthService _authService = AuthService();
 
   UserModel? _usuario;
   List<Equipamento?> _equipamentos = [];
@@ -77,7 +79,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
     });
 
     try {
-      await _emprestimoService.confirmarEmprestimo(widget.emprestimo.id!);
+      final atendenteId = _authService.currentUser?.uid;
+      if (atendenteId == null) {
+        throw Exception('Usuário não autenticado');
+      }
+
+      await _emprestimoService.confirmarEmprestimo(widget.emprestimo.id!, atendenteId);
       
       if (mounted) {
         // mensagem de sucesso
@@ -130,23 +137,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
 
   // recusa o emprestimo
   Future<void> _recusarEmprestimo() async {
-    // motivo da recusa
-    final motivo = await showDialog<String>(
-      context: context,
-      builder: (context) => _buildMotivoRecusaDialog(),
-    );
-
-    if (motivo == null) return;
-
     setState(() {
       _isConfirming = true;
     });
 
     try {
-      await _emprestimoService.recusarEmprestimo(
-        widget.emprestimo.id!,
-        motivo: motivo.isEmpty ? null : motivo,
-      );
+      await _emprestimoService.recusarEmprestimo(widget.emprestimo.id!);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -194,48 +190,6 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
         );
       }
     }
-  }
-
-  Widget _buildMotivoRecusaDialog() {
-    final controller = TextEditingController();
-    
-    return AlertDialog(
-      title: const Text('Motivo da Recusa'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Por que você está recusando este empréstimo?',
-            style: TextStyle(fontSize: 14),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              hintText: 'Motivo (opcional)',
-              border: OutlineInputBorder(),
-            ),
-            maxLines: 3,
-            maxLength: 200,
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancelar'),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.pop(context, controller.text),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-          ),
-          child: const Text('Recusar'),
-        ),
-      ],
-    );
   }
 
   @override
