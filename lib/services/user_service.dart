@@ -32,7 +32,7 @@ class UserService {
         'ativo': true,
         'foto': foto,
         'registro_academico': registroAcademico,
-        'num_cracha': numCracha,
+        'numCracha': numCracha,
         'curso': curso,
         'semestre': semestre,
         'createdAt': FieldValue.serverTimestamp(),
@@ -221,7 +221,7 @@ class UserService {
     try {
       QuerySnapshot snapshot = await _db
           .collection(_collection)
-          .where('num_cracha', isEqualTo: cracha)
+          .where('numCracha', isEqualTo: cracha)
           .limit(1)
           .get();
 
@@ -280,7 +280,7 @@ class UserService {
     try {
       QuerySnapshot snapshot = await _db
           .collection(_collection)
-          .where('num_cracha', isEqualTo: cracha)
+          .where('numCracha', isEqualTo: cracha)
           .get();
       return snapshot.docs.isNotEmpty;
     } catch (e) {

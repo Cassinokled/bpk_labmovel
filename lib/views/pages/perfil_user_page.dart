@@ -6,14 +6,14 @@ import '../widgets/navbar_user.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_photo_widget.dart';
 
-class PerfilPage extends StatefulWidget {
-  const PerfilPage({super.key});
+class PerfilUserPage extends StatefulWidget {
+  const PerfilUserPage({super.key});
 
   @override
-  State<PerfilPage> createState() => _PerfilPageState();
+  State<PerfilUserPage> createState() => _PerfilUserPageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> {
+class _PerfilUserPageState extends State<PerfilUserPage> {
   final AuthService _authService = AuthService();
   final UserService _userService = UserService();
   UserModel? _userData;
@@ -42,12 +42,6 @@ class _PerfilPageState extends State<PerfilPage> {
     }
   }
 
-  bool get _canGoBackToSelection {
-    // verifica se o usuario eh atendente e user ao mesmo tempo
-    return _userData?.isAtendente == true &&
-        _userData?.tiposUsuario.contains('user') == true;
-  }
-
   Future<void> _logout() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -70,7 +64,7 @@ class _PerfilPageState extends State<PerfilPage> {
     if (confirmed == true) {
       try {
         await _authService.logout();
-        // Remove todas as rotas e volta para o AuthChecker
+        // remove todas as rotas e volta para AuthChecker
         if (mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
@@ -111,26 +105,10 @@ class _PerfilPageState extends State<PerfilPage> {
     return Column(
       children: [
         const SizedBox(height: 60),
-        // logo com botao de voltar (se for atendente + user) e logout
+        // logo com logout
         Row(
           children: [
-            if (_canGoBackToSelection)
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Color.fromARGB(255, 86, 22, 36),
-                  ),
-                  tooltip: 'Voltar para seleção',
-                  onPressed: () {
-                    // volta pra pagina de selecao (2 paginas atras)
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                ),
-              )
-            else
-              const SizedBox(width: 56),
+            const SizedBox(width: 56),
             const Expanded(child: Center(child: AppLogo())),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
@@ -153,7 +131,7 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget _buildPerfilContent(user) {
     return Column(
       children: [
-        // Parte superior: Avatar + nome
+        // Avatar + nome
         Expanded(
           flex: 1,
           child: Column(
@@ -176,7 +154,7 @@ class _PerfilPageState extends State<PerfilPage> {
           ),
         ),
 
-        // email, RA, tipo de user
+        // email, RA, curso, semestre
         Expanded(
           flex: 1,
           child: Padding(
@@ -190,13 +168,20 @@ class _PerfilPageState extends State<PerfilPage> {
                   Icons.badge_outlined,
                   _userData?.registroAcademico ?? '—',
                 ),
-                const SizedBox(height: 12),
-                _buildInfoTile(
-                  Icons.verified_user,
-                  (_userData?.tiposUsuario.isNotEmpty ?? false)
-                      ? _userData!.tiposUsuario.join(' | ')
-                      : 'Tipo não informado',
-                ),
+                if (_userData?.curso != null) ...[
+                  const SizedBox(height: 12),
+                  _buildInfoTile(
+                    Icons.school_outlined,
+                    _userData!.curso!,
+                  ),
+                ],
+                if (_userData?.semestre != null) ...[
+                  const SizedBox(height: 12),
+                  _buildInfoTile(
+                    Icons.calendar_today_outlined,
+                    '${_userData!.semestre}º Semestre',
+                  ),
+                ],
               ],
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'login_page.dart';
 import 'home_page.dart';
 import 'atendente_user_select_page.dart';
+import 'atendente_page.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
 
@@ -63,14 +64,17 @@ class AuthChecker extends StatelessWidget {
               }
 
               // verifica tipo de usuario e redireciona
-              // se for atendente vai pra pagina de selecao
-              if (user.isAtendente &&
-                  !(user.tiposUsuario.length == 1 &&
-                      user.tiposUsuario.contains('user'))) {
+              // se for apenas atendente (sem ser user), vai direto para seleção de bloco
+              if (user.isAtendente && !user.isUser) {
+                return const AtendentePage();
+              }
+              
+              // se for atendente E user, vai pra página de seleção de tipo
+              if (user.isAtendente && user.isUser) {
                 return const AtendenteUserSelectPage();
               }
 
-              // se for user vai pra home normal
+              // se for apenas user vai pra home normal
               return const HomePage();
             },
           );

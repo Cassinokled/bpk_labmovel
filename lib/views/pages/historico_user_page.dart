@@ -5,7 +5,7 @@ import '../../services/auth_service.dart';
 import '../../services/emprestimo_service.dart';
 import '../../services/equipamento_service.dart';
 import '../widgets/app_logo.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_user.dart';
 
 class HistoricoUserPage extends StatefulWidget {
   const HistoricoUserPage({super.key});
@@ -100,7 +100,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBar(selectedIndex: 1),
+      bottomNavigationBar: const NavBarUser(selectedIndex: 1),
     );
   }
 
@@ -479,7 +479,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBar(selectedIndex: 1),
+      bottomNavigationBar: const NavBarUser(selectedIndex: 1),
     );
   }
 

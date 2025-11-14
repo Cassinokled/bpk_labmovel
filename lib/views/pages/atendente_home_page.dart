@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../models/user_model.dart';
 import '../widgets/app_logo.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_atendente.dart';
+import 'atendente_user_select_page.dart';
 
 class AtendenteHomePage extends StatelessWidget {
   final UserModel? user;
@@ -31,9 +32,9 @@ class AtendenteHomePage extends StatelessWidget {
     if (confirmed == true) {
       try {
         await AuthService().logout();
-        // authchecker detecta e manda pra login
+        // remove rotas e volta para o authchecker
         if (context.mounted) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
       } catch (e) {
         if (context.mounted) {
@@ -61,7 +62,15 @@ class AtendenteHomePage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: 'Voltar',
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  // pagina de seleca0
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const AtendenteUserSelectPage(),
+                    ),
+                    (route) => false,
+                  );
+                },
               ),
               Expanded(child: Center(child: AppLogo())),
               IconButton(
@@ -75,7 +84,7 @@ class AtendenteHomePage extends StatelessWidget {
           const SizedBox(height: 20),
         ],
       ),
-      bottomNavigationBar: const NavBar(isAtendente: true),
+      bottomNavigationBar: const NavBarAtendente(),
     );
   }
 }

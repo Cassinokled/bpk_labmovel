@@ -3,7 +3,7 @@ import '../../models/emprestimo_model.dart';
 import '../../models/equipamento.dart';
 import '../../services/equipamento_service.dart';
 import '../widgets/app_logo.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_user.dart';
 import 'qr_code_devolucao_page.dart';
 
 class EmprestimoDetalhesPage extends StatefulWidget {
@@ -107,7 +107,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBarUser(),
     );
   }
 

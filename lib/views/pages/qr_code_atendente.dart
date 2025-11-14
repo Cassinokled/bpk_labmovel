@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_atendente.dart';
 import 'confirmar_emprestimo_page.dart';
 
 class QRScanPage extends StatefulWidget {
@@ -273,9 +273,8 @@ class _QRScanPageState extends State<QRScanPage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavBar(
+      bottomNavigationBar: NavBarAtendente(
         selectedIndex: 2,
-        isAtendente: true,
         onBackFromScanner: () {
           controller?.pauseCamera();
           Navigator.pop(context);

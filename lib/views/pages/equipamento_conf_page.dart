@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_user.dart';
 import '../widgets/app_logo.dart';
 import '../../providers/carrinho_emprestimo_provider.dart';
 import '../../services/equipamento_service.dart';
@@ -75,7 +75,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           const Spacer(),
         ],
       ),
-      bottomNavigationBar: const NavBar(selectedIndex: 2),
+      bottomNavigationBar: const NavBarUser(selectedIndex: 2),
     );
   }
 

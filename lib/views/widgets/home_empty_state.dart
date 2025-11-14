@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeEmptyState extends StatelessWidget {
   const HomeEmptyState({super.key});
@@ -10,19 +9,11 @@ class HomeEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.2),
-              border: Border.all(color: Colors.blue, width: 2),
-            ),
-            child: SvgPicture.asset(
-              'assets/pics/home-none.svg',
-              width: 100,
-              height: 100,
-              fit: BoxFit.contain,
-            ),
+          Image.asset(
+            'assets/pics/home-none.png',
+            width: 120,
+            height: 120,
+            fit: BoxFit.contain,
           ),
           const SizedBox(height: 20),
           const Text(

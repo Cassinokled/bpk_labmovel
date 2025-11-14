@@ -1,11 +1,47 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_logo.dart';
 import 'registros_emprestimos_page.dart';
+import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
+import '../../models/user_model.dart';
 
-class AtendentePage extends StatelessWidget {
+class AtendentePage extends StatefulWidget {
   final String? user;
 
   const AtendentePage({super.key, this.user});
+
+  @override
+  State<AtendentePage> createState() => _AtendentePageState();
+}
+
+class _AtendentePageState extends State<AtendentePage> {
+  final AuthService _authService = AuthService();
+  final UserService _userService = UserService();
+  UserModel? _userData;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final user = _authService.currentUser;
+      if (user != null) {
+        final userData = await _userService.getUser(user.uid);
+        setState(() {
+          _userData = userData;
+          _isLoading = false;
+        });
+      } else {
+        setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,56 +49,78 @@ class AtendentePage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    // verifica se mostra o botao de voltar ou nao
+    final bool showBackButton = !_isLoading && _userData != null && _userData!.isUser && _userData!.isAtendente;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9F5),
-      appBar: AppBar(
-        title: const Text(
-          'Tela do Atendente',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: const Color.fromARGB(255, 86, 22, 36),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.05, // margem lateral proporcional
-            vertical: screenHeight * 0.03, // margem vertical proporcional
-          ),
-          child: Column(
+      body: Column(
+        children: [
+          const SizedBox(height: 60),
+          
+          // header com seta de voltar e logo
+          Row(
             children: [
-              SizedBox(height: screenHeight * 0.05),
-
-              // Logo centralizada e responsiva
-              SizedBox(
-                height: screenHeight * 0.15,
-                child: const Center(child: AppLogo()),
-              ),
-
-              SizedBox(height: screenHeight * 0.05),
-
-              // Título acima dos botões
-              const Text(
-                'Escolha o bloco:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Color.fromARGB(255, 86, 22, 36),
-                ),
-              ),
-
-              SizedBox(height: screenHeight * 0.03),
-
-              // Botões principais
-              _buildBlocoButton(context, 'Bloco Verde Musgo', screenWidth),
-              _buildBlocoButton(context, 'Bloco Vermelho', screenWidth),
-              _buildBlocoButton(context, 'Charles Darwin', screenWidth),
-              _buildBlocoButton(context, 'Kled', screenWidth),
-
-              SizedBox(height: screenHeight * 0.05),
+              if (showBackButton)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Color.fromARGB(255, 86, 22, 36),
+                    ),
+                    tooltip: 'Voltar',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                )
+              else
+                const SizedBox(width: 56), 
+              const Expanded(child: Center(child: AppLogo())),
+              const SizedBox(width: 56),
             ],
           ),
-        ),
+
+          const SizedBox(height: 40),
+
+          // Conteúdo scrollável
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.05,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.08),
+                    
+                    const Text(
+                      'Escolha o bloco que\nestara atendendo',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0x80561624),
+                        fontFamily: 'Avignon',
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    SizedBox(height: screenHeight * 0.05),
+
+                    _buildBlocoButton(context, 'Bloco I - Branco', screenWidth),
+                    _buildBlocoButton(context, 'Bloco II - Verde Claro', screenWidth),
+                    _buildBlocoButton(context, 'Bloco III - Verde Musgo', screenWidth),
+                    _buildBlocoButton(context, 'Bloco IV - Vermelho', screenWidth),
+                    _buildBlocoButton(context, 'Charles Darwin', screenWidth),
+
+                    SizedBox(height: screenHeight * 0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -84,10 +142,12 @@ class AtendentePage extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          Navigator.push(
+          // Navega para a home do atendente com o bloco selecionado
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => RegistrosEmprestimosPage(nomeBloco: bloco),
+              settings: RouteSettings(arguments: {'nomeBloco': bloco}),
             ),
           );
         },

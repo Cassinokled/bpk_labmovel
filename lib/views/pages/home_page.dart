@@ -11,9 +11,10 @@ import '../widgets/emprestimos_lista.dart';
 import '../widgets/home_action_buttons.dart';
 import '../widgets/home_empty_state.dart';
 import '../widgets/home_equipamentos_list.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_user.dart';
 import '../widgets/test_qr_button.dart';
 import 'qr_code_page.dart';
+import 'atendente_user_select_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -66,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(child: _buildBody()),
         ],
       ),
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBarUser(),
     );
   }
 
@@ -85,7 +86,15 @@ class _HomePageState extends State<HomePage> {
                     color: Color.fromARGB(255, 86, 22, 36),
                   ),
                   tooltip: 'Voltar para seleção',
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    // navega pagina de selecao
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const AtendenteUserSelectPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
               )
             else

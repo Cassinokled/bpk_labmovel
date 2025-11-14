@@ -66,9 +66,9 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
     if (confirmed == true) {
       try {
         await _authService.logout();
-        // authchecker detecta e manda pra login
+        // eemove as rotas e volta para o auth
         if (mounted) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
       } catch (e) {
         if (mounted) {

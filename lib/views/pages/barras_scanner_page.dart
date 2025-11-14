@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/barcode_display.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_user.dart';
 import 'equipamento_conf_page.dart';
 
 class BarrasScannerPage extends StatefulWidget {
@@ -90,9 +90,8 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
           const Spacer(),
         ],
       ),
-      bottomNavigationBar: NavBar(
+      bottomNavigationBar: NavBarUser(
         selectedIndex: 2,
-        isAtendente: false,
         onBackFromScanner: () {
           if (mounted) {
             _stopScanner();

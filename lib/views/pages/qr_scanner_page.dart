@@ -4,7 +4,7 @@ import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/qr_code_scanner.dart';
-import '../widgets/navbar.dart';
+import '../widgets/navbar_atendente.dart';
 import 'confirmar_emprestimo_page.dart';
 import 'confirmar_devolucao_page.dart';
 
@@ -294,7 +294,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
           const Spacer(),
         ],
       ),
-      bottomNavigationBar: const NavBar(selectedIndex: 2, isAtendente: true),
+      bottomNavigationBar: const NavBarAtendente(selectedIndex: 2),
     );
   }
 }

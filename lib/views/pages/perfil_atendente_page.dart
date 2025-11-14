@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
-import '../widgets/navbar_user.dart';
+import '../widgets/navbar_atendente.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_photo_widget.dart';
 
-class PerfilPage extends StatefulWidget {
-  const PerfilPage({super.key});
+class PerfilAtendentePage extends StatefulWidget {
+  const PerfilAtendentePage({super.key});
 
   @override
-  State<PerfilPage> createState() => _PerfilPageState();
+  State<PerfilAtendentePage> createState() => _PerfilAtendentePageState();
 }
 
-class _PerfilPageState extends State<PerfilPage> {
+class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
   final AuthService _authService = AuthService();
   final UserService _userService = UserService();
   UserModel? _userData;
@@ -42,12 +42,6 @@ class _PerfilPageState extends State<PerfilPage> {
     }
   }
 
-  bool get _canGoBackToSelection {
-    // verifica se o usuario eh atendente e user ao mesmo tempo
-    return _userData?.isAtendente == true &&
-        _userData?.tiposUsuario.contains('user') == true;
-  }
-
   Future<void> _logout() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -70,7 +64,7 @@ class _PerfilPageState extends State<PerfilPage> {
     if (confirmed == true) {
       try {
         await _authService.logout();
-        // Remove todas as rotas e volta para o AuthChecker
+        // remove todas as rotas e volta para auth
         if (mounted) {
           Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
@@ -103,7 +97,7 @@ class _PerfilPageState extends State<PerfilPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBarUser(selectedIndex: 4),
+      bottomNavigationBar: const NavBarAtendente(selectedIndex: 4),
     );
   }
 
@@ -111,26 +105,10 @@ class _PerfilPageState extends State<PerfilPage> {
     return Column(
       children: [
         const SizedBox(height: 60),
-        // logo com botao de voltar (se for atendente + user) e logout
+        // logo com logout
         Row(
           children: [
-            if (_canGoBackToSelection)
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Color.fromARGB(255, 86, 22, 36),
-                  ),
-                  tooltip: 'Voltar para seleção',
-                  onPressed: () {
-                    // volta pra pagina de selecao (2 paginas atras)
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                ),
-              )
-            else
-              const SizedBox(width: 56),
+            const SizedBox(width: 56),
             const Expanded(child: Center(child: AppLogo())),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
@@ -153,7 +131,7 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget _buildPerfilContent(user) {
     return Column(
       children: [
-        // Parte superior: Avatar + nome
+        // avatar e nome
         Expanded(
           flex: 1,
           child: Column(
@@ -165,18 +143,34 @@ class _PerfilPageState extends State<PerfilPage> {
               ),
               const SizedBox(height: 12),
               Text(
-                _userData?.nomeCompleto ?? 'Usuário',
+                _userData?.nomeCompleto ?? 'Atendente',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 86, 22, 36),
                 ),
               ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 86, 22, 36),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  'Atendente',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
 
-        // email, RA, tipo de user
+        // email cracha
         Expanded(
           flex: 1,
           child: Padding(
@@ -188,14 +182,14 @@ class _PerfilPageState extends State<PerfilPage> {
                 const SizedBox(height: 12),
                 _buildInfoTile(
                   Icons.badge_outlined,
-                  _userData?.registroAcademico ?? '—',
+                  _userData?.numCracha ?? 
+                  _userData?.registroAcademico ?? 
+                  '—',
                 ),
                 const SizedBox(height: 12),
                 _buildInfoTile(
                   Icons.verified_user,
-                  (_userData?.tiposUsuario.isNotEmpty ?? false)
-                      ? _userData!.tiposUsuario.join(' | ')
-                      : 'Tipo não informado',
+                  _userData?.tipoPrincipal ?? 'Atendente',
                 ),
               ],
             ),
