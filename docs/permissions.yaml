@@ -1,0 +1,24 @@
+app:
+  id: com.example.bpk_labmovel
+  name: BPK LabMovel
+
+permissions:
+  - name: android.permission.CAMERA
+    type: dangerous 
+    feature: Leitura de QR Code (Empréstimo/Devolução) e Scanner de Código de Barras (Itens)
+    data_min: Acesso momentâneo ao stream de vídeo da câmera (sem gravação).
+    request_timing: Solicitado apenas quando o usuário clica no botão "Ler QR Code" ou "Escanear Item".
+    rationale: "O app precisa da câmera para ler o código e registrar o empréstimo ou identificar o item. Nenhuma imagem é salva."
+    alternative: O usuário pode digitar manualmente o código de identificação ou patrimônio.
+    storage: Nenhuma imagem ou vídeo é armazenado; o stream é descartado após decodificação.
+    play_policy: Funcionalidade principal (Core Feature) - Necessário para operação física de inventário.
+
+  - name: android.permission.POST_NOTIFICATIONS
+    type: dangerous 
+    feature: Notificações de Status (Aprovações e Pendências)
+    data_min: Token de registro do dispositivo (FCM Token).
+    request_timing: Solicitado na primeira autenticação ou ao realizar o primeiro pedido de empréstimo.
+    rationale: "Permita notificações para saber imediatamente quando seu pedido for aprovado ou se houver pendências."
+    alternative: O usuário deve verificar manualmente o status na tela "Histórico".
+    storage: Token armazenado de forma segura e temporária; sem conteúdo sensível no payload.
+    play_policy: Notificações transacionais/informativas sobre mudança de estado do pedido.

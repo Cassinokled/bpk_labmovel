@@ -16,8 +16,6 @@ allprojects {
         mavenCentral()
     }
 }
-
-// Redirecionamento de build
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
@@ -26,16 +24,10 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 
-// REMOVA ESTE BLOCO (CAUSA O ERRO!)
-// subprojects {
-//     project.evaluationDependsOn(":app")
-// }
-
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
 
-// FORÇA JAVA 1.8 EM TODOS OS MÓDULOS (SEM afterEvaluate!)
 subprojects {
     extensions.findByType<BaseExtension>()?.apply {
         compileOptions {
