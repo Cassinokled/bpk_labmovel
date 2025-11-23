@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import 'home_page.dart';
 import 'atendente_page.dart';
@@ -149,12 +150,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            foregroundColor: const Color.fromARGB(
-                              255,
-                              86,
-                              22,
-                              36,
-                            ),
+                            foregroundColor: AppColors.primary,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -175,7 +171,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                               const Icon(
                                 Icons.person,
                                 size: 48,
-                                color: Color.fromARGB(255, 86, 22, 36),
+                                color: AppColors.primary,
                               ),
                               const SizedBox(height: 8),
                               Text(
@@ -199,12 +195,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              86,
-                              22,
-                              36,
-                            ),
+                            backgroundColor: AppColors.primary,
                             foregroundColor: Colors.white,
                             elevation: 4,
                             shape: RoundedRectangleBorder(

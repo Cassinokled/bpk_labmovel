@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../utils/app_colors.dart';
 
 class BarcodeScanner extends StatefulWidget {
   final Function(String) onBarcodeScanned;
@@ -47,7 +48,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: const Color.fromARGB(255, 86, 22, 36),
+          color: AppColors.primary,
           width: 11,
         ),
       ),

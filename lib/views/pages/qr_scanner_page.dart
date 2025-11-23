@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/qr_code_scanner.dart';
 import '../widgets/navbar_atendente.dart';
@@ -213,7 +214,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                       height: 1.2,
                       fontWeight: FontWeight.w500,
                     ),
@@ -233,7 +234,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Color.fromARGB(255, 86, 22, 36),
+                          color: AppColors.primary,
                         ),
                       ),
                       SizedBox(width: 12),
@@ -241,7 +242,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         'Processando QR Code...',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Color.fromARGB(255, 86, 22, 36),
+                          color: AppColors.primary,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -253,7 +254,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                     children: [
                       Icon(
                         Icons.qr_code_scanner,
-                        color: Color.fromARGB(255, 86, 22, 36),
+                        color: AppColors.primary,
                         size: 20,
                       ),
                       SizedBox(width: 12),
@@ -262,7 +263,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 86, 22, 36),
+                          color: AppColors.primary,
                         ),
                       ),
                     ],

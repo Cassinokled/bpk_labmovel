@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 
 class CircularCloseButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -11,7 +12,7 @@ class CircularCloseButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.size = 62,
-    this.backgroundColor = const Color.fromARGB(255, 86, 22, 36),
+    this.backgroundColor = AppColors.primary,
     this.iconColor = Colors.white,
     this.iconSize = 32,
   });

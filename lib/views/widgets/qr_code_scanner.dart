@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../utils/app_colors.dart';
 
 class QRCodeScanner extends StatefulWidget {
   final Function(String) onQRCodeScanned;
@@ -48,7 +49,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: AppColors.shadowDark,
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

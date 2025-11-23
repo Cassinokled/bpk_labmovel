@@ -4,6 +4,7 @@ import '../../models/equipamento.dart';
 import '../../services/auth_service.dart';
 import '../../services/emprestimo_service.dart';
 import '../../services/equipamento_service.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_user.dart';
 
@@ -21,6 +22,8 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
   List<EmprestimoModel> _emprestimos = [];
   bool _isLoading = true;
   String? _error;
+  DateTime? startDate;
+  DateTime? endDate;
 
   @override
   void initState() {
@@ -61,10 +64,45 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
     }
   }
 
+  Future<void> _selectStartDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: startDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        startDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: endDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        endDate = picked;
+      });
+    }
+  }
+
+  void _clearFilters() {
+    setState(() {
+      startDate = null;
+      endDate = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -80,14 +118,75 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
               child: Text(
                 'Histórico de Empréstimos',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+
+            // filtros de data
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: _selectStartDate,
+                          icon: const Icon(Icons.calendar_today),
+                          label: Text(
+                            startDate != null
+                                ? '${startDate!.day}/${startDate!.month}/${startDate!.year}'
+                                : 'Data Inicial',
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: AppColors.primary,
+                            side: const BorderSide(color: AppColors.primary),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: _selectEndDate,
+                          icon: const Icon(Icons.calendar_today),
+                          label: Text(
+                            endDate != null
+                                ? '${endDate!.day}/${endDate!.month}/${endDate!.year}'
+                                : 'Data Final',
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: AppColors.primary,
+                            side: const BorderSide(color: AppColors.primary),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  if (startDate != null || endDate != null)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        onPressed: _clearFilters,
+                        icon: const Icon(Icons.clear),
+                        label: const Text('Limpar Filtros'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
 
             // conteudo
             Expanded(
@@ -109,13 +208,13 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
+          CircularProgressIndicator(color: AppColors.primary),
           SizedBox(height: 20),
           Text(
             'Carregando histórico...',
             style: TextStyle(
               fontSize: 16,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ),
         ],
@@ -143,7 +242,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
               icon: const Icon(Icons.refresh),
               label: const Text('Tentar novamente'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
               ),
             ),
@@ -169,7 +268,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
               'Nenhum empréstimo encontrado',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey[600],
+                color: AppColors.textSecondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -178,7 +277,43 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
               'Seu histórico aparecerá aqui',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey[500],
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Aplicar filtros de data
+    List<EmprestimoModel> filteredEmprestimos = _emprestimos;
+    if (startDate != null || endDate != null) {
+      filteredEmprestimos = _emprestimos.where((e) {
+        final date = e.criadoEm;
+        if (startDate != null && date.isBefore(startDate!)) return false;
+        if (endDate != null && date.isAfter(endDate!.add(const Duration(days: 1)))) return false;
+        return true;
+      }).toList();
+    }
+
+    if (filteredEmprestimos.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.filter_list_off,
+              size: 80,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Nenhum empréstimo encontrado \ncom os filtros aplicados',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -188,12 +323,12 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
 
     return RefreshIndicator(
       onRefresh: _carregarHistorico,
-      color: const Color.fromARGB(255, 86, 22, 36),
+      color: AppColors.primary,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        itemCount: _emprestimos.length,
+        itemCount: filteredEmprestimos.length,
         itemBuilder: (context, index) {
-          final emprestimo = _emprestimos[index];
+          final emprestimo = filteredEmprestimos[index];
           return _buildEmprestimoCard(emprestimo, index + 1);
         },
       ),
@@ -251,7 +386,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 86, 22, 36),
+                                    color: AppColors.primary,
                                   ),
                                 ),
                               ),
@@ -260,14 +395,14 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                           const SizedBox(height: 4),
                           Text(
                             '${emprestimo.codigosEquipamentos.length} ${emprestimo.codigosEquipamentos.length == 1 ? 'equipamento' : 'equipamentos'}',
-                            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                            style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             _formatarDataCompleta(emprestimo.criadoEm),
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -276,7 +411,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                     const SizedBox(width: 8),
                     const Icon(
                       Icons.chevron_right,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                       size: 24,
                     ),
                   ],
@@ -291,13 +426,13 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
 
   Color _getStatusColor(EmprestimoModel emprestimo) {
     if (emprestimo.isPendente) {
-      return Colors.orange;
+      return AppColors.warning;
     } else if (emprestimo.isRecusado) {
-      return Colors.red;
+      return AppColors.error;
     } else if (emprestimo.isDevolvido) {
-      return Colors.green;
+      return AppColors.success;
     } else if (emprestimo.isAtivo) {
-      return const Color.fromARGB(255, 86, 22, 36);
+      return AppColors.primary;
     } else {
       return Colors.grey;
     }
@@ -308,16 +443,16 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
     String text;
 
     if (emprestimo.isPendente) {
-      color = Colors.orange;
+      color = AppColors.warning;
       text = 'Pendente';
     } else if (emprestimo.isRecusado) {
-      color = Colors.red;
+      color = AppColors.error;
       text = 'Recusado';
     } else if (emprestimo.isDevolvido) {
-      color = Colors.green;
+      color = AppColors.success;
       text = 'Devolvido';
     } else if (emprestimo.isAtivo) {
-      color = const Color.fromARGB(255, 86, 22, 36);
+      color = AppColors.primary;
       text = 'Ativo';
     } else {
       color = Colors.grey;
@@ -427,7 +562,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
     final numeroFormatado = widget.numero.toString().padLeft(3, '0');
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -439,7 +574,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -459,7 +594,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -489,19 +624,19 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
     IconData icon;
 
     if (widget.emprestimo.isPendente) {
-      color = Colors.orange;
+      color = AppColors.warning;
       text = 'Pendente';
       icon = Icons.pending;
     } else if (widget.emprestimo.isRecusado) {
-      color = Colors.red;
+      color = AppColors.error;
       text = 'Recusado';
       icon = Icons.cancel;
     } else if (widget.emprestimo.isDevolvido) {
-      color = Colors.green;
+      color = AppColors.success;
       text = 'Devolvido';
       icon = Icons.check_circle;
     } else if (widget.emprestimo.isAtivo) {
-      color = Colors.blue;
+      color = AppColors.info;
       text = 'Ativo';
       icon = Icons.check_circle;
     } else {
@@ -550,7 +685,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 12),
@@ -700,7 +835,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: const Color.fromARGB(255, 86, 22, 36), size: 20),
+        Icon(icon, color: AppColors.primary, size: 20),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -708,14 +843,14 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
             children: [
               Text(
                 label,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               Text(
                 value,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -747,7 +882,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
@@ -773,13 +908,13 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 86, 22, 36),
+                    color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'CÓD: ${equipamento?.codigo ?? '—'}',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                 ),
               ],
             ),

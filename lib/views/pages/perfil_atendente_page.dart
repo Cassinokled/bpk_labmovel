@@ -56,7 +56,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -74,7 +74,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -204,7 +204,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.textWhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

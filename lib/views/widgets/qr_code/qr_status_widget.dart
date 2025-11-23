@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/emprestimo_model.dart';
+import '../../../utils/app_colors.dart';
 import '../qr_code_display.dart';
 
 // widget pra exibir diferentes estados do qr code
@@ -55,13 +56,13 @@ class QRStatusWidget extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
+        CircularProgressIndicator(color: AppColors.primary),
         SizedBox(height: 20),
         Text(
           'Gerando QR Code...',
           style: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
         ),
       ],
@@ -72,16 +73,20 @@ class QRStatusWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.error_outline, color: Colors.red, size: 64),
+        const Icon(Icons.error_outline, color: AppColors.error, size: 64),
         const SizedBox(height: 20),
         Text(
           error!,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, color: Colors.red),
+          style: const TextStyle(fontSize: 16, color: AppColors.error),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: onRetry,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+          ),
           child: const Text('Tentar novamente'),
         ),
       ],
@@ -92,14 +97,14 @@ class QRStatusWidget extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.check_circle, color: Colors.green, size: 80),
+        Icon(Icons.check_circle, color: AppColors.success, size: 80),
         SizedBox(height: 20),
         Text(
           'Empréstimo confirmado!',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
-            color: Colors.green,
+            color: AppColors.success,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -109,7 +114,7 @@ class QRStatusWidget extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
         ),
       ],
@@ -120,14 +125,14 @@ class QRStatusWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.cancel, color: Colors.red, size: 80),
+        const Icon(Icons.cancel, color: AppColors.error, size: 80),
         const SizedBox(height: 20),
         const Text(
           'Empréstimo recusado',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
-            color: Colors.red,
+            color: AppColors.error,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -137,7 +142,7 @@ class QRStatusWidget extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
         ),
       ],
@@ -155,7 +160,7 @@ class QRStatusWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 18,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
               height: 1.2,
               fontWeight: FontWeight.w500,
             ),
@@ -172,7 +177,7 @@ class QRStatusWidget extends StatelessWidget {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
             SizedBox(width: 10),
@@ -180,7 +185,7 @@ class QRStatusWidget extends StatelessWidget {
               'Aguardando confirmação...',
               style: TextStyle(
                 fontSize: 14,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -201,7 +206,7 @@ class QRStatusWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 18,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
               height: 1.2,
               fontWeight: FontWeight.w500,
             ),
@@ -218,7 +223,7 @@ class QRStatusWidget extends StatelessWidget {
               height: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
             SizedBox(width: 10),
@@ -226,7 +231,7 @@ class QRStatusWidget extends StatelessWidget {
               'Aguardando confirmação da devolução...',
               style: TextStyle(
                 fontSize: 14,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -240,14 +245,14 @@ class QRStatusWidget extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.assignment_turned_in, color: Colors.green, size: 80),
+        Icon(Icons.assignment_turned_in, color: AppColors.success, size: 80),
         SizedBox(height: 20),
         Text(
           'Devolução confirmada!',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,
-            color: Colors.green,
+            color: AppColors.success,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -257,7 +262,7 @@ class QRStatusWidget extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
         ),
       ],

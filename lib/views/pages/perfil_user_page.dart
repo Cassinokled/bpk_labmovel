@@ -56,7 +56,7 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -74,7 +74,7 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -116,7 +116,7 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
               child: IconButton(
                 icon: const Icon(
                   Icons.logout,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
                 tooltip: 'Sair',
                 onPressed: _logout,
@@ -148,7 +148,7 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -195,11 +195,11 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.textWhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -207,14 +207,14 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color.fromARGB(255, 86, 22, 36)),
+          Icon(icon, color: AppColors.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               text,
               style: const TextStyle(
                 fontSize: 16,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
           ),

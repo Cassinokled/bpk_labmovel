@@ -62,7 +62,7 @@ class _PerfilPageState extends State<PerfilPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -80,7 +80,7 @@ class _PerfilPageState extends State<PerfilPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }

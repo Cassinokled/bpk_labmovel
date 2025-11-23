@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../utils/app_colors.dart';
 import '../pages/perfil_page.dart';
 import '../pages/barras_scanner_page.dart';
 import '../pages/qr_scanner_page.dart';
@@ -148,8 +149,8 @@ class _NavBarState extends State<NavBar> {
                 ),
                 child: CircularCloseButton(
                   size: 56,
-                  backgroundColor: const Color.fromARGB(255, 86, 22, 36),
-                  iconColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  iconColor: AppColors.textWhite,
                   iconSize: 28,
                   onPressed:
                       widget.onBackFromScanner ?? () => Navigator.pop(context),

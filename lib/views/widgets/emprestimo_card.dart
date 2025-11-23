@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/emprestimo_model.dart';
+import '../../utils/app_colors.dart';
 
 class EmprestimoCard extends StatelessWidget {
   final EmprestimoModel emprestimo;
@@ -40,12 +41,12 @@ class EmprestimoCard extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 86, 22, 36).withOpacity(0.1),
+                color: AppColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
                 Icons.inventory_2_outlined,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
                 size: 28,
               ),
             ),
@@ -61,7 +62,7 @@ class EmprestimoCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -100,7 +101,7 @@ class EmprestimoCard extends StatelessWidget {
 
             const Icon(
               Icons.chevron_right,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ],
         ),

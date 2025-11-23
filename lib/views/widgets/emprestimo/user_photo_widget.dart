@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/user_model.dart';
+import '../../../utils/app_colors.dart';
 
 // widget reutilizavel pra exibir a foto do usuario
 class UserPhotoWidget extends StatelessWidget {
@@ -15,9 +16,9 @@ class UserPhotoWidget extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color.fromARGB(255, 86, 22, 36).withOpacity(0.1),
+        color: AppColors.primary.withOpacity(0.1),
         border: Border.all(
-          color: const Color.fromARGB(255, 86, 22, 36),
+          color: AppColors.primary,
           width: 3,
         ),
       ),
@@ -48,7 +49,7 @@ class UserPhotoWidget extends StatelessWidget {
                         loadingProgress.expectedTotalBytes!
                   : null,
               strokeWidth: 2,
-              color: const Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           );
         },
@@ -72,11 +73,11 @@ class UserPhotoWidget extends StatelessWidget {
 
   Widget _buildDefaultAvatar() {
     return Container(
-      color: const Color.fromARGB(255, 86, 22, 36).withOpacity(0.1),
+      color: AppColors.primary.withOpacity(0.1),
       child: Icon(
         Icons.person,
         size: size * 0.5,
-        color: const Color.fromARGB(255, 86, 22, 36),
+        color: AppColors.primary,
       ),
     );
   }

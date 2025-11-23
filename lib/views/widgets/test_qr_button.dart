@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/emprestimo_model.dart';
 import '../../services/auth_service.dart';
+import '../../utils/app_colors.dart';
 import '../pages/qr_code_page.dart';
 
 class TestQRButton extends StatelessWidget {
@@ -32,7 +33,7 @@ class TestQRButton extends StatelessWidget {
       icon: const Icon(Icons.qr_code),
       label: const Text('Teste: Gerar QR Code (5815)'),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(
           horizontal: 24,

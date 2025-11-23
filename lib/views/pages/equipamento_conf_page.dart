@@ -4,6 +4,7 @@ import '../widgets/navbar_user.dart';
 import '../widgets/app_logo.dart';
 import '../../providers/carrinho_emprestimo_provider.dart';
 import '../../services/equipamento_service.dart';
+import '../../utils/app_colors.dart';
 
 class EquipamentoConfPage extends StatefulWidget {
   final String bookCode;
@@ -82,13 +83,13 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
   Widget _buildLoading() {
     return const Column(
       children: [
-        CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
+        CircularProgressIndicator(color: AppColors.primary),
         SizedBox(height: 20),
         Text(
           'Verificando disponibilidade...',
           style: TextStyle(
             fontSize: 16,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
         ),
       ],
@@ -111,7 +112,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+              backgroundColor: AppColors.primary,
               padding: const EdgeInsets.symmetric(vertical: 18),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -141,7 +142,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           style: const TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
             fontFamily: 'Avignon',
           ),
         ),
@@ -170,7 +171,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+              backgroundColor: AppColors.primary,
               padding: const EdgeInsets.symmetric(vertical: 18),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -200,7 +201,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           style: const TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
             fontFamily: 'Avignon',
           ),
         ),
@@ -228,7 +229,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
                     content: Text(
                       'Este equipamento já foi adicionado ao carrinho!',
                     ),
-                    backgroundColor: Color.fromARGB(255, 86, 22, 36),
+                    backgroundColor: AppColors.primary,
                     duration: Duration(seconds: 2),
                   ),
                 );
@@ -245,7 +246,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+              backgroundColor: AppColors.primary,
               padding: const EdgeInsets.symmetric(vertical: 18),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -284,7 +285,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
           ),

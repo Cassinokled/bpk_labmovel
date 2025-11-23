@@ -6,6 +6,7 @@ import '../../services/emprestimo_service.dart';
 import '../../services/user_service.dart';
 import '../../services/equipamento_service.dart';
 import '../../services/auth_service.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_info_card.dart';
 import '../widgets/emprestimo/solicitation_info_badge.dart';
@@ -204,7 +205,6 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               child: AppLogo(),
             ),
 
-            // Título
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Text(
@@ -212,7 +212,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ),
@@ -240,14 +240,14 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
           SizedBox(height: 20),
           Text(
             'Carregando informações...',
             style: TextStyle(
               fontSize: 16,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ),
         ],
@@ -282,7 +282,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               icon: const Icon(Icons.refresh),
               label: const Text('Tentar novamente'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
               ),
             ),
@@ -325,14 +325,14 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
             const Spacer(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -422,7 +422,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               onPressed: _isConfirming ? null : _confirmarEmprestimo,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.green,
+                backgroundColor: AppColors.success,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../utils/app_colors.dart';
 
 class QRCodeDisplay extends StatelessWidget {
   final String qrData;
@@ -11,7 +12,7 @@ class QRCodeDisplay extends StatelessWidget {
     super.key,
     required this.qrData,
     this.size = 266.0,
-    this.borderColor = const Color.fromARGB(255, 86, 22, 36),
+    this.borderColor = AppColors.primary,
     this.borderWidth = 11,
   });
 

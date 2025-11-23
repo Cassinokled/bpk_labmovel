@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/user_model.dart';
+import '../../../utils/app_colors.dart';
 import 'user_photo_widget.dart';
 
 // widget pra exibir informacoes do usuario (foto + nome + curso)
@@ -31,7 +32,7 @@ class UserInfoCard extends StatelessWidget {
           style: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 86, 22, 36),
+            color: AppColors.primary,
           ),
           textAlign: TextAlign.center,
         ),
