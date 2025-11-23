@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
 import '../../services/auth_service.dart';
@@ -34,7 +35,7 @@ class EmprestimosLista extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Text(
                 'Erro ao carregar empréstimos',
-                style: TextStyle(color: Colors.grey[600]),
+                style: TextStyle(color: AppColors.textSecondary),
               ),
             ),
           );
@@ -56,7 +57,7 @@ class EmprestimosLista extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ),
@@ -91,7 +92,7 @@ class EmprestimosLista extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Divider(color: Colors.grey[400], thickness: 1),
+                    child: Divider(color: AppColors.divider, thickness: 1),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -100,12 +101,12 @@ class EmprestimosLista extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ),
                   Expanded(
-                    child: Divider(color: Colors.grey[400], thickness: 1),
+                    child: Divider(color: AppColors.divider, thickness: 1),
                   ),
                 ],
               ),

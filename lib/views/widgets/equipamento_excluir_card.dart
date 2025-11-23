@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../models/equipamento.dart';
 
 class EquipamentoExcluirCard extends StatelessWidget {
@@ -20,21 +21,21 @@ class EquipamentoExcluirCard extends StatelessWidget {
       background: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF561624),
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(16),
         ),
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 20),
-        child: const Icon(Icons.delete, color: Colors.white, size: 32),
+        child: const Icon(Icons.delete, color: AppColors.textWhite, size: 32),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFFEDEDED),
+          color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColors.primaryLight,
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -47,7 +48,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
               width: 16,
               height: 100,
               decoration: const BoxDecoration(
-                color: Color(0xFFEDEDED),
+                color: AppColors.cardBackground,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
                   bottomLeft: Radius.circular(16),
@@ -66,7 +67,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 86, 22, 36),
+                        color: AppColors.primary,
                         fontFamily: 'Avignon',
                       ),
                     ),
@@ -75,7 +76,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
                       'CÓD: ${equipamento.codigo}',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Color.fromARGB(255, 86, 22, 36),
+                        color: AppColors.primary,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -83,7 +84,7 @@ class EquipamentoExcluirCard extends StatelessWidget {
                       'Bloco: ${equipamento.bloco}',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Color.fromARGB(255, 86, 22, 36),
+                        color: AppColors.primary,
                       ),
                     ),
                   ],

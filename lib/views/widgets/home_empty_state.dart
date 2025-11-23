@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../utils/app_colors.dart';
 
 class HomeEmptyState extends StatelessWidget {
   const HomeEmptyState({super.key});
@@ -9,18 +11,19 @@ class HomeEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/pics/home-none.png',
+          SvgPicture.asset(
+            'assets/pics/home-none.svg',
             width: 120,
             height: 120,
             fit: BoxFit.contain,
+            color: AppColors.primary,
           ),
           const SizedBox(height: 20),
           const Text(
             'Parece que ainda não tem\nnenhum item aqui...',
             style: TextStyle(
               fontSize: 20,
-              color: Color(0x80561624),
+              color: AppColors.primaryMedium,
               fontFamily: 'Avignon',
               fontWeight: FontWeight.w500,
             ),

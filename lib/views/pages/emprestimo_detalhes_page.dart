@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../models/emprestimo_model.dart';
 import '../../models/equipamento.dart';
 import '../../services/equipamento_service.dart';
@@ -55,7 +56,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
     final numeroFormatado = widget.numero.toString().padLeft(3, '0');
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -67,7 +68,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
@@ -87,7 +88,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 86, 22, 36),
+                      color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -115,19 +116,19 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: AppColors.successLight,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.green, width: 1),
+        border: Border.all(color: AppColors.success, width: 1),
       ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check_circle, color: Colors.green, size: 16),
+          Icon(Icons.check_circle, color: AppColors.success, size: 16),
           SizedBox(width: 8),
           Text(
             'Ativo',
             style: TextStyle(
-              color: Colors.green,
+              color: AppColors.success,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -152,7 +153,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 12),
@@ -180,11 +181,11 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.textWhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -210,11 +211,11 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: isAtrasado
-                  ? Colors.red.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+                  ? AppColors.errorLight
+                  : AppColors.warningLight,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isAtrasado ? Colors.red : Colors.orange,
+                color: isAtrasado ? AppColors.error : AppColors.warning,
                 width: 1,
               ),
             ),
@@ -222,7 +223,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
               children: [
                 Icon(
                   isAtrasado ? Icons.warning : Icons.schedule,
-                  color: isAtrasado ? Colors.red : Colors.orange,
+                  color: isAtrasado ? AppColors.error : AppColors.warning,
                   size: 24,
                 ),
                 const SizedBox(width: 12),
@@ -235,7 +236,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: isAtrasado ? Colors.red : Colors.orange[800],
+                          color: isAtrasado ? AppColors.error : AppColors.warning,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -244,7 +245,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isAtrasado ? Colors.red : Colors.orange[900],
+                          color: isAtrasado ? AppColors.error : AppColors.warning,
                         ),
                       ),
                       if (!isAtrasado) ...[
@@ -255,7 +256,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                           ),
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: AppColors.textSecondary,
                           ),
                         ),
                       ],
@@ -273,7 +274,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: const Color.fromARGB(255, 86, 22, 36), size: 20),
+        Icon(icon, color: AppColors.primary, size: 20),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -281,14 +282,14 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             children: [
               Text(
                 label,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               Text(
                 value,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -303,11 +304,11 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.textWhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -320,14 +321,14 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
               child: Text(
                 '$numero',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textWhite,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -346,13 +347,13 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 86, 22, 36),
+                    color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'CÓD: ${equipamento?.codigo ?? '—'}',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                 ),
               ],
             ),
@@ -412,8 +413,8 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
         ),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          backgroundColor: const Color.fromARGB(255, 86, 22, 36),
-          foregroundColor: Colors.white,
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.textWhite,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

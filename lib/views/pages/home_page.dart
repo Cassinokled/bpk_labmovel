@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../utils/app_colors.dart';
 
 import '../../models/emprestimo_model.dart';
 import '../../models/user_model.dart';
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _buildHeader(),
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                 child: IconButton(
                   icon: const Icon(
                     Icons.arrow_back,
-                    color: Color.fromARGB(255, 86, 22, 36),
+                    color: AppColors.primary,
                   ),
                   tooltip: 'Voltar para seleção',
                   onPressed: () {
@@ -164,7 +165,7 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Erro: Usuário não identificado'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
       return;

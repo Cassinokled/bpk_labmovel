@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
@@ -92,7 +93,7 @@ class _PerfilPageState extends State<PerfilPage> {
     final user = _authService.currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _buildHeader(),
@@ -120,7 +121,7 @@ class _PerfilPageState extends State<PerfilPage> {
                 child: IconButton(
                   icon: const Icon(
                     Icons.arrow_back,
-                    color: Color.fromARGB(255, 86, 22, 36),
+                    color: AppColors.primary,
                   ),
                   tooltip: 'Voltar para seleção',
                   onPressed: () {
@@ -137,7 +138,7 @@ class _PerfilPageState extends State<PerfilPage> {
               child: IconButton(
                 icon: const Icon(
                   Icons.logout,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
                 tooltip: 'Sair',
                 onPressed: _logout,
@@ -169,7 +170,7 @@ class _PerfilPageState extends State<PerfilPage> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -209,11 +210,11 @@ class _PerfilPageState extends State<PerfilPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.textWhite,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -221,14 +222,14 @@ class _PerfilPageState extends State<PerfilPage> {
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color.fromARGB(255, 86, 22, 36)),
+          Icon(icon, color: AppColors.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               text,
               style: const TextStyle(
                 fontSize: 16,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
           ),

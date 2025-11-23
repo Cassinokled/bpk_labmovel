@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_atendente.dart';
 import 'atendente_page.dart';
@@ -11,7 +13,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),
@@ -61,11 +63,12 @@ class RegistrosEmprestimosPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/pics/home-none.png',
+                  SvgPicture.asset(
+                    'assets/pics/home-none.svg',
                     width: 120,
                     height: 120,
                     fit: BoxFit.contain,
+                    color: AppColors.success,
                   ),                
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
@@ -74,7 +77,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20,
-                        color: Color(0x80561624),
+                        color: AppColors.primaryMedium,
                         fontFamily: 'Avignon',
                         fontWeight: FontWeight.w500,
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 
 class HomeActionButtons extends StatelessWidget {
   final VoidCallback onCancelar;
@@ -24,20 +25,20 @@ class HomeActionButtons extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onCancelar,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFEDEDED),
+                backgroundColor: AppColors.cardBackground,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
                 elevation: 2,
-                shadowColor: Colors.black.withOpacity(0.5),
+                shadowColor: AppColors.shadowDark,
               ),
               child: const Text(
                 'Cancelar empréstimo',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ),
@@ -48,7 +49,7 @@ class HomeActionButtons extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onConcluir,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 86, 22, 36),
+                backgroundColor: AppColors.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -60,7 +61,7 @@ class HomeActionButtons extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                  color: AppColors.textWhite,
                 ),
               ),
             ),

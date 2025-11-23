@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
@@ -86,7 +87,7 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
     final user = _authService.currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _buildHeader(),

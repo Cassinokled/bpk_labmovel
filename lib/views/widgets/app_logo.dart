@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 
 class AppLogo extends StatelessWidget {
   final double width;
@@ -9,7 +10,7 @@ class AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/pics/logos/logo_bpk.png',
+      AppColors.logoPath,
       width: width,
       height: height,
       fit: BoxFit.contain,

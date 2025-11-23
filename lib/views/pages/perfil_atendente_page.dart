@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../models/user_model.dart';
@@ -86,7 +87,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
     final user = _authService.currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _buildHeader(),
@@ -115,7 +116,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
               child: IconButton(
                 icon: const Icon(
                   Icons.logout,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
                 tooltip: 'Sair',
                 onPressed: _logout,
@@ -147,14 +148,14 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
               const SizedBox(height: 4),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
@@ -162,7 +163,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppColors.textWhite,
                   ),
                 ),
               ),
@@ -207,7 +208,7 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -215,14 +216,14 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color.fromARGB(255, 86, 22, 36)),
+          Icon(icon, color: AppColors.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               text,
               style: const TextStyle(
                 fontSize: 16,
-                color: Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
               ),
             ),
           ),

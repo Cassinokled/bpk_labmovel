@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../../models/equipamento.dart';
 
 class EquipamentoCard extends StatelessWidget {
@@ -13,10 +14,10 @@ class EquipamentoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8D5D8),
+        color: AppColors.primaryLightBackground,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color.fromARGB(255, 86, 22, 36),
+          color: AppColors.primary,
           width: 3,
         ),
       ),
@@ -27,7 +28,7 @@ class EquipamentoCard extends StatelessWidget {
             width: 8,
             height: 60,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -42,17 +43,17 @@ class EquipamentoCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 86, 22, 36),
+                    color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'CÓD: ${equipamento.codigo}',
-                  style: const TextStyle(fontSize: 14, color: Colors.black87),
+                  style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
                 ),
                 Text(
                   'Bloco: ${equipamento.bloco}',
-                  style: const TextStyle(fontSize: 14, color: Colors.black87),
+                  style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
                 ),
               ],
             ),
