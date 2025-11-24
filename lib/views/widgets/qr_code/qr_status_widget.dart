@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../models/emprestimo_model.dart';
 import '../../../utils/app_colors.dart';
 import '../qr_code_display.dart';
+import 'recusa_devolucao_widget.dart';
 
 // widget pra exibir diferentes estados do qr code
 class QRStatusWidget extends StatelessWidget {
@@ -11,6 +12,7 @@ class QRStatusWidget extends StatelessWidget {
   final String qrData;
   final VoidCallback? onRetry;
   final bool isDevolucao;
+  final VoidCallback? onRecusaOk;
 
   const QRStatusWidget({
     super.key,
@@ -20,6 +22,7 @@ class QRStatusWidget extends StatelessWidget {
     required this.qrData,
     this.onRetry,
     this.isDevolucao = false,
+    this.onRecusaOk,
   });
 
   @override
@@ -34,6 +37,9 @@ class QRStatusWidget extends StatelessWidget {
 
     // se for devolucao
     if (isDevolucao) {
+      if (emprestimo != null && emprestimo!.isBlocoCorreto == false) {
+        return RecusaDevolucaoWidget(emprestimo: emprestimo, onOk: onRecusaOk);
+      }
       if (emprestimo?.isDevolvido == true) {
         return _buildDevolvido();
       }
@@ -122,6 +128,13 @@ class QRStatusWidget extends StatelessWidget {
   }
 
   Widget _buildRecusado() {
+    final motivo = emprestimo?.motivoRecusa;
+    final isBlocoMotivo = motivo != null && motivo.contains('blocos');
+
+    if (isBlocoMotivo) {
+      return const RecusaDevolucaoWidget();
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -237,6 +250,7 @@ class QRStatusWidget extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 10),
       ],
     );
   }

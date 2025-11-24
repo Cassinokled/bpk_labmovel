@@ -1,11 +1,17 @@
 import 'package:flutter/foundation.dart';
 import '../models/equipamento.dart';
 import '../models/emprestimo_model.dart';
+import '../models/bloco_model.dart';
 import '../services/equipamento_service.dart';
 
 class CarrinhoEmprestimo extends ChangeNotifier {
   final List<Equipamento> _equipamentos = [];
   final EquipamentoService _equipamentoService = EquipamentoService();
+  Bloco? _blocoEsperado;
+
+  void setBlocoEsperado(Bloco bloco) {
+    _blocoEsperado = bloco;
+  }
 
   List<Equipamento> get equipamentos => List.unmodifiable(_equipamentos);
 
@@ -13,14 +19,31 @@ class CarrinhoEmprestimo extends ChangeNotifier {
 
   bool get temItens => _equipamentos.isNotEmpty;
 
-  Future<void> adicionarEquipamento(String codigo) async {
+  Future<Map<String, dynamic>> adicionarEquipamento(String codigo) async {
     // busca o equipamento do banco
     final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
 
-    if (equipamento != null) {
-      _equipamentos.add(equipamento);
-      notifyListeners();
+    if (equipamento == null) {
+      return {
+        'sucesso': false,
+        'mensagem': 'Equipamento não encontrado.',
+      };
     }
+
+    // verifica se o bloco do equipamento
+    if (_blocoEsperado != null && equipamento.bloco != _blocoEsperado!.nome) {
+      return {
+        'sucesso': false,
+        'mensagem': 'Este equipamento pertence a outro bloco (${equipamento.bloco}). Você só pode emprestar itens do bloco ${_blocoEsperado!.nome}.',
+      };
+    }
+
+    _equipamentos.add(equipamento);
+    notifyListeners();
+    return {
+      'sucesso': true,
+      'mensagem': 'Equipamento adicionado com sucesso.',
+    };
   }
 
   void removerEquipamento(int index) {

@@ -123,7 +123,7 @@ class _QRCodePageState extends State<QRCodePage> {
           const Spacer(),
           Padding(padding: const EdgeInsets.all(26.0), child: _buildContent()),
           const Spacer(),
-          // Botão de voltar (só mostra se estiver pendente)
+          // botao de voltar (so mostra se estiver pendente)
           if (_emprestimo?.isPendente == true)
             const Padding(
               padding: EdgeInsets.only(bottom: 26.0),

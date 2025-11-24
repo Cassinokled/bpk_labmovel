@@ -124,9 +124,10 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
       height: 90,
-      margin: const EdgeInsets.only(bottom: 26),
+      margin: EdgeInsets.only(bottom: 26 + bottomPadding),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -142,33 +143,55 @@ class _NavBarState extends State<NavBar> {
           if (index == 2 && _selectedIndex == 2) {
             return GestureDetector(
               onTap: () => _onItemTapped(index),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                child: CircularCloseButton(
-                  size: 56,
-                  backgroundColor: AppColors.primary,
-                  iconColor: AppColors.textWhite,
-                  iconSize: 28,
-                  onPressed:
-                      widget.onBackFromScanner ?? () => Navigator.pop(context),
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    child: CircularCloseButton(
+                      size: 62,
+                      backgroundColor: AppColors.primary,
+                      iconColor: AppColors.textWhite,
+                      iconSize: 28,
+                      onPressed:
+                          widget.onBackFromScanner ?? () => Navigator.pop(context),
+                    ),
+                  ),
+                ],
               ),
             );
           }
 
           return GestureDetector(
             onTap: () => _onItemTapped(index),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              color: Colors.transparent,
-              child: SvgPicture.asset(
-                isSelected ? item['active']! : item['inactive']!,
-                width: iconSize,
-                height: iconSize,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  color: Colors.transparent,
+                  child: SvgPicture.asset(
+                    isSelected ? item['active']! : item['inactive']!,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                ),
+                if (isSelected && !isAddButton)
+                  Container(
+                    width: 15,
+                    height: 2,
+                    margin: const EdgeInsets.only(top: 4),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primary,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           );
         }),

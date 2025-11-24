@@ -68,7 +68,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
                     width: 120,
                     height: 120,
                     fit: BoxFit.contain,
-                    color: AppColors.success,
+                    color: AppColors.primary,
                   ),                
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),

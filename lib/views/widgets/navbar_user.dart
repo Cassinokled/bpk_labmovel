@@ -141,9 +141,12 @@ class _NavBarUserState extends State<NavBarUser> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final bottomMargin = 15 + bottomPadding;
+
     return Container(
       height: 90,
-      margin: const EdgeInsets.only(bottom: 26),
+      margin: EdgeInsets.only(bottom: bottomMargin),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -165,7 +168,7 @@ class _NavBarUserState extends State<NavBarUser> {
                   vertical: 12,
                 ),
                 child: CircularCloseButton(
-                  size: 56,
+                  size: 62,
                   backgroundColor: AppColors.primary,
                   iconColor: AppColors.textWhite,
                   iconSize: 28,
@@ -181,10 +184,25 @@ class _NavBarUserState extends State<NavBarUser> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               color: Colors.transparent,
-              child: SvgPicture.asset(
-                isSelected ? item['active']! : item['inactive']!,
-                width: iconSize,
-                height: iconSize,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    isSelected ? item['active']! : item['inactive']!,
+                    width: iconSize,
+                    height: iconSize,
+                  ),
+                  if (isSelected) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      width: 15,
+                      height: 2,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primary, width: 1),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           );

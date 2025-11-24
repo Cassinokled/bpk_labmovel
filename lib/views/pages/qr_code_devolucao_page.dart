@@ -89,16 +89,19 @@ class _QRCodeDevolucaoPageState extends State<QRCodeDevolucaoPage> {
         children: [
           const SizedBox(height: 60),
           const Center(child: AppLogo()),
-          const Spacer(),
-          Padding(padding: const EdgeInsets.all(26.0), child: _buildContent()),
-          const Spacer(),
-          // Botão de voltar (só mostra se ainda não foi devolvido)
-          if (_emprestimo?.isDevolvido != true)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(26.0),
+              child: _buildContent(),
+            ),
+          ),
+          // Botão de voltar
+          if (_emprestimo?.isDevolvido != true && _emprestimo?.isBlocoCorreto != false)
             const Padding(
               padding: EdgeInsets.only(bottom: 26.0),
               child: Center(child: CircularCloseButton()),
             ),
-          if (_emprestimo?.isDevolvido == true) const SizedBox(height: 80),
+          if (_emprestimo?.isDevolvido == true || _emprestimo?.isBlocoCorreto == false) const SizedBox(height: 80),
         ],
       ),
     );
@@ -114,6 +117,16 @@ class _QRCodeDevolucaoPageState extends State<QRCodeDevolucaoPage> {
       qrData: _qrData,
       onRetry: () {},
       isDevolucao: true,
+      onRecusaOk: _resetBlocoCorreto,
     );
+  }
+
+  // reseta o isBlocoCorreto para null
+  void _resetBlocoCorreto() {
+    if (_emprestimo != null) {
+      _emprestimoService.atualizarEmprestimo(_emprestimo!.id!, {
+        'isBlocoCorreto': null,
+      });
+    }
   }
 }

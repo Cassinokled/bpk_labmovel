@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'views/pages/auth_checker.dart';
 import 'providers/carrinho_emprestimo_provider.dart';
+import 'providers/bloco_provider.dart';
 import 'firebase_options.dart';
 import 'utils/brasilia_time.dart';
 import 'utils/app_colors.dart';
@@ -26,8 +27,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CarrinhoEmprestimo(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CarrinhoEmprestimo()),
+        ChangeNotifierProvider(create: (context) => BlocoProvider()),
+      ],
       child: MaterialApp(
         title: 'LabMovel',
         debugShowCheckedModeBanner: false,

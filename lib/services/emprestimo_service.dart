@@ -66,14 +66,35 @@ class EmprestimoService {
   }
 
   // recusa um emprestimo
-  Future<void> recusarEmprestimo(String id) async {
+  Future<void> recusarEmprestimo(String id, {String? motivo}) async {
     try {
       await _firestore.collection(_collection).doc(id).update({
         'confirmado': false,
         'confirmedoEm': Timestamp.fromDate(BrasiliaTime.now()),
+        'motivoRecusa': motivo,
       });
     } catch (e) {
       throw Exception('Erro ao recusar empréstimo: $e');
+    }
+  }
+
+  // atualiza isBlocoCorreto
+  Future<void> atualizarIsBlocoCorreto(String id, bool isBlocoCorreto) async {
+    try {
+      await _firestore.collection(_collection).doc(id).update({
+        'isBlocoCorreto': isBlocoCorreto,
+      });
+    } catch (e) {
+      throw Exception('Erro ao atualizar bloco correto: $e');
+    }
+  }
+
+  // atualiza campos especificos emprestimo
+  Future<void> atualizarEmprestimo(String id, Map<String, dynamic> updates) async {
+    try {
+      await _firestore.collection(_collection).doc(id).update(updates);
+    } catch (e) {
+      throw Exception('Erro ao atualizar empréstimo: $e');
     }
   }
 

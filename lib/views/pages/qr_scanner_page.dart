@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
+import '../../services/equipamento_service.dart';
 import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/qr_code_scanner.dart';
 import '../widgets/navbar_atendente.dart';
 import 'confirmar_emprestimo_page.dart';
 import 'confirmar_devolucao_page.dart';
+import '../../providers/bloco_provider.dart';
+import 'package:provider/provider.dart';
 
 class QRScannerPage extends StatefulWidget {
   const QRScannerPage({super.key});
@@ -18,6 +21,7 @@ class QRScannerPage extends StatefulWidget {
 
 class _QRScannerPageState extends State<QRScannerPage> {
   final EmprestimoService _emprestimoService = EmprestimoService();
+  final EquipamentoService _equipamentoService = EquipamentoService();
   String _scannedCode = '';
   bool _hasScanned = false;
   bool _isProcessing = false;
@@ -93,6 +97,40 @@ class _QRScannerPageState extends State<QRScannerPage> {
       return;
     }
 
+    // Valida se os equipamentos são do bloco do atendente
+    final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
+    final blocoAtendente = blocoProvider.blocoSelecionado;
+    if (blocoAtendente == null) {
+      _showError('Nenhum bloco selecionado. Volte e selecione um bloco.');
+      _resetScanner();
+      return;
+    }
+
+    // Verifica cada equipamento do empréstimo
+    List<String> equipamentosInvalidos = [];
+    for (final codigo in emprestimo.codigosEquipamentos) {
+      final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
+      if (equipamento != null && equipamento.bloco != blocoAtendente.nome) {
+        equipamentosInvalidos.add('${equipamento.displayName} (bloco: ${equipamento.bloco})');
+      }
+    }
+
+    if (equipamentosInvalidos.isNotEmpty) {
+      // Recusa automaticamente o empréstimo com motivo
+      await _emprestimoService.recusarEmprestimo(emprestimo.id!, motivo: 'Itens de outros blocos: ${equipamentosInvalidos.join(', ')}');
+      
+      // Mostra mensagem para o atendente
+      _showSuccess('Empréstimo recusado devido a itens de outros blocos. O usuário foi notificado.');
+      
+      // Volta para a home do atendente
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      });
+      return;
+    }
+
     // navega pra pagina de confirmacao
     if (mounted) {
       final result = await Navigator.push<bool>(
@@ -122,6 +160,40 @@ class _QRScannerPageState extends State<QRScannerPage> {
     if (emprestimo.isDevolvido) {
       _showError('Este empréstimo já foi devolvido');
       _resetScanner();
+      return;
+    }
+
+    // Valida se os equipamentos são do bloco do atendente
+    final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
+    final blocoAtendente = blocoProvider.blocoSelecionado;
+    if (blocoAtendente == null) {
+      _showError('Nenhum bloco selecionado. Volte e selecione um bloco.');
+      _resetScanner();
+      return;
+    }
+
+    // Verifica cada equipamento do empréstimo
+    List<String> equipamentosInvalidos = [];
+    for (final codigo in emprestimo.codigosEquipamentos) {
+      final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
+      if (equipamento != null && equipamento.bloco != blocoAtendente.nome) {
+        equipamentosInvalidos.add('${equipamento.displayName} (bloco: ${equipamento.bloco})');
+      }
+    }
+
+    if (equipamentosInvalidos.isNotEmpty) {
+      // Marca bloco incorreto para notificar o usuário
+      await _emprestimoService.atualizarIsBlocoCorreto(emprestimo.id!, false);
+      
+      // Mostra mensagem para o atendente
+      _showSuccess('Bloco incorreto detectado. O usuário foi notificado para tentar no bloco correto.');
+      
+      // Volta para a home do atendente
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      });
       return;
     }
 

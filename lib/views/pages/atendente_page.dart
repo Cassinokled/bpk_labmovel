@@ -3,7 +3,11 @@ import '../widgets/app_logo.dart';
 import 'registros_emprestimos_page.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
+import '../../services/bloco_service.dart';
 import '../../models/user_model.dart';
+import '../../models/bloco_model.dart';
+import '../../providers/bloco_provider.dart';
+import 'package:provider/provider.dart';
 
 class AtendentePage extends StatefulWidget {
   final String? user;
@@ -17,22 +21,26 @@ class AtendentePage extends StatefulWidget {
 class _AtendentePageState extends State<AtendentePage> {
   final AuthService _authService = AuthService();
   final UserService _userService = UserService();
+  final BlocoService _blocoService = BlocoService();
   UserModel? _userData;
   bool _isLoading = true;
+  List<Bloco> _blocos = [];
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadData();
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> _loadData() async {
     try {
       final user = _authService.currentUser;
       if (user != null) {
         final userData = await _userService.getUser(user.uid);
+        final blocos = await _blocoService.buscarTodos();
         setState(() {
           _userData = userData;
+          _blocos = blocos;
           _isLoading = false;
         });
       } else {
@@ -108,11 +116,12 @@ class _AtendentePageState extends State<AtendentePage> {
 
                     SizedBox(height: screenHeight * 0.05),
 
-                    _buildBlocoButton(context, 'Bloco I - Branco', screenWidth),
-                    _buildBlocoButton(context, 'Bloco II - Verde Claro', screenWidth),
-                    _buildBlocoButton(context, 'Bloco III - Verde Musgo', screenWidth),
-                    _buildBlocoButton(context, 'Bloco IV - Vermelho', screenWidth),
-                    _buildBlocoButton(context, 'Charles Darwin', screenWidth),
+                    if (_isLoading)
+                      const CircularProgressIndicator()
+                    else if (_blocos.isEmpty)
+                      const Text('Nenhum bloco disponível')
+                    else
+                      ..._blocos.map((bloco) => _buildBlocoButton(context, bloco, screenWidth)),
 
                     SizedBox(height: screenHeight * 0.05),
                   ],
@@ -128,7 +137,7 @@ class _AtendentePageState extends State<AtendentePage> {
   // Botão responsivo
   Widget _buildBlocoButton(
     BuildContext context,
-    String bloco,
+    Bloco bloco,
     double screenWidth,
   ) {
     return Padding(
@@ -142,18 +151,20 @@ class _AtendentePageState extends State<AtendentePage> {
           ),
         ),
         onPressed: () {
+          // Salva o bloco selecionado no provider
+          Provider.of<BlocoProvider>(context, listen: false).selecionarBloco(bloco);
+          
           // Navega para a home do atendente com o bloco selecionado
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => RegistrosEmprestimosPage(nomeBloco: bloco),
-              settings: RouteSettings(arguments: {'nomeBloco': bloco}),
+              builder: (context) => RegistrosEmprestimosPage(nomeBloco: bloco.nome),
             ),
           );
         },
 
         child: Text(
-          bloco,
+          bloco.nome,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
