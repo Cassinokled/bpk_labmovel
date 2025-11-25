@@ -30,7 +30,12 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
     try {
       final user = _authService.currentUser;
       if (user != null) {
+        // verificar e atualizar pendencias
+        await _userService.verificarEAtualizarPendencias(user.uid);
+        
+        // carregar dados atualizados
         final userData = await _userService.getUser(user.uid);
+        
         setState(() {
           _userData = userData;
           _isLoading = false;
@@ -140,17 +145,48 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
             children: [
               UserPhotoWidget(
                 usuario: _userData,
-                size: 96,
+                size: 160,
               ),
               const SizedBox(height: 12),
               Text(
                 _userData?.nomeCompleto ?? 'Usuário',
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
               ),
+              //indicador de pendencias no perfil (nao sei se vai ficar para a versao final, conversar com a maria para decidir design)
+              if (_userData?.comPendencias == true) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.error, width: 1),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: AppColors.error,
+                        size: 16,
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'Pendências',
+                        style: TextStyle(
+                          color: AppColors.error,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ],
           ),
         ),

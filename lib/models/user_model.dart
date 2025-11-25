@@ -20,6 +20,9 @@ class UserModel {
   final String? curso; // alunos
   final int? semestre; // alunos
 
+  // status de pendencias
+  final bool comPendencias; // se o usuario tem emprestimos atrasados
+
   // metadados
   final DateTime? createdAt;
   final DateTime? lastLogin;
@@ -40,6 +43,7 @@ class UserModel {
     this.foto,
     this.createdAt,
     this.lastLogin,
+    this.comPendencias = false,
   });
 
   // criar usermodel a partir do firestore
@@ -71,6 +75,7 @@ class UserModel {
       semestre: data['semestre'],
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
       lastLogin: (data['lastLogin'] as Timestamp?)?.toDate(),
+      comPendencias: data['comPendencias'] ?? false,
     );
   }
 
@@ -100,6 +105,7 @@ class UserModel {
       semestre: data['semestre'],
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
       lastLogin: (data['lastLogin'] as Timestamp?)?.toDate(),
+      comPendencias: data['comPendencias'] ?? false,
     );
   }
 
@@ -118,6 +124,7 @@ class UserModel {
       'numCracha': numCracha, 
       'curso': curso,
       'semestre': semestre,
+      'comPendencias': comPendencias,
       'createdAt': createdAt != null
           ? Timestamp.fromDate(createdAt!)
           : FieldValue.serverTimestamp(),
@@ -169,6 +176,7 @@ class UserModel {
     int? semestre,
     DateTime? createdAt,
     DateTime? lastLogin,
+    bool? comPendencias,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -186,6 +194,7 @@ class UserModel {
       semestre: semestre ?? this.semestre,
       createdAt: createdAt ?? this.createdAt,
       lastLogin: lastLogin ?? this.lastLogin,
+      comPendencias: comPendencias ?? this.comPendencias,
     );
   }
 

@@ -8,19 +8,25 @@ import 'recusa_devolucao_widget.dart';
 class QRStatusWidget extends StatelessWidget {
   final bool isLoading;
   final String? error;
+  final String? errorTitle;
+  final String? errorBody;
   final EmprestimoModel? emprestimo;
   final String qrData;
   final VoidCallback? onRetry;
+  final VoidCallback? onBack;
   final bool isDevolucao;
   final VoidCallback? onRecusaOk;
 
   const QRStatusWidget({
     super.key,
     required this.isLoading,
-    this.error,
+  this.error,
+  this.errorTitle,
+  this.errorBody,
     this.emprestimo,
     required this.qrData,
     this.onRetry,
+    this.onBack,
     this.isDevolucao = false,
     this.onRecusaOk,
   });
@@ -31,7 +37,7 @@ class QRStatusWidget extends StatelessWidget {
       return _buildLoading();
     }
 
-    if (error != null) {
+    if (error != null || errorTitle != null || errorBody != null) {
       return _buildError();
     }
 
@@ -76,24 +82,53 @@ class QRStatusWidget extends StatelessWidget {
   }
 
   Widget _buildError() {
+    final title = errorTitle;
+    final body = errorBody ?? error;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        if (title != null) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                color: AppColors.error,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+
         const Icon(Icons.error_outline, color: AppColors.error, size: 64),
         const SizedBox(height: 20),
-        Text(
-          error!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, color: AppColors.error),
-        ),
-        const SizedBox(height: 20),
+
+        if (body != null) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              body,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18, color: AppColors.primary),
+            ),
+          ),
+          const SizedBox(height: 80),
+        ],
+
         ElevatedButton(
-          onPressed: onRetry,
+          onPressed: onBack ?? onRetry,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
           ),
-          child: const Text('Tentar novamente'),
+          child: Text(
+            onBack != null ? 'Voltar' : 'Tentar novamente',
+            style: const TextStyle(fontSize: 18),
+          ),
         ),
       ],
     );

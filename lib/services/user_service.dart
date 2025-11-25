@@ -35,6 +35,7 @@ class UserService {
         'numCracha': numCracha,
         'curso': curso,
         'semestre': semestre,
+        'comPendencias': false,
         'createdAt': FieldValue.serverTimestamp(),
         'lastLogin': FieldValue.serverTimestamp(),
       });
@@ -53,7 +54,7 @@ class UserService {
       }
       return null;
     } catch (e) {
-      print('❌ Erro ao buscar usuário: $e');
+      print('Erro ao buscar usuário: $e');
       rethrow;
     }
   }
@@ -285,6 +286,50 @@ class UserService {
       return snapshot.docs.isNotEmpty;
     } catch (e) {
       return false;
+    }
+  }
+
+  // verificar e atualizar status de pendencias do usuario
+  Future<void> verificarEAtualizarPendencias(String uid) async {
+    try {
+      // emprestimos ativos
+      final emprestimosQuery = await _db
+          .collection('emprestimos')
+          .where('userId', isEqualTo: uid)
+          .where('confirmado', isEqualTo: true)
+          .where('devolvido', isEqualTo: null)
+          .get();
+
+      bool temPendencias = false;
+
+      for (var doc in emprestimosQuery.docs) {
+        final data = doc.data();
+        final confirmedoEm = (data['confirmedoEm'] as Timestamp?)?.toDate();
+
+        if (confirmedoEm != null) {
+          // calcular prazo limite
+          final prazoLimite = DateTime(
+            confirmedoEm.year,
+            confirmedoEm.month,
+            confirmedoEm.day,
+            22,
+            30,
+          );
+
+          if (DateTime.now().isAfter(prazoLimite)) {
+            temPendencias = true;
+            break;
+          }
+        }
+      }
+
+      // atualizar o campo comPendencias
+      await _db.collection(_collection).doc(uid).update({
+        'comPendencias': temPendencias,
+      });
+    } catch (e) {
+      print('Erro ao verificar pendencias: $e');
+      rethrow;
     }
   }
 }

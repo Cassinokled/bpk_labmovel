@@ -97,7 +97,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       return;
     }
 
-    // Valida se os equipamentos são do bloco do atendente
+    // valida se equipamentos sao do bloco do atendente
     final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
     final blocoAtendente = blocoProvider.blocoSelecionado;
     if (blocoAtendente == null) {
@@ -106,7 +106,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
       return;
     }
 
-    // Verifica cada equipamento do empréstimo
+    // verifica cada equipamento
     List<String> equipamentosInvalidos = [];
     for (final codigo in emprestimo.codigosEquipamentos) {
       final equipamento = await _equipamentoService.buscarPorCodigo(codigo);
@@ -116,13 +116,13 @@ class _QRScannerPageState extends State<QRScannerPage> {
     }
 
     if (equipamentosInvalidos.isNotEmpty) {
-      // Recusa automaticamente o empréstimo com motivo
+      // recusa automaticamente o empréstimo
       await _emprestimoService.recusarEmprestimo(emprestimo.id!, motivo: 'Itens de outros blocos: ${equipamentosInvalidos.join(', ')}');
       
-      // Mostra mensagem para o atendente
+      // mostra mensagem para o atendente
       _showSuccess('Empréstimo recusado devido a itens de outros blocos. O usuário foi notificado.');
       
-      // Volta para a home do atendente
+      // volta home
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           Navigator.of(context).pop();
@@ -182,13 +182,13 @@ class _QRScannerPageState extends State<QRScannerPage> {
     }
 
     if (equipamentosInvalidos.isNotEmpty) {
-      // Marca bloco incorreto para notificar o usuário
+      // marca bloco incorreto para notificar
       await _emprestimoService.atualizarIsBlocoCorreto(emprestimo.id!, false);
       
       // Mostra mensagem para o atendente
       _showSuccess('Bloco incorreto detectado. O usuário foi notificado para tentar no bloco correto.');
       
-      // Volta para a home do atendente
+      // volta home
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           Navigator.of(context).pop();
