@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import '../../utils/app_colors.dart';
 import '../../models/emprestimo_model.dart';
 import '../../models/equipamento.dart';
+import '../../models/user_model.dart';
 import '../../services/equipamento_service.dart';
+import '../../services/user_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_user.dart';
+import '../widgets/navbar_atendente.dart';
 import 'qr_code_devolucao_page.dart';
 
 class EmprestimoDetalhesPage extends StatefulWidget {
   final EmprestimoModel emprestimo;
   final int numero;
+  final bool isAtendente;
 
   const EmprestimoDetalhesPage({
     super.key,
     required this.emprestimo,
     required this.numero,
+    this.isAtendente = false,
   });
 
   @override
@@ -23,8 +28,11 @@ class EmprestimoDetalhesPage extends StatefulWidget {
 
 class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
   final EquipamentoService _equipamentoService = EquipamentoService();
+  final UserService _userService = UserService();
   List<Equipamento?> _equipamentos = [];
   bool _isLoading = true;
+  UserModel? _usuario;
+  UserModel? _atendente;
 
   @override
   void initState() {
@@ -40,8 +48,28 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
         ),
       );
 
+      // busca usuario
+      UserModel? usuario;
+      try {
+        usuario = await _userService.getUser(widget.emprestimo.userId);
+      } catch (e) {
+        // ignore
+      }
+
+      // busca atendente
+      UserModel? atendente;
+      if (widget.emprestimo.atendenteEmprestimoId != null) {
+        try {
+          atendente = await _userService.getUser(widget.emprestimo.atendenteEmprestimoId!);
+        } catch (e) {
+          // ignore
+        }
+      }
+
       setState(() {
         _equipamentos = equipamentos;
+        _usuario = usuario;
+        _atendente = atendente;
         _isLoading = false;
       });
     } catch (e) {
@@ -108,7 +136,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBarUser(),
+      bottomNavigationBar: widget.isAtendente ? const NavBarAtendente() : const NavBarUser(),
     );
   }
 
@@ -164,8 +192,8 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
           }),
           const SizedBox(height: 24),
 
-          // botao de gerar qr para devolucao
-          _buildDevolucaoButton(),
+          // botao de gerar qr para devolucao (apenas para usuario)
+          if (!widget.isAtendente) _buildDevolucaoButton(),
           const SizedBox(height: 100),
         ],
       ),
@@ -193,6 +221,25 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
       ),
       child: Column(
         children: [
+          // quem esta com os equipamentos e quem realizou (so atendentes conseguem ver)
+          if (widget.isAtendente) ...[
+            if (_usuario != null)
+              _buildInfoRow(
+                Icons.person,
+                'Equipamentos com',
+                _usuario!.nomeCompleto,
+              ),
+            if (_usuario != null) const SizedBox(height: 12),
+
+            if (_atendente != null)
+              _buildInfoRow(
+                Icons.admin_panel_settings,
+                'Empréstimo realizado por',
+                _atendente!.nomeCompleto,
+              ),
+            if (_atendente != null) const SizedBox(height: 12),
+          ],
+
           _buildInfoRow(
             Icons.calendar_today,
             'Emprestado em',

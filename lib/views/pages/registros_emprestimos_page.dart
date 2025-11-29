@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_atendente.dart';
+import '../widgets/emprestimos_lista_bloco.dart';
 import 'atendente_page.dart';
 
 class RegistrosEmprestimosPage extends StatelessWidget {
@@ -18,8 +18,7 @@ class RegistrosEmprestimosPage extends StatelessWidget {
         children: [
           const SizedBox(height: 60),
           
-          // header seta e logo
-          Row(
+                    Row(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 16.0),
@@ -58,35 +57,18 @@ class RegistrosEmprestimosPage extends StatelessWidget {
             ),
           ),
 
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/pics/home-none.svg',
-                    width: 120,
-                    height: 120,
-                    fit: BoxFit.contain,
-                    color: AppColors.primary,
-                  ),                
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      'Parece que ainda não tem\nnenhum item aqui...',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppColors.primaryMedium,
-                        fontFamily: 'Avignon',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  
+          const SizedBox(height: 16),
+          const Divider(
+            color: Color.fromARGB(255, 86, 22, 36),
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          const SizedBox(height: 8),
 
-                ],
-              ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: EmprestimosListaBloco(bloco: nomeBloco),
             ),
           ),
         ],
