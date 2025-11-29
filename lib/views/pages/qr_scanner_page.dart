@@ -133,10 +133,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
 
     // navega pra pagina de confirmacao
     if (mounted) {
+      final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
+      final blocoAtendente = blocoProvider.blocoSelecionado;
+
       final result = await Navigator.push<bool>(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmarEmprestimoPage(emprestimo: emprestimo),
+          builder: (context) => ConfirmarEmprestimoPage(
+            emprestimo: emprestimo,
+            nomeBloco: blocoAtendente?.nome,
+          ),
         ),
       );
 
@@ -199,10 +205,16 @@ class _QRScannerPageState extends State<QRScannerPage> {
 
     // navega pra pagina de confirmacao de devolucao
     if (mounted) {
+      final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
+      final blocoAtendente = blocoProvider.blocoSelecionado;
+
       final result = await Navigator.push<bool>(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmarDevolucaoPage(emprestimo: emprestimo),
+          builder: (context) => ConfirmarDevolucaoPage(
+            emprestimo: emprestimo,
+            nomeBloco: blocoAtendente?.nome,
+          ),
         ),
       );
 

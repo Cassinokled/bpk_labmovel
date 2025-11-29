@@ -10,12 +10,18 @@ import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_info_card.dart';
 import '../widgets/emprestimo/equipamento_card_widget.dart';
 import 'atendente_home_page.dart';
+import 'registros_emprestimos_page.dart';
 
 // pagina de detalhes do emprestimo e confirmar devolucao
 class ConfirmarDevolucaoPage extends StatefulWidget {
   final EmprestimoModel emprestimo;
+  final String? nomeBloco;
 
-  const ConfirmarDevolucaoPage({super.key, required this.emprestimo});
+  const ConfirmarDevolucaoPage({
+    super.key,
+    required this.emprestimo,
+    this.nomeBloco,
+  });
 
   @override
   State<ConfirmarDevolucaoPage> createState() => _ConfirmarDevolucaoPageState();
@@ -101,12 +107,22 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
 
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => AtendenteHomePage(user: _usuario),
-            ),
-            (route) => false,
-          );
+          if (widget.nomeBloco != null) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegistrosEmprestimosPage(nomeBloco: widget.nomeBloco!),
+                settings: RouteSettings(arguments: {'nomeBloco': widget.nomeBloco}),
+              ),
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => AtendenteHomePage(user: _usuario),
+              ),
+              (route) => false,
+            );
+          }
         }
       }
     } catch (e) {

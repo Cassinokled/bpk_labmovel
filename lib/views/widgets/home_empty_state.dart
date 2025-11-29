@@ -11,12 +11,15 @@ class HomeEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/pics/home-none.svg',
-            width: 120,
-            height: 120,
-            fit: BoxFit.contain,
-            color: AppColors.primary,
+          Padding(
+            padding: const EdgeInsets.only(top: 90),
+            child: SvgPicture.asset(
+              'assets/pics/home-none.svg',
+              width: 100,
+              height: 100,
+              fit: BoxFit.contain,
+              color: AppColors.primary,
+            ),
           ),
           const SizedBox(height: 20),
           const Text(

@@ -17,6 +17,7 @@ class EmprestimoModel {
   final DateTime? devolvidoEm; // data de devolucao
   final String? motivoRecusa; // motivo da recusa, se aplicavel
   final bool? isBlocoCorreto; // se o bloco esta correto para devolucao
+  final String? bloco; // bloco do emprestimo
 
   EmprestimoModel({
     this.id,
@@ -32,6 +33,7 @@ class EmprestimoModel {
     this.devolvidoEm,
     this.motivoRecusa,
     this.isBlocoCorreto,
+    this.bloco,
   }) : criadoEm = criadoEm ?? BrasiliaTime.now();
   
   // helpers verificar status
@@ -90,6 +92,7 @@ class EmprestimoModel {
           : null,
       'motivoRecusa': motivoRecusa,
       'isBlocoCorreto': isBlocoCorreto,
+      'bloco': bloco,
     };
   }
 
@@ -115,6 +118,7 @@ class EmprestimoModel {
       devolvidoEm: (json['devolvidoEm'] as Timestamp?)?.toDate(),
       motivoRecusa: json['motivoRecusa'],
       isBlocoCorreto: json['isBlocoCorreto'],
+      bloco: json['bloco'],
     );
   }
 
@@ -143,6 +147,7 @@ class EmprestimoModel {
     DateTime? devolvidoEm,
     String? motivoRecusa,
     bool? isBlocoCorreto,
+    String? bloco,
   }) {
     return EmprestimoModel(
       id: id ?? this.id,
@@ -159,6 +164,7 @@ class EmprestimoModel {
       devolvidoEm: devolvidoEm ?? this.devolvidoEm,
       motivoRecusa: motivoRecusa ?? this.motivoRecusa,
       isBlocoCorreto: isBlocoCorreto ?? this.isBlocoCorreto,
+      bloco: bloco ?? this.bloco,
     );
   }
 

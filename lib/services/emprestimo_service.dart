@@ -46,11 +46,19 @@ class EmprestimoService {
         throw Exception('Empréstimo não encontrado');
       }
 
+      // pega o bloco do emprestimo do equipamento para registro no banco
+      String? bloco;
+      if (emprestimo.codigosEquipamentos.isNotEmpty) {
+        final equipamento = await _equipamentoService.buscarPorCodigo(emprestimo.codigosEquipamentos.first);
+        bloco = equipamento?.bloco;
+      }
+
       // atualiza o status do emprestimo
       await _firestore.collection(_collection).doc(id).update({
         'confirmado': true,
         'confirmedoEm': Timestamp.fromDate(BrasiliaTime.now()),
         'atendenteEmprestimoId': atendenteId,
+        'bloco': bloco,
       });
 
       // atualiza o estado de cada equipamento emprestado
@@ -164,6 +172,24 @@ class EmprestimoService {
           // ordena por data
           emprestimos.sort((a, b) => b.criadoEm.compareTo(a.criadoEm));
 
+          return emprestimos;
+        });
+  }
+
+  // monitora emprestimos ativos do bloco que o atendente esta
+  Stream<List<EmprestimoModel>> monitorarEmprestimosAtivosPorBloco(String bloco) {
+    return _firestore
+        .collection(_collection)
+        .where('bloco', isEqualTo: bloco)
+        .where('confirmado', isEqualTo: true)
+        .where('devolvido', isEqualTo: null)
+        .snapshots()
+        .map((snapshot) {
+          final emprestimos = snapshot.docs
+              .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+              .where((emprestimo) => emprestimo.isAtivo) // filtro extra
+              .toList();
+          emprestimos.sort((a, b) => b.criadoEm.compareTo(a.criadoEm));
           return emprestimos;
         });
   }
