@@ -277,4 +277,184 @@ class EmprestimoService {
           return emprestimos;
         });
   }
+
+//contadores e listadores -_- por bloco(emprestimos - confirmados, atrasados, devolvidos, atrasados devolvidos hoje) - ***ler bem para nao usar o errado*** <--- e raro mas acontece sempre
+
+  // conta emprestimos realizados hoje no bloco (confirmados)
+  Future<int> contarEmprestimosRealizadosHoje(String bloco) async {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('confirmado', isEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) =>
+              emprestimo.criadoEm.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+              emprestimo.criadoEm.isBefore(fimDia))
+          .toList();
+
+      return emprestimos.length;
+    } catch (e) {
+      throw Exception('Erro ao contar empréstimos realizados hoje: $e');
+    }
+  }
+
+  // conta emprestimos devolvidos hoje no bloco
+  Future<int> contarEmprestimosDevolvidosHoje(String bloco) async {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('devolvido', isEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) =>
+              emprestimo.devolvidoEm != null &&
+              emprestimo.devolvidoEm!.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+              emprestimo.devolvidoEm!.isBefore(fimDia) &&
+              emprestimo.atrasado == false)
+          .toList();
+
+      return emprestimos.length;
+    } catch (e) {
+      throw Exception('Erro ao contar empréstimos devolvidos hoje: $e');
+    }
+  }
+
+  // conta emprestimos atrasados no bloco (ativos e atrasados)
+  Future<int> contarEmprestimosAtrasados(String bloco) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('confirmado', isEqualTo: true)
+          .where('devolvido', isNotEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) => emprestimo.isAtrasadoAtual)
+          .toList();
+
+      return emprestimos.length;
+    } catch (e) {
+      throw Exception('Erro ao contar empréstimos atrasados: $e');
+    }
+  }
+
+  // lista emprestimos atrasados devolvidos hoje no bloco
+  Future<List<EmprestimoModel>> listarEmprestimosAtrasadosDevolvidosHoje(String bloco) async {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('devolvido', isEqualTo: true)
+          .where('atrasado', isEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) =>
+              emprestimo.devolvidoEm != null &&
+              emprestimo.devolvidoEm!.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+              emprestimo.devolvidoEm!.isBefore(fimDia))
+          .toList();
+
+      return emprestimos;
+    } catch (e) {
+      throw Exception('Erro ao listar empréstimos atrasados devolvidos hoje: $e');
+    }
+  }
+
+  // lista emprestimos atrasados ativos no bloco
+  Future<List<EmprestimoModel>> listarEmprestimosAtrasadosAtivos(String bloco) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('confirmado', isEqualTo: true)
+          .where('devolvido', isNotEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) => emprestimo.isAtrasadoAtual)
+          .toList();
+
+      return emprestimos;
+    } catch (e) {
+      throw Exception('Erro ao listar empréstimos atrasados ativos: $e');
+    }
+  }
+
+  // lista emprestimos realizados hoje no bloco (total - mesmo os atrasado)
+  Future<List<EmprestimoModel>> listarEmprestimosRealizadosHoje(String bloco) async {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('confirmado', isEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) =>
+              emprestimo.criadoEm.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+              emprestimo.criadoEm.isBefore(fimDia))
+          .toList();
+
+      return emprestimos;
+    } catch (e) {
+      throw Exception('Erro ao listar empréstimos realizados hoje: $e');
+    }
+  }
+
+  // lista emprestimos devolvidos hoje no bloco (apenas os no prazo correto '-')
+  Future<List<EmprestimoModel>> listarEmprestimosDevolvidosHoje(String bloco) async {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    try {
+      final querySnapshot = await _firestore
+          .collection(_collection)
+          .where('bloco', isEqualTo: bloco)
+          .where('devolvido', isEqualTo: true)
+          .get();
+
+      final emprestimos = querySnapshot.docs
+          .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+          .where((emprestimo) =>
+              emprestimo.devolvidoEm != null &&
+              emprestimo.devolvidoEm!.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+              emprestimo.devolvidoEm!.isBefore(fimDia) &&
+              emprestimo.atrasado == false)
+          .toList();
+
+      return emprestimos;
+    } catch (e) {
+      throw Exception('Erro ao listar empréstimos devolvidos hoje: $e');
+    }
+  }
 }
