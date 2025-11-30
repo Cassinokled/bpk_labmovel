@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../models/user_model.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_atendente.dart';
 import 'atendente_user_select_page.dart';
@@ -52,7 +53,7 @@ class AtendenteHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),

@@ -52,7 +52,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),

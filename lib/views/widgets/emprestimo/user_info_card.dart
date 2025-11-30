@@ -43,7 +43,7 @@ class UserInfoCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Colors.grey,
+              color: AppColors.grey,
             ),
             textAlign: TextAlign.center,
           ),

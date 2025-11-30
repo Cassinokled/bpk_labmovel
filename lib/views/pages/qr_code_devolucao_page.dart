@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import '../../models/emprestimo_model.dart';
 import '../../services/emprestimo_service.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/circular_close_button.dart';
 import '../widgets/qr_code/qr_status_widget.dart';
@@ -84,7 +85,7 @@ class _QRCodeDevolucaoPageState extends State<QRCodeDevolucaoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),

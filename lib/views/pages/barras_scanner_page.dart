@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/barcode_display.dart';
 import '../widgets/navbar_user.dart';
@@ -42,7 +43,7 @@ class _BarcodeScannerPageState extends State<BarrasScannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),

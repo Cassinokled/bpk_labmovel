@@ -7,6 +7,7 @@ import '../../services/bloco_service.dart';
 import '../../models/user_model.dart';
 import '../../models/bloco_model.dart';
 import '../../providers/bloco_provider.dart';
+import '../../utils/app_colors.dart';
 import 'package:provider/provider.dart';
 
 class AtendentePage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _AtendentePageState extends State<AtendentePage> {
     final bool showBackButton = !_isLoading && _userData != null && _userData!.isUser && _userData!.isAtendente;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),
@@ -105,9 +106,9 @@ class _AtendentePageState extends State<AtendentePage> {
                     
                     const Text(
                       'Escolha o bloco que\nestara atendendo',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
-                        color: Color(0x80561624),
+                        color: AppColors.primarySemiTransparent,
                         fontFamily: 'Avignon',
                         fontWeight: FontWeight.w600,
                       ),

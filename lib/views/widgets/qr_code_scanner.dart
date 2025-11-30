@@ -77,7 +77,7 @@ class ScannerOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white
+      ..color = AppColors.white
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
 

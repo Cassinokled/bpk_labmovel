@@ -16,6 +16,7 @@ class AppColors {
   static const Color primaryLight = Color.fromARGB(26, 86, 22, 36); // 0.1 opacity
   static const Color primaryMedium = Color.fromARGB(128, 86, 22, 36); // 0.5 opacity
   static const Color primaryLightBackground = Color(0xFFE8D5D8); // light background for cards
+  static const Color primarySemiTransparent = Color(0x80561624); // 0.5 opacity
 
   // cores de status com opacidade
   static const Color successLight = Color.fromARGB(26, 76, 175, 80); // green 0.1
@@ -34,6 +35,9 @@ class AppColors {
   static const Color shadow = Color.fromARGB(13, 0, 0, 0); // black 0.05
   static const Color shadowDark = Color.fromARGB(128, 0, 0, 0); // black 0.5
   static const Color transparent = Colors.transparent;
+  static const Color grey = Colors.grey;
+  static const Color white = Colors.white;
+  static const Color shadowMedium = Color.fromARGB(38, 0, 0, 0); // black 0.15
 
   // logo path
   static const String logoPath = 'assets/pics/logos/logo_bpk.png';

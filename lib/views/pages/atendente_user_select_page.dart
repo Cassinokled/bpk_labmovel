@@ -91,7 +91,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 60),
@@ -99,7 +99,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
             children: [
               const SizedBox(width: 16),
               IconButton(
-                icon: const Icon(Icons.arrow_back, color: Color(0xFFF8F9F5)),
+                icon: const Icon(Icons.arrow_back, color: AppColors.textWhite),
                 onPressed: null, // nao faz nada
               ),
               Expanded(child: Center(child: AppLogo())),

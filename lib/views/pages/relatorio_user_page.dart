@@ -58,7 +58,7 @@ class _RelatorioUserPageState extends State<RelatorioUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [

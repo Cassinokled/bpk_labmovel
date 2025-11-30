@@ -6,6 +6,7 @@ import '../../services/emprestimo_service.dart';
 import '../../services/user_service.dart';
 import '../../services/equipamento_service.dart';
 import '../../services/auth_service.dart';
+import '../../utils/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/emprestimo/user_info_card.dart';
 import '../widgets/emprestimo/equipamento_card_widget.dart';
@@ -151,7 +152,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [

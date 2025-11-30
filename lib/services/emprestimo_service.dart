@@ -256,4 +256,25 @@ class EmprestimoService {
       throw Exception('Erro ao limpar empréstimos antigos: $e');
     }
   }
+
+  // mostra apenas emprestimos do dia
+  Stream<List<EmprestimoModel>> monitorarTodosEmprestimosPorBloco(String bloco) {
+    final hoje = BrasiliaTime.now();
+    final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    return _firestore
+        .collection(_collection)
+        .where('bloco', isEqualTo: bloco)
+        .where('criadoEm', isGreaterThanOrEqualTo: Timestamp.fromDate(inicioDia))
+        .where('criadoEm', isLessThan: Timestamp.fromDate(fimDia))
+        .orderBy('criadoEm', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          final emprestimos = snapshot.docs
+              .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+              .toList();
+          return emprestimos;
+        });
+  }
 }

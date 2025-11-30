@@ -21,7 +21,7 @@ class QRCodeDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: borderColor, width: borderWidth),
       ),
@@ -29,7 +29,7 @@ class QRCodeDisplay extends StatelessWidget {
         data: qrData,
         version: QrVersions.auto,
         size: size,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
       ),
     );
   }

@@ -33,6 +33,7 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
   bool _isLoading = true;
   UserModel? _usuario;
   UserModel? _atendente;
+  UserModel? _atendenteDevolucao;
 
   @override
   void initState() {
@@ -66,10 +67,21 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
         }
       }
 
+      // busca atendente de devolucao
+      UserModel? atendenteDevolucao;
+      if (widget.emprestimo.atendenteDevolucaoId != null) {
+        try {
+          atendenteDevolucao = await _userService.getUser(widget.emprestimo.atendenteDevolucaoId!);
+        } catch (e) {
+          // ignore
+        }
+      }
+
       setState(() {
         _equipamentos = equipamentos;
         _usuario = usuario;
         _atendente = atendente;
+        _atendenteDevolucao = atendenteDevolucao;
         _isLoading = false;
       });
     } catch (e) {
@@ -141,22 +153,48 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
   }
 
   Widget _buildStatusBadge() {
+    Color backgroundColor;
+    Color borderColor;
+    Color textColor;
+    IconData icon;
+    String statusText;
+
+    if (widget.emprestimo.isDevolvido) {
+      backgroundColor = widget.emprestimo.atrasado ? AppColors.errorLight : AppColors.successLight;
+      borderColor = widget.emprestimo.atrasado ? AppColors.error : AppColors.success;
+      textColor = widget.emprestimo.atrasado ? AppColors.error : AppColors.success;
+      icon = widget.emprestimo.atrasado ? Icons.warning : Icons.check_circle;
+      statusText = widget.emprestimo.atrasado ? 'Devolvido Atrasado' : 'Devolvido';
+    } else if (widget.emprestimo.isRecusado) {
+      backgroundColor = AppColors.errorLight;
+      borderColor = AppColors.error;
+      textColor = AppColors.error;
+      icon = Icons.cancel;
+      statusText = 'Recusado';
+    } else {
+      backgroundColor = AppColors.successLight;
+      borderColor = AppColors.success;
+      textColor = AppColors.success;
+      icon = Icons.check_circle;
+      statusText = 'Ativo';
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.successLight,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.success, width: 1),
+        border: Border.all(color: borderColor, width: 1),
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check_circle, color: AppColors.success, size: 16),
-          SizedBox(width: 8),
+          Icon(icon, color: textColor, size: 16),
+          const SizedBox(width: 8),
           Text(
-            'Ativo',
+            statusText,
             style: TextStyle(
-              color: AppColors.success,
+              color: textColor,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -238,6 +276,14 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
                 _atendente!.nomeCompleto,
               ),
             if (_atendente != null) const SizedBox(height: 12),
+
+            if (_atendenteDevolucao != null)
+              _buildInfoRow(
+                Icons.admin_panel_settings,
+                'Devolução realizada por',
+                _atendenteDevolucao!.nomeCompleto,
+              ),
+            if (_atendenteDevolucao != null) const SizedBox(height: 12),
           ],
 
           _buildInfoRow(
@@ -253,66 +299,76 @@ class _EmprestimoDetalhesPageState extends State<EmprestimoDetalhesPage> {
               _formatarDataCompleta(widget.emprestimo.confirmedoEm!),
             ),
           ],
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: isAtrasado
-                  ? AppColors.errorLight
-                  : AppColors.warningLight,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: isAtrasado ? AppColors.error : AppColors.warning,
-                width: 1,
-              ),
+          if (widget.emprestimo.devolvidoEm != null) ...[
+            const SizedBox(height: 12),
+            _buildInfoRow(
+              Icons.undo,
+              'Devolvido em',
+              _formatarDataCompleta(widget.emprestimo.devolvidoEm!),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  isAtrasado ? Icons.warning : Icons.schedule,
+          ],
+          if (!widget.emprestimo.isDevolvido && !widget.emprestimo.isRecusado) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isAtrasado
+                    ? AppColors.errorLight
+                    : AppColors.warningLight,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
                   color: isAtrasado ? AppColors.error : AppColors.warning,
-                  size: 24,
+                  width: 1,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isAtrasado ? 'PRAZO VENCIDO!' : 'Prazo de devolução',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: isAtrasado ? AppColors.error : AppColors.warning,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Até ${prazo.day.toString().padLeft(2, '0')}/${prazo.month.toString().padLeft(2, '0')} às 22:30',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isAtrasado ? AppColors.error : AppColors.warning,
-                        ),
-                      ),
-                      if (!isAtrasado) ...[
-                        const SizedBox(height: 2),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    isAtrasado ? Icons.warning : Icons.schedule,
+                    color: isAtrasado ? AppColors.error : AppColors.warning,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          _formatarTempoRestante(
-                            widget.emprestimo.tempoRestante,
-                          ),
+                          isAtrasado ? 'PRAZO VENCIDO!' : 'Prazo de devolução',
                           style: TextStyle(
                             fontSize: 12,
-                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            color: isAtrasado ? AppColors.error : AppColors.warning,
                           ),
                         ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Até ${prazo.day.toString().padLeft(2, '0')}/${prazo.month.toString().padLeft(2, '0')} às 22:30',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isAtrasado ? AppColors.error : AppColors.warning,
+                          ),
+                        ),
+                        if (!isAtrasado) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            _formatarTempoRestante(
+                              widget.emprestimo.tempoRestante,
+                            ),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

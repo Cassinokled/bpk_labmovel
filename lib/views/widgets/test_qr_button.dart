@@ -34,7 +34,7 @@ class TestQRButton extends StatelessWidget {
       label: const Text('Teste: Gerar QR Code (5815)'),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.textWhite,
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
           vertical: 16,

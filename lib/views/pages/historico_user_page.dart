@@ -178,7 +178,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                         icon: const Icon(Icons.clear),
                         label: const Text('Limpar Filtros'),
                         style: TextButton.styleFrom(
-                          foregroundColor: Colors.grey[600],
+                          foregroundColor: AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -261,7 +261,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
             Icon(
               Icons.history,
               size: 80,
-              color: Colors.grey[400],
+              color: AppColors.divider,
             ),
             const SizedBox(height: 16),
             Text(
@@ -304,7 +304,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
             Icon(
               Icons.filter_list_off,
               size: 80,
-              color: Colors.grey[400],
+              color: AppColors.divider,
             ),
             const SizedBox(height: 16),
             Text(
@@ -434,7 +434,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
     } else if (emprestimo.isAtivo) {
       return AppColors.primary;
     } else {
-      return Colors.grey;
+      return AppColors.grey;
     }
   }
 
@@ -455,7 +455,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
       color = AppColors.primary;
       text = 'Ativo';
     } else {
-      color = Colors.grey;
+      color = AppColors.grey;
       text = '?';
     }
 
@@ -640,7 +640,7 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
       text = 'Ativo';
       icon = Icons.check_circle;
     } else {
-      color = Colors.grey;
+      color = AppColors.grey;
       text = 'Desconhecido';
       icon = Icons.help;
     }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import '../../utils/app_colors.dart';
+import '../../providers/bloco_provider.dart';
 import '../pages/perfil_atendente_page.dart';
 import '../pages/qr_scanner_page.dart';
 import '../pages/historico_atendente_page.dart';
@@ -61,37 +63,23 @@ class _NavBarAtendenteState extends State<NavBarAtendente> {
       if (widget.selectedIndex == 0) {
         return; // ja esta na home, nao faz nada
       }
-      // pega o nome do bloco da rota atual se disponivel
-      final route = ModalRoute.of(context);
-      String? nomeBloco;
-      if (route?.settings.arguments is Map) {
-        nomeBloco = (route!.settings.arguments as Map)['nomeBloco'] as String?;
-      }
       
-      // se nao tiver o bloco tenta pegar do contexto navegando ate encontrar
-      if (nomeBloco == null) {
-        // volta ate encontrar a RegistrosEmprestimosPage ou primeira rota
-        Navigator.of(context).popUntil((route) {
-          // verifica se encontrou a pagina de registros
-          if (route.settings.arguments is Map) {
-            final args = route.settings.arguments as Map;
-            if (args.containsKey('nomeBloco')) {
-              nomeBloco = args['nomeBloco'] as String?;
-              return true;
-            }
-          }
-          // se eh a primeira rota ou pagina de registros para
-          return route.isFirst || route.settings.name == '/registros';
-        });
-      } else {
-        // se temos o bloco navega para home
+      // pega o bloco selecionado do provider
+      final blocoProvider = Provider.of<BlocoProvider>(context, listen: false);
+      final blocoSelecionado = blocoProvider.blocoSelecionado;
+      
+      if (blocoSelecionado != null) {
+        // navega para a home do bloco selecionado
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => RegistrosEmprestimosPage(nomeBloco: nomeBloco!),
-            settings: RouteSettings(arguments: {'nomeBloco': nomeBloco}),
+            builder: (context) => RegistrosEmprestimosPage(nomeBloco: blocoSelecionado.nome),
+            settings: RouteSettings(arguments: {'nomeBloco': blocoSelecionado.nome}),
           ),
           (route) => route.isFirst,
         );
+      } else {
+        // se nao tem bloco selecionado, volta para selecao de bloco
+        Navigator.of(context).popUntil((route) => route.isFirst);
       }
       return;
     }

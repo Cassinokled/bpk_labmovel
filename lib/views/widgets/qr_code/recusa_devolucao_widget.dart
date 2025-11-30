@@ -54,7 +54,7 @@ class RecusaDevolucaoWidget extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.textWhite,
                 padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 12),
               ),
               child: const Text(

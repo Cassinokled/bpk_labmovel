@@ -175,12 +175,22 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
 
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => AtendenteHomePage(user: _usuario),
-            ),
-            (route) => false,
-          );
+          if (widget.nomeBloco != null) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => RegistrosEmprestimosPage(nomeBloco: widget.nomeBloco!),
+                settings: RouteSettings(arguments: {'nomeBloco': widget.nomeBloco}),
+              ),
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => AtendenteHomePage(user: _usuario),
+              ),
+              (route) => false,
+            );
+          }
         }
       }
     } catch (e) {
@@ -193,12 +203,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error_outline, color: Colors.white),
+                const Icon(Icons.error_outline, color: AppColors.textWhite),
                 const SizedBox(width: 12),
                 Expanded(child: Text('Erro ao recusar: $e')),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: const Duration(seconds: 3),
           ),
         );
@@ -209,7 +219,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
