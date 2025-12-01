@@ -64,13 +64,13 @@ class AuthChecker extends StatelessWidget {
               }
 
               // verifica tipo de usuario e redireciona
-              // se for apenas atendente (sem ser user), vai direto para seleção de bloco
-              if (user.isAtendente && !user.isUser) {
+              // se for apenas atendente ou admin (sem ser user), vai direto para seleção de bloco
+              if ((user.isAtendente || user.isAdmin) && !user.isUser) {
                 return const AtendentePage();
               }
               
-              // se for atendente E user, vai pra página de seleção de tipo
-              if (user.isAtendente && user.isUser) {
+              // se for atendente ou admin E user, vai pra página de seleção de tipo
+              if ((user.isAtendente || user.isAdmin) && user.isUser) {
                 return const AtendenteUserSelectPage();
               }
 

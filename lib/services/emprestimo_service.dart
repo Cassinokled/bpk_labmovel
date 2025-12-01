@@ -278,6 +278,41 @@ class EmprestimoService {
         });
   }
 
+  // monitora todos os emprestimos por bloco sem filtro de data (para admin)
+  Stream<List<EmprestimoModel>> monitorarTodosEmprestimosPorBlocoSemFiltro(String bloco) {
+    return _firestore
+        .collection(_collection)
+        .where('bloco', isEqualTo: bloco)
+        .orderBy('criadoEm', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          final emprestimos = snapshot.docs
+              .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+              .toList();
+          return emprestimos;
+        });
+  }
+
+  // monitora emprestimos por bloco e dia especifico
+  Stream<List<EmprestimoModel>> monitorarEmprestimosPorBlocoEDia(String bloco, DateTime dia) {
+    final inicioDia = DateTime(dia.year, dia.month, dia.day);
+    final fimDia = inicioDia.add(const Duration(days: 1));
+
+    return _firestore
+        .collection(_collection)
+        .where('bloco', isEqualTo: bloco)
+        .where('criadoEm', isGreaterThanOrEqualTo: Timestamp.fromDate(inicioDia))
+        .where('criadoEm', isLessThan: Timestamp.fromDate(fimDia))
+        .orderBy('criadoEm', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          final emprestimos = snapshot.docs
+              .map((doc) => EmprestimoModel.fromJson(doc.data(), docId: doc.id))
+              .toList();
+          return emprestimos;
+        });
+  }
+
 //contadores e listadores -_- por bloco(emprestimos - confirmados, atrasados, devolvidos, atrasados devolvidos hoje) - ***ler bem para nao usar o errado*** <--- e raro mas acontece sempre
 
   // conta emprestimos realizados hoje no bloco (confirmados)

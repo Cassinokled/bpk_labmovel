@@ -8,13 +8,20 @@ import '../pages/emprestimo_detalhes_page.dart';
 
 class HistoricoEmprestimosListaBloco extends StatelessWidget {
   final String bloco;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
-  const HistoricoEmprestimosListaBloco({super.key, required this.bloco});
+  const HistoricoEmprestimosListaBloco({
+    super.key,
+    required this.bloco,
+    this.startDate,
+    this.endDate,
+  });
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<EmprestimoModel>>(
-      stream: EmprestimoService().monitorarTodosEmprestimosPorBloco(bloco),
+      stream: EmprestimoService().monitorarTodosEmprestimosPorBlocoSemFiltro(bloco),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -50,7 +57,15 @@ class HistoricoEmprestimosListaBloco extends StatelessWidget {
 
         final emprestimos = snapshot.data ?? [];
 
-        if (emprestimos.isEmpty) {
+        // filtra por data se startDate ou endDate estiver definido
+        final emprestimosFiltrados = emprestimos.where((emprestimo) {
+          final date = emprestimo.criadoEm;
+          if (startDate != null && date.isBefore(startDate!)) return false;
+          if (endDate != null && date.isAfter(endDate!.add(const Duration(days: 1)))) return false;
+          return true;
+        }).toList();
+
+        if (emprestimosFiltrados.isEmpty) {
           return Padding(
             padding: const EdgeInsets.only(top: 100),
             child: Center(
@@ -84,9 +99,9 @@ class HistoricoEmprestimosListaBloco extends StatelessWidget {
         }
 
         // agrupa emprestimos por status ('-')
-        final ativos = emprestimos.where((e) => e.isAtivo).toList();
-        final devolvidos = emprestimos.where((e) => e.isDevolvido).toList();
-        final recusados = emprestimos.where((e) => e.isRecusado).toList();
+        final ativos = emprestimosFiltrados.where((e) => e.isAtivo).toList();
+        final devolvidos = emprestimosFiltrados.where((e) => e.isDevolvido).toList();
+        final recusados = emprestimosFiltrados.where((e) => e.isRecusado).toList();
 
         return SingleChildScrollView(
           child: Column(
