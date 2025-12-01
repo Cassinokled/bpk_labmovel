@@ -101,4 +101,17 @@ class SolicitacaoRelatorioService {
       throw Exception('Erro ao atualizar comprovante: $e');
     }
   }
+
+  Future<void> rejeitarSolicitacao(String id, String motivo, String atendenteId) async {
+    try {
+      await _firestore.collection(_collection).doc(id).update({
+        'aprovado': false,
+        'motivoRejeicao': motivo,
+        'aprovadoEm': Timestamp.now(),
+        'atendenteId': atendenteId,
+      });
+    } catch (e) {
+      throw Exception('Erro ao rejeitar solicitação: $e');
+    }
+  }
 }

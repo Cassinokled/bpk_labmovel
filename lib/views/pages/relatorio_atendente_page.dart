@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import '../widgets/relatorio_card_widget.dart';
 import '../../services/relatorio_data_service.dart';
 import '../../services/relatorio_pdf_service.dart';
+import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
+import 'relatorios_protocolos_admin_page.dart';
 
 class RelatorioAtendentePage extends StatefulWidget {
   const RelatorioAtendentePage({super.key});
@@ -21,6 +24,9 @@ class _RelatorioAtendentePageState extends State<RelatorioAtendentePage> {
   final EmprestimoService _emprestimoService = EmprestimoService();
   final RelatorioDataService _relatorioDataService = RelatorioDataService();
   final RelatorioPdfService _relatorioPdfService = RelatorioPdfService();
+  final AuthService _authService = AuthService();
+  final UserService _userService = UserService();
+
   int _emprestimosRealizados = 0;
   int _emprestimosDevolvidos = 0;
   int _emprestimosAtrasadosDevolvidos = 0;
@@ -34,7 +40,31 @@ class _RelatorioAtendentePageState extends State<RelatorioAtendentePage> {
   @override
   void initState() {
     super.initState();
-    _carregarRelatorio();
+    _checkUserAndLoad();
+  }
+
+  Future<void> _checkUserAndLoad() async {
+    try {
+      final user = _authService.currentUser;
+      if (user != null) {
+        final userData = await _userService.getUser(user.uid);
+
+        if (userData?.isAdmin ?? false) {
+          if (mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const RelatoriosProtocolosAdminPage(),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      _carregarRelatorio();
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
   }
 
   Future<void> _carregarRelatorio() async {

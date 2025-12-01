@@ -22,6 +22,8 @@ class RelatorioPdfService {
     required List<EmprestimoModel> emprestimosAtrasadosLista,
     required Map<String, String> userNames,
     required Map<String, String> equipamentosFormatted,
+    String? tituloRelatorio, // opicional esse
+    String? tipoPeriodo, // opicional tambem
   }) async {
     final pdf = pw.Document();
 
@@ -39,6 +41,8 @@ class RelatorioPdfService {
           emprestimosAtrasadosLista: emprestimosAtrasadosLista,
           userNames: userNames,
           equipamentosFormatted: equipamentosFormatted,
+          tituloRelatorio: tituloRelatorio,
+          tipoPeriodo: tipoPeriodo,
         ),
       ),
     );
@@ -60,11 +64,13 @@ class RelatorioPdfService {
     required List<EmprestimoModel> emprestimosAtrasadosLista,
     required Map<String, String> userNames,
     required Map<String, String> equipamentosFormatted,
+    String? tituloRelatorio,
+    String? tipoPeriodo,
   }) {
     List<pw.Widget> widgets = [];
 
     // cabecalho
-    widgets.add(_buildHeader(bloco));
+    widgets.add(_buildHeader(bloco, tituloRelatorio, tipoPeriodo));
 
     // resumo
     widgets.add(_buildResumo(
@@ -96,12 +102,32 @@ class RelatorioPdfService {
     return widgets;
   }
 
-  pw.Widget _buildHeader(Bloco? bloco) {
+  pw.Widget _buildHeader(Bloco? bloco, String? tituloRelatorio, String? tipoPeriodo) {
+    // determina o tipo de relatoio
+    String tipoRelatorio = 'Relatório Diário';
+    if (tituloRelatorio != null && tituloRelatorio.isNotEmpty) {
+      tipoRelatorio = tituloRelatorio;
+    } else if (tipoPeriodo != null) {
+      switch (tipoPeriodo) {
+        case 'Mês':
+          tipoRelatorio = 'Relatório Mensal';
+          break;
+        case 'Semestre':
+          tipoRelatorio = 'Relatório Semestral';
+          break;
+        case 'Ano':
+          tipoRelatorio = 'Relatório Anual';
+          break;
+        default:
+          tipoRelatorio = 'Relatório Diário';
+      }
+    }
+
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Relatório Diário',
+          tipoRelatorio,
           style: pw.TextStyle(
             fontSize: 24,
             fontWeight: pw.FontWeight.bold,
@@ -115,7 +141,7 @@ class RelatorioPdfService {
           ),
         pw.SizedBox(height: 10),
         pw.Text(
-          'Data: ${BrasiliaTime.now().toString().split(' ')[0]}',
+          'Data de geração: ${BrasiliaTime.now().toString().split(' ')[0]}',
           style: pw.TextStyle(fontSize: 16),
         ),
         pw.SizedBox(height: 20),
@@ -140,9 +166,9 @@ class RelatorioPdfService {
           ),
         ),
         pw.SizedBox(height: 10),
-        pw.Text('Empréstimos realizados hoje: $emprestimosRealizados'),
-        pw.Text('Empréstimos devolvidos hoje: $emprestimosDevolvidos'),
-        pw.Text('Empréstimos atrasados devolvidos hoje: $emprestimosAtrasadosDevolvidos'),
+        pw.Text('Empréstimos realizados: $emprestimosRealizados'),
+        pw.Text('Empréstimos devolvidos: $emprestimosDevolvidos'),
+        pw.Text('Empréstimos atrasados devolvidos: $emprestimosAtrasadosDevolvidos'),
         pw.Text('Empréstimos atrasados: $emprestimosAtrasados'),
         pw.SizedBox(height: 20),
       ],
@@ -161,7 +187,7 @@ class RelatorioPdfService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'Empréstimos Atrasados Devolvidos Hoje',
+            'Empréstimos Atrasados Devolvidos',
             style: pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,
@@ -223,7 +249,7 @@ class RelatorioPdfService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'Empréstimos Realizados e Devolvidos hoje',
+            'Empréstimos Realizados e Devolvidos',
             style: pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,

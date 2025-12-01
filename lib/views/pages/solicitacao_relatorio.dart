@@ -50,9 +50,24 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
       body: SafeArea(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Center(child: AppLogo()),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                  ),
+                  const Expanded(
+                    child: Center(child: AppLogo()),
+                  ),
+                  const SizedBox(width: 48),
+                ],
+              ),
             ),
 
             const Padding(

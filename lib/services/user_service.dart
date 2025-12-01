@@ -244,12 +244,39 @@ class UserService {
     }
   }
 
-  /// Reativar usuário
-  Future<void> activateUser(String uid) async {
+  /// busca por id
+  Future<Map<String, UserModel>> getUsersMap(Set<String> userIds) async {
     try {
-      await _db.collection(_collection).doc(uid).update({'ativo': true});
+      if (userIds.isEmpty) return {};
+
+      final Map<String, UserModel> usersMap = {};
+
+      // busca em lote de 10 - por conta do limite do bd 
+      const batchSize = 10;
+      final batches = <List<String>>[];
+
+      final idsList = userIds.toList();
+      for (var i = 0; i < idsList.length; i += batchSize) {
+        final end = (i + batchSize < idsList.length) ? i + batchSize : idsList.length;
+        batches.add(idsList.sublist(i, end));
+      }
+
+      for (final batch in batches) {
+        final querySnapshot = await _db
+            .collection(_collection)
+            .where(FieldPath.documentId, whereIn: batch)
+            .get();
+
+        for (final doc in querySnapshot.docs) {
+          final user = UserModel.fromFirestore(doc);
+          usersMap[doc.id] = user;
+        }
+      }
+
+      return usersMap;
     } catch (e) {
-      rethrow;
+      print('Erro ao buscar usuários: $e');
+      return {};
     }
   }
 

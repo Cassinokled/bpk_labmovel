@@ -57,12 +57,21 @@ class HistoricoEmprestimosListaBloco extends StatelessWidget {
 
         final emprestimos = snapshot.data ?? [];
 
-        // filtra por data se startDate ou endDate estiver definido
+        // filtra por data
         final emprestimosFiltrados = emprestimos.where((emprestimo) {
           final date = emprestimo.criadoEm;
-          if (startDate != null && date.isBefore(startDate!)) return false;
-          if (endDate != null && date.isAfter(endDate!.add(const Duration(days: 1)))) return false;
-          return true;
+          
+          if (startDate != null || endDate != null) {
+            if (startDate != null && date.isBefore(startDate!)) return false;
+            if (endDate != null && date.isAfter(endDate!.add(const Duration(days: 1)))) return false;
+            return true;
+          }
+          
+          final hoje = DateTime.now();
+          final inicioDia = DateTime(hoje.year, hoje.month, hoje.day);
+          final fimDia = inicioDia.add(const Duration(days: 1));
+          return date.isAfter(inicioDia.subtract(const Duration(seconds: 1))) &&
+                 date.isBefore(fimDia);
         }).toList();
 
         if (emprestimosFiltrados.isEmpty) {
