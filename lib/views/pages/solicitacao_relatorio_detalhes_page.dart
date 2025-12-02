@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import '../../utils/app_colors.dart';
 import '../../models/solicitacao_relatorio_model.dart';
+import '../../services/solicitacao_relatorio_service.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/navbar_user.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:open_filex/open_filex.dart';
 
-class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
+class SolicitacaoRelatorioDetalhesPage extends StatefulWidget {
   final SolicitacaoRelatorioModel solicitacao;
   final int numero;
 
@@ -14,6 +18,13 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
     required this.solicitacao,
     required this.numero,
   });
+
+  @override
+  State<SolicitacaoRelatorioDetalhesPage> createState() => _SolicitacaoRelatorioDetalhesPageState();
+}
+
+class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioDetalhesPage> {
+  final SolicitacaoRelatorioService _solicitacaoService = SolicitacaoRelatorioService();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +60,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    solicitacao.titulo,
+                    widget.solicitacao.titulo,
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -92,11 +103,11 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
     String statusText;
     IconData statusIcon;
 
-    if (solicitacao.isPendente) {
+    if (widget.solicitacao.isPendente) {
       statusColor = Colors.orange;
       statusText = 'Pendente';
       statusIcon = Icons.hourglass_empty;
-    } else if (solicitacao.isAprovado) {
+    } else if (widget.solicitacao.isAprovado) {
       statusColor = Colors.green;
       statusText = 'Aprovado';
       statusIcon = Icons.check_circle;
@@ -136,7 +147,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
       
-        if (solicitacao.isRejeitado && solicitacao.motivoRejeicao != null)
+        if (widget.solicitacao.isRejeitado && widget.solicitacao.motivoRejeicao != null)
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(bottom: 16),
@@ -172,7 +183,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
                     border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                   ),
                   child: Text(
-                    solicitacao.motivoRejeicao!,
+                    widget.solicitacao.motivoRejeicao!,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.red,
@@ -211,7 +222,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                solicitacao.motivo,
+                widget.solicitacao.motivo,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black87,
@@ -264,7 +275,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${solicitacao.dataInicio.day}/${solicitacao.dataInicio.month}/${solicitacao.dataInicio.year}',
+                          '${widget.solicitacao.dataInicio.day}/${widget.solicitacao.dataInicio.month}/${widget.solicitacao.dataInicio.year}',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black87,
@@ -293,7 +304,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${solicitacao.dataFim.day}/${solicitacao.dataFim.month}/${solicitacao.dataFim.year}',
+                          '${widget.solicitacao.dataFim.day}/${widget.solicitacao.dataFim.month}/${widget.solicitacao.dataFim.year}',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black87,
@@ -336,7 +347,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '${solicitacao.criadoEm.day}/${solicitacao.criadoEm.month}/${solicitacao.criadoEm.year} às ${solicitacao.criadoEm.hour.toString().padLeft(2, '0')}:${solicitacao.criadoEm.minute.toString().padLeft(2, '0')}',
+                '${widget.solicitacao.criadoEm.day}/${widget.solicitacao.criadoEm.month}/${widget.solicitacao.criadoEm.year} às ${widget.solicitacao.criadoEm.hour.toString().padLeft(2, '0')}:${widget.solicitacao.criadoEm.minute.toString().padLeft(2, '0')}',
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black87,
@@ -346,7 +357,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
           ),
         ),
 
-        if (solicitacao.comprovanteUrl != null)
+        if (widget.solicitacao.comprovanteUrl != null)
           Container(
             width: double.infinity,
             margin: const EdgeInsets.only(bottom: 16),
@@ -375,7 +386,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 GestureDetector(
-                  onTap: () => _launchURL(solicitacao.comprovanteUrl!),
+                  onTap: () => _launchURL(widget.solicitacao.comprovanteUrl!),
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -392,7 +403,7 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            _getFileName(solicitacao.comprovanteUrl!),
+                            _getFileName(widget.solicitacao.comprovanteUrl!),
                             style: const TextStyle(
                               fontSize: 14,
                               color: AppColors.primary,
@@ -435,14 +446,74 @@ class SolicitacaoRelatorioDetalhesPage extends StatelessWidget {
     }
   }
 
-  Future<void> _launchURL(String url) async {
+  Future<void> _launchURL(String arquivoId) async {
     try {
-      final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
+      // loading
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                ),
+                SizedBox(width: 16),
+                Text('Abrindo arquivo...'),
+              ],
+            ),
+            duration: Duration(seconds: 30),
+          ),
+        );
+      }
+
+      // buscando no firestore
+      final arquivo = await _solicitacaoService.buscarArquivo(arquivoId);
+      
+      if (arquivo == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Arquivo não encontrado')),
+          );
+        }
+        return;
+      }
+
+      // decodificando base64
+      final bytes = base64Decode(arquivo['base64Data'] as String);
+      final fileName = arquivo['fileName'] as String;
+      
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$fileName';
+      final file = File(filePath);
+      
+      // salva
+      await file.writeAsBytes(bytes);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+      }
+
+      // tenta abrir
+      final result = await OpenFilex.open(filePath);
+
+      if (result.type != ResultType.done && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao abrir arquivo: ${result.message}\nArquivo salvo em: $filePath'),
+            duration: const Duration(seconds: 5),
+          ),
+        );
       }
     } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao abrir arquivo: $e')),
+        );
+      }
     }
   }
 }

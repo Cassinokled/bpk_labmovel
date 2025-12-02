@@ -21,6 +21,8 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
   DateTime? _dataInicio;
   DateTime? _dataFim;
   String? _selectedFileName;
+  PlatformFile? _selectedFile;
+  bool _isSubmitting = false;
 
   final AuthService _authService = AuthService();
   final SolicitacaoRelatorioService _solicitacaoService = SolicitacaoRelatorioService();
@@ -167,9 +169,13 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
                         ),
                         child: InkWell(
                           onTap: () async {
-                            FilePickerResult? result = await FilePicker.platform.pickFiles();
+                            FilePickerResult? result = await FilePicker.platform.pickFiles(
+                              type: FileType.any,
+                              allowMultiple: false,
+                            );
                             if (result != null) {
                               setState(() {
+                                _selectedFile = result.files.single;
                                 _selectedFileName = result.files.single.name;
                               });
                             }
@@ -202,7 +208,7 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton(
-                  onPressed: () async {
+                  onPressed: _isSubmitting ? null : () async {
                     if (_formKey.currentState!.validate()) {
                       if (_dataInicio == null || _dataFim == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -219,19 +225,47 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
                         return;
                       }
 
-                      final solicitacao = SolicitacaoRelatorioModel(
-                        userId: userId,
-                        titulo: _tituloController.text,
-                        motivo: _motivoController.text,
-                        dataInicio: _dataInicio!,
-                        dataFim: _dataFim!,
-                        comprovanteUrl: _selectedFileName,
-                      );
+                      setState(() => _isSubmitting = true);
 
                       try {
-                        await _solicitacaoService.criarSolicitacao(solicitacao);
+                        final solicitacao = SolicitacaoRelatorioModel(
+                          userId: userId,
+                          titulo: _tituloController.text,
+                          motivo: _motivoController.text,
+                          dataInicio: _dataInicio!,
+                          dataFim: _dataFim!,
+                        );
+
+                        final solicitacaoCriada = await _solicitacaoService.criarSolicitacao(solicitacao);
+
+                        if (_selectedFile != null && solicitacaoCriada.id != null) {
+                          String? comprovanteUrl;
+                          
+                          if (_selectedFile!.bytes != null) {
+                            comprovanteUrl = await _solicitacaoService.uploadComprovanteBytes(
+                              _selectedFile!.bytes!,
+                              _selectedFileName!,
+                              userId,
+                              solicitacaoCriada.id!,
+                            );
+                          } else if (_selectedFile!.path != null) {
+                            comprovanteUrl = await _solicitacaoService.uploadComprovantePath(
+                              _selectedFile!.path!,
+                              userId,
+                              solicitacaoCriada.id!,
+                            );
+                          }
+
+                          if (comprovanteUrl != null) {
+                            await _solicitacaoService.atualizarComprovanteUrl(
+                              solicitacaoCriada.id!,
+                              comprovanteUrl,
+                            );
+                          }
+                        }
 
                         if (mounted) {
+                          setState(() => _isSubmitting = false);
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const SolicitacaoEnviadaPage(),
@@ -240,6 +274,7 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
                         }
                       } catch (e) {
                         if (mounted) {
+                          setState(() => _isSubmitting = false);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Erro ao enviar solicitação: $e')),
                           );
@@ -254,10 +289,19 @@ class _SolicitacaoRelatorioPageState extends State<SolicitacaoRelatorioPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
-                    'Confirmar',
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  child: _isSubmitting
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text(
+                          'Confirmar',
+                          style: TextStyle(fontSize: 20),
+                        ),
                 ),
               ),
             ),

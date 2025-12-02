@@ -50,7 +50,9 @@ dependencies:
   timezone: ^0.9.4
   file_picker: ^8.0.0 
   pdf: ^3.10.7
-  printing: ^5.13.3 
+  printing: ^5.13.3
+  path_provider: ^2.1.1
+  open_filex: ^4.5.0 
 
 dev_dependencies:
   flutter_test:

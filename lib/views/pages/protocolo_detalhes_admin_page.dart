@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:open_filex/open_filex.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import '../../utils/app_colors.dart';
 import '../../models/solicitacao_relatorio_model.dart';
 import '../../models/user_model.dart';
@@ -46,6 +50,87 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
         setState(() {
           _adminName = 'Admin desconhecido';
         });
+      }
+    }
+  }
+
+  Future<void> _abrirArquivo() async {
+    final arquivoId = widget.solicitacao.comprovanteUrl;
+    if (arquivoId == null || arquivoId.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nenhum arquivo anexado')),
+        );
+      }
+      return;
+    }
+
+    try {
+      // loading
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                ),
+                SizedBox(width: 16),
+                Text('Abrindo arquivo...'),
+              ],
+            ),
+            duration: Duration(seconds: 30),
+          ),
+        );
+      }
+
+      // buscando no firestore
+      final arquivo = await _solicitacaoService.buscarArquivo(arquivoId);
+      
+      if (arquivo == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Arquivo não encontrado')),
+          );
+        }
+        return;
+      }
+
+      // decodificando do base64
+      final bytes = base64Decode(arquivo['base64Data'] as String);
+      final fileName = arquivo['fileName'] as String;
+      
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$fileName';
+      final file = File(filePath);
+      
+      // salva o arquivo
+      await file.writeAsBytes(bytes);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+      }
+
+      // tenta abrir o arquivo
+      final result = await OpenFilex.open(filePath);
+
+      if (result.type != ResultType.done && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao abrir arquivo: ${result.message}\nArquivo salvo em: $filePath'),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao abrir arquivo: $e')),
+        );
       }
     }
   }
@@ -451,24 +536,28 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Comprovante anexado',
-                  style: const TextStyle(
+                  widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
+                      ? 'Comprovante anexado'
+                      : 'Sem comprovante anexado',
+                  style: TextStyle(
                     fontSize: 16,
-                    color: AppColors.textPrimary,
+                    color: widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
+                        ? AppColors.textPrimary
+                        : Colors.grey,
                   ),
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  // tem que implementar ainda a visualizacao dos arquivos
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Funcionalidade de visualização em desenvolvimento')),
-                  );
-                },
+                onPressed: widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
+                    ? _abrirArquivo
+                    : null,
                 icon: Icon(
                   Icons.visibility,
-                  color: AppColors.primary,
+                  color: widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
+                      ? AppColors.primary
+                      : Colors.grey,
                 ),
+                tooltip: 'Abrir arquivo',
               ),
             ],
           ),
