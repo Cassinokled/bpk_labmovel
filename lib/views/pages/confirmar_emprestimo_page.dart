@@ -96,12 +96,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle_outline, color: Colors.white),
+                Icon(Icons.check_circle_outline, color: AppColors.white),
                 SizedBox(width: 12),
                 Expanded(child: Text('Empréstimo confirmado com sucesso!')),
               ],
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.success,
             duration: Duration(seconds: 2),
           ),
         );
@@ -136,12 +136,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error_outline, color: Colors.white),
+                const Icon(Icons.error_outline, color: AppColors.white),
                 const SizedBox(width: 12),
                 Expanded(child: Text('Erro ao confirmar: $e')),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: const Duration(seconds: 3),
           ),
         );
@@ -163,12 +163,12 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.cancel, color: Colors.white),
+                Icon(Icons.cancel, color: AppColors.white),
                 SizedBox(width: 12),
                 Expanded(child: Text('Empréstimo recusado')),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: Duration(seconds: 2),
           ),
         );
@@ -287,7 +287,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
           children: [
             const Icon(
               Icons.error_outline,
-              color: Colors.red,
+              color: AppColors.error,
               size: 64,
             ),
             const SizedBox(height: 20),
@@ -296,7 +296,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.red,
+                color: AppColors.error,
               ),
             ),
             const SizedBox(height: 20),
@@ -306,7 +306,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               label: const Text('Tentar novamente'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.white,
               ),
             ),
           ],
@@ -361,7 +361,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               child: Text(
                 '${_equipamentos.length} ${_equipamentos.length == 1 ? 'item' : 'itens'}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -389,10 +389,10 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColors.shadowMedium,
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
@@ -406,8 +406,8 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               onPressed: _isConfirming ? null : _recusarEmprestimo,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.error,
+                foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -446,7 +446,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.success,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -458,7 +458,7 @@ class _ConfirmarEmprestimoPageState extends State<ConfirmarEmprestimoPage> {
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     )
                   : const Row(

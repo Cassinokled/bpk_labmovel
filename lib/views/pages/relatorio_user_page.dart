@@ -87,7 +87,7 @@ class _RelatorioUserPageState extends State<RelatorioUserPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -104,7 +104,7 @@ class _RelatorioUserPageState extends State<RelatorioUserPage> {
 
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(color: Colors.grey),
+              child: Divider(color: AppColors.divider),
             ),
 
             // conteudo

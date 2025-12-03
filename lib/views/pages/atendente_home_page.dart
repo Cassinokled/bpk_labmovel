@@ -24,7 +24,7 @@ class AtendenteHomePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -42,7 +42,7 @@ class AtendenteHomePage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -61,7 +61,7 @@ class AtendenteHomePage extends StatelessWidget {
             children: [
               const SizedBox(width: 16),
               IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back, color: AppColors.primary),
                 tooltip: 'Voltar',
                 onPressed: () {
                   // pagina de seleca0
@@ -73,9 +73,9 @@ class AtendenteHomePage extends StatelessWidget {
                   );
                 },
               ),
-              Expanded(child: Center(child: AppLogo())),
+              const Expanded(child: Center(child: AppLogo())),
               IconButton(
-                icon: const Icon(Icons.logout),
+                icon: const Icon(Icons.logout, color: AppColors.primary),
                 tooltip: 'Sair',
                 onPressed: () => _logout(context),
               ),

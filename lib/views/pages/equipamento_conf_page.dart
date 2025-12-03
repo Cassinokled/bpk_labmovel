@@ -99,12 +99,12 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
   Widget _buildError() {
     return Column(
       children: [
-        const Icon(Icons.error_outline, size: 64, color: Colors.red),
+        const Icon(Icons.error_outline, size: 64, color: AppColors.error),
         const SizedBox(height: 20),
         Text(
           _errorMessage!,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 18, color: Colors.red, height: 1.4),
+          style: const TextStyle(fontSize: 18, color: AppColors.error, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
@@ -124,7 +124,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: AppColors.white,
               ),
             ),
           ),
@@ -147,7 +147,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           ),
         ),
         const SizedBox(height: 20),
-        const Icon(Icons.block, size: 64, color: Colors.red),
+        const Icon(Icons.block, size: 64, color: AppColors.error),
         const SizedBox(height: 20),
         const Text(
           'Este equipamento já está emprestado!',
@@ -155,7 +155,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.red,
+            color: AppColors.error,
             height: 1.4,
           ),
         ),
@@ -163,7 +163,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
         const Text(
           'Por favor, escolha outro equipamento.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.4),
+          style: TextStyle(fontSize: 16, color: AppColors.textPrimary, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
@@ -183,7 +183,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: AppColors.white,
               ),
             ),
           ),
@@ -209,7 +209,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
         const Text(
           'Deseja adicionar o equipamento referente a esse código?',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, color: Colors.black87, height: 1.4),
+          style: TextStyle(fontSize: 18, color: AppColors.textPrimary, height: 1.4),
         ),
         const SizedBox(height: 40),
         SizedBox(
@@ -258,7 +258,7 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: AppColors.white,
               ),
             ),
           ),
@@ -272,13 +272,13 @@ class _EquipamentoConfPageState extends State<EquipamentoConfPage> {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.white,
               padding: const EdgeInsets.symmetric(vertical: 18),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
               elevation: 2,
-              shadowColor: Colors.black.withOpacity(1.0),
+              shadowColor: AppColors.shadowDark,
             ),
             child: const Text(
               'Não, remover',

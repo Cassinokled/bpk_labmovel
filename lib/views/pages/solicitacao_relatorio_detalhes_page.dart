@@ -104,15 +104,15 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
     IconData statusIcon;
 
     if (widget.solicitacao.isPendente) {
-      statusColor = Colors.orange;
+      statusColor = AppColors.warning;
       statusText = 'Pendente';
       statusIcon = Icons.hourglass_empty;
     } else if (widget.solicitacao.isAprovado) {
-      statusColor = Colors.green;
+      statusColor = AppColors.success;
       statusText = 'Aprovado';
       statusIcon = Icons.check_circle;
     } else {
-      statusColor = Colors.red;
+      statusColor = AppColors.error;
       statusText = 'Rejeitado';
       statusIcon = Icons.cancel;
     }
@@ -153,11 +153,11 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: AppColors.shadowMedium,
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -171,22 +171,22 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                    color: AppColors.error,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
+                    color: AppColors.errorLight,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                    border: Border.all(color: AppColors.error),
                   ),
                   child: Text(
                     widget.solicitacao.motivoRejeicao!,
                     style: const TextStyle(
                       fontSize: 14,
-                      color: Colors.red,
+                      color: AppColors.error,
                     ),
                   ),
                 ),
@@ -199,11 +199,11 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: AppColors.shadowMedium,
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -225,7 +225,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                 widget.solicitacao.motivo,
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.black87,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ],
@@ -237,11 +237,11 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: AppColors.shadowMedium,
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -270,7 +270,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black54,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -278,7 +278,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                           '${widget.solicitacao.dataInicio.day}/${widget.solicitacao.dataInicio.month}/${widget.solicitacao.dataInicio.year}',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ],
@@ -287,7 +287,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                   Container(
                     height: 40,
                     width: 1,
-                    color: Colors.grey.withValues(alpha: 0.3),
+                    color: AppColors.divider,
                     margin: const EdgeInsets.symmetric(horizontal: 12),
                   ),
                   Expanded(
@@ -299,7 +299,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black54,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -307,7 +307,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                           '${widget.solicitacao.dataFim.day}/${widget.solicitacao.dataFim.month}/${widget.solicitacao.dataFim.year}',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.black87,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ],
@@ -324,11 +324,11 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: AppColors.shadowMedium,
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -350,7 +350,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                 '${widget.solicitacao.criadoEm.day}/${widget.solicitacao.criadoEm.month}/${widget.solicitacao.criadoEm.year} às ${widget.solicitacao.criadoEm.hour.toString().padLeft(2, '0')}:${widget.solicitacao.criadoEm.minute.toString().padLeft(2, '0')}',
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.black87,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ],
@@ -363,11 +363,11 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
             margin: const EdgeInsets.only(bottom: 16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: AppColors.shadow,
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -457,7 +457,7 @@ class _SolicitacaoRelatorioDetalhesPageState extends State<SolicitacaoRelatorioD
                 SizedBox(
                   width: 20,
                   height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(AppColors.white)),
                 ),
                 SizedBox(width: 16),
                 Text('Abrindo arquivo...'),

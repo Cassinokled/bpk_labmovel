@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../utils/app_colors.dart';
 
 // widget pra exibir informacoes de data/hora da solicitacao
 class SolicitationInfoBadge extends StatelessWidget {
@@ -11,14 +12,14 @@ class SolicitationInfoBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
+        color: AppColors.info.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.withOpacity(0.3), width: 1),
+        border: Border.all(color: AppColors.info.withOpacity(0.3), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.access_time, color: Colors.blue, size: 20),
+          const Icon(Icons.access_time, color: AppColors.info, size: 20),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +28,7 @@ class SolicitationInfoBadge extends StatelessWidget {
                 'Solicitado em',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.blue,
+                  color: AppColors.info,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -37,7 +38,7 @@ class SolicitationInfoBadge extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: AppColors.info,
                 ),
               ),
             ],

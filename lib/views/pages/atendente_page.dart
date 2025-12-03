@@ -167,7 +167,7 @@ class _AtendentePageState extends State<AtendentePage> {
         child: Text(
           bloco.nome,
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

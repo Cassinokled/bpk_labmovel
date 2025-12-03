@@ -20,15 +20,15 @@ class EquipamentoCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isLoaded ? Colors.grey.shade200 : Colors.red.shade200,
+          color: isLoaded ? AppColors.divider : AppColors.errorLight,
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.shadow,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -54,14 +54,14 @@ class EquipamentoCardWidget extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: isLoaded ? AppColors.primary : Colors.red,
+        color: isLoaded ? AppColors.primary : AppColors.error,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
         child: Text(
           '$numero',
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -93,9 +93,9 @@ class EquipamentoCardWidget extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 14, color: Colors.grey),
+        Icon(icon, size: 14, color: AppColors.grey),
         const SizedBox(width: 6),
-        Text(text, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+        Text(text, style: const TextStyle(fontSize: 13, color: AppColors.grey)),
       ],
     );
   }
@@ -108,14 +108,14 @@ class EquipamentoCardWidget extends StatelessWidget {
           'Equipamento não encontrado',
           style: TextStyle(
             fontSize: 14,
-            color: Colors.red,
+            color: AppColors.error,
             fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: 4),
         Text(
           'Verifique o código no banco de dados',
-          style: TextStyle(fontSize: 12, color: Colors.grey),
+          style: TextStyle(fontSize: 12, color: AppColors.grey),
         ),
       ],
     );
@@ -124,7 +124,7 @@ class EquipamentoCardWidget extends StatelessWidget {
   Widget _buildStatusIcon(bool isLoaded) {
     return Icon(
       isLoaded ? Icons.check_circle : Icons.error,
-      color: isLoaded ? AppColors.success : Colors.red,
+      color: isLoaded ? AppColors.success : AppColors.error,
       size: 24,
     );
   }

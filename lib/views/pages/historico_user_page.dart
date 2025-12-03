@@ -144,7 +144,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                                 : 'Data Inicial',
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.white,
                             foregroundColor: AppColors.primary,
                             side: const BorderSide(color: AppColors.primary),
                           ),
@@ -161,7 +161,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
                                 : 'Data Final',
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.white,
                             foregroundColor: AppColors.primary,
                             side: const BorderSide(color: AppColors.primary),
                           ),
@@ -229,12 +229,12 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.red, size: 64),
+            const Icon(Icons.error_outline, color: AppColors.error, size: 64),
             const SizedBox(height: 20),
             Text(
               _error!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.red),
+              style: const TextStyle(fontSize: 16, color: AppColors.error),
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -243,7 +243,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
               label: const Text('Tentar novamente'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.white,
               ),
             ),
           ],
@@ -341,11 +341,11 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
+              color: AppColors.shadowMedium,
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -468,7 +468,7 @@ class _HistoricoUserPageState extends State<HistoricoUserPage> {
       child: Text(
         text,
         style: const TextStyle(
-          color: Colors.white,
+          color: AppColors.white,
           fontWeight: FontWeight.bold,
           fontSize: 11,
         ),
@@ -704,11 +704,11 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -744,13 +744,13 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: widget.emprestimo.isAtrasadoAtual
-                    ? Colors.red.withOpacity(0.1)
-                    : Colors.orange.withOpacity(0.1),
+                    ? AppColors.errorLight
+                    : AppColors.warningLight,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: widget.emprestimo.isAtrasadoAtual
-                      ? Colors.red
-                      : Colors.orange,
+                      ? AppColors.error
+                      : AppColors.warning,
                   width: 1,
                 ),
               ),
@@ -761,8 +761,8 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                         ? Icons.warning
                         : Icons.schedule,
                     color: widget.emprestimo.isAtrasadoAtual
-                        ? Colors.red
-                        : Colors.orange,
+                        ? AppColors.error
+                        : AppColors.warning,
                     size: 24,
                   ),
                   const SizedBox(width: 12),
@@ -778,8 +778,8 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             color: widget.emprestimo.isAtrasadoAtual
-                                ? Colors.red
-                                : Colors.orange[800],
+                                ? AppColors.error
+                                : AppColors.warning,
                           ),
                         ),
                         const SizedBox(height: 2),
@@ -789,8 +789,8 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: widget.emprestimo.isAtrasadoAtual
-                                ? Colors.red
-                                : Colors.orange[900],
+                                ? AppColors.error
+                                : AppColors.warning,
                           ),
                         ),
                       ],
@@ -805,20 +805,20 @@ class _HistoricoDetalhesPageState extends State<HistoricoDetalhesPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: AppColors.errorLight,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red, width: 1),
+                border: Border.all(color: AppColors.error, width: 1),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.warning, color: Colors.red, size: 24),
+                  Icon(Icons.warning, color: AppColors.error, size: 24),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'Este empréstimo foi devolvido com atraso',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.red,
+                        color: AppColors.error,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

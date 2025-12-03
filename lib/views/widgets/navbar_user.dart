@@ -147,7 +147,7 @@ class _NavBarUserState extends State<NavBarUser> {
     return Container(
       height: 90,
       margin: EdgeInsets.only(bottom: bottomMargin),
-      color: Colors.transparent,
+      color: AppColors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(_navItems.length, (index) {
@@ -183,7 +183,7 @@ class _NavBarUserState extends State<NavBarUser> {
             onTap: () => _onItemTapped(index),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              color: Colors.transparent,
+              color: AppColors.transparent,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

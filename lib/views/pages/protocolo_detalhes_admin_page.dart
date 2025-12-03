@@ -75,7 +75,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
                 SizedBox(
                   width: 20,
                   height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                  child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(AppColors.white)),
                 ),
                 SizedBox(width: 16),
                 Text('Abrindo arquivo...'),
@@ -147,7 +147,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle_outline, color: Colors.white),
+                Icon(Icons.check_circle_outline, color: AppColors.white),
                 SizedBox(width: 12),
                 Expanded(child: Text('Protocolo aprovado com sucesso!')),
               ],
@@ -203,7 +203,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
-              foregroundColor: Colors.white,
+              foregroundColor: AppColors.white,
             ),
             child: const Text('Rejeitar'),
           ),
@@ -226,12 +226,12 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.cancel, color: Colors.white),
+                Icon(Icons.cancel, color: AppColors.white),
                 SizedBox(width: 12),
                 Expanded(child: Text('Protocolo rejeitado')),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: Duration(seconds: 2),
           ),
         );
@@ -359,7 +359,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primary.withOpacity(0.2)),
           ),
@@ -434,7 +434,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.red,
+                color: AppColors.error,
               ),
             ),
           ],
@@ -444,15 +444,15 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.red.shade50,
+            color: AppColors.errorLight,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.red.shade200),
+            border: Border.all(color: AppColors.error),
           ),
           child: Text(
             widget.solicitacao.motivoRejeicao!,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.red.shade800,
+              color: AppColors.error,
               height: 1.5,
             ),
             textAlign: TextAlign.left,
@@ -483,7 +483,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primary.withOpacity(0.2)),
           ),
@@ -522,7 +522,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primary.withOpacity(0.2)),
           ),
@@ -543,7 +543,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
                     fontSize: 16,
                     color: widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
                         ? AppColors.textPrimary
-                        : Colors.grey,
+                        : AppColors.grey,
                   ),
                 ),
               ),
@@ -555,7 +555,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
                   Icons.visibility,
                   color: widget.solicitacao.comprovanteUrl != null && widget.solicitacao.comprovanteUrl!.isNotEmpty
                       ? AppColors.primary
-                      : Colors.grey,
+                      : AppColors.grey,
                 ),
                 tooltip: 'Abrir arquivo',
               ),
@@ -587,7 +587,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primary.withOpacity(0.2)),
           ),
@@ -619,10 +619,10 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColors.shadowMedium,
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
@@ -635,8 +635,8 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
               onPressed: _isProcessing ? null : _rejeitarSolicitacao,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.error,
+                foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -648,7 +648,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     )
                   : const Row(
@@ -674,7 +674,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.success,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -686,7 +686,7 @@ class _ProtocoloDetalhesAdminPageState extends State<ProtocoloDetalhesAdminPage>
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     )
                   : const Row(

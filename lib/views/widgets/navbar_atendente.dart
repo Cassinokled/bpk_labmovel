@@ -149,7 +149,7 @@ class _NavBarAtendenteState extends State<NavBarAtendente> {
     return Container(
       height: 90,
       margin: EdgeInsets.only(bottom: 26 + bottomPadding),
-      color: Colors.transparent,
+      color: AppColors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(_navItems.length, (index) {
@@ -193,7 +193,7 @@ class _NavBarAtendenteState extends State<NavBarAtendente> {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  color: Colors.transparent,
+                  color: AppColors.transparent,
                   child: SvgPicture.asset(
                     isSelected ? item['active']! : item['inactive']!,
                     width: iconSize,

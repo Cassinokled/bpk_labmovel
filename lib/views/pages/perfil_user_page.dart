@@ -203,7 +203,9 @@ class _PerfilUserPageState extends State<PerfilUserPage> {
                 const SizedBox(height: 12),
                 _buildInfoTile(
                   Icons.badge_outlined,
-                  _userData?.registroAcademico ?? '—',
+                  _userData?.registroAcademico ?? 
+                  _userData?.numCracha ?? 
+                  '—',
                 ),
                 if (_userData?.curso != null) ...[
                   const SizedBox(height: 12),

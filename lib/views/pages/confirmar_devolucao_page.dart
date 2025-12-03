@@ -96,12 +96,12 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
           const SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle_outline, color: Colors.white),
+                Icon(Icons.check_circle_outline, color: AppColors.white),
                 SizedBox(width: 12),
                 Expanded(child: Text('Devolução confirmada com sucesso!')),
               ],
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.success,
             duration: Duration(seconds: 2),
           ),
         );
@@ -136,12 +136,12 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.error_outline, color: Colors.white),
+                const Icon(Icons.error_outline, color: AppColors.white),
                 const SizedBox(width: 12),
                 Expanded(child: Text('Erro ao confirmar devolução: $e')),
               ],
             ),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: const Duration(seconds: 3),
           ),
         );
@@ -169,7 +169,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 86, 22, 36),
+                  color: AppColors.primary,
                 ),
               ),
             ),
@@ -195,13 +195,13 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(color: Color.fromARGB(255, 86, 22, 36)),
+          CircularProgressIndicator(color: AppColors.primary),
           SizedBox(height: 20),
           Text(
             'Carregando informações...',
             style: TextStyle(
               fontSize: 16,
-              color: Color.fromARGB(255, 86, 22, 36),
+              color: AppColors.primary,
             ),
           ),
         ],
@@ -216,12 +216,12 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.red, size: 64),
+            const Icon(Icons.error_outline, color: AppColors.error, size: 64),
             const SizedBox(height: 20),
             Text(
               _error!,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.red),
+              style: const TextStyle(fontSize: 16, color: AppColors.error),
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -229,8 +229,8 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
               icon: const Icon(Icons.refresh),
               label: const Text('Tentar novamente'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 86, 22, 36),
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.white,
               ),
             ),
           ],
@@ -267,11 +267,11 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -289,11 +289,11 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: isAtrasado
-                  ? Colors.red.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+                  ? AppColors.errorLight
+                  : AppColors.warningLight,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isAtrasado ? Colors.red : Colors.orange,
+                color: isAtrasado ? AppColors.error : AppColors.warning,
                 width: 1,
               ),
             ),
@@ -301,7 +301,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
               children: [
                 Icon(
                   isAtrasado ? Icons.warning : Icons.schedule,
-                  color: isAtrasado ? Colors.red : Colors.orange,
+                  color: isAtrasado ? AppColors.error : AppColors.warning,
                   size: 24,
                 ),
                 const SizedBox(width: 12),
@@ -314,7 +314,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: isAtrasado ? Colors.red : Colors.orange[800],
+                          color: isAtrasado ? AppColors.error : AppColors.warning,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -323,7 +323,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isAtrasado ? Colors.red : Colors.orange[900],
+                          color: isAtrasado ? AppColors.error : AppColors.warning,
                         ),
                       ),
                     ],
@@ -337,19 +337,19 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: AppColors.errorLight,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.red, size: 16),
+                  Icon(Icons.info_outline, color: AppColors.error, size: 16),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Este empréstimo será marcado como atrasado',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.red,
+                        color: AppColors.error,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -366,7 +366,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: const Color.fromARGB(255, 86, 22, 36), size: 20),
+        Icon(icon, color: AppColors.primary, size: 20),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -374,7 +374,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
             children: [
               Text(
                 label,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               Text(
                 value,
@@ -409,13 +409,13 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 86, 22, 36),
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 '${_equipamentos.length} ${_equipamentos.length == 1 ? 'item' : 'itens'}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -443,10 +443,10 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColors.shadow,
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
@@ -460,8 +460,8 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
               onPressed: _isConfirming ? null : () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.grey[300],
-                foregroundColor: Colors.grey[800],
+                backgroundColor: AppColors.grey,
+                foregroundColor: AppColors.textPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -487,8 +487,8 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
               onPressed: _isConfirming ? null : _confirmarDevolucao,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.success,
+                foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -500,7 +500,7 @@ class _ConfirmarDevolucaoPageState extends State<ConfirmarDevolucaoPage> {
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     )
                   : const Row(

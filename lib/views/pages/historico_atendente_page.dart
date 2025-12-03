@@ -120,15 +120,13 @@ class _HistoricoAtendentePageState extends State<HistoricoAtendentePage> {
             // titulo
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Center(
-                child: Text(
-                  'Histórico de \nAtendimentos',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 86, 22, 36),
-                  ),
+              child: Text(
+                'Histórico de Atendimentos',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
                 ),
               ),
             ),
@@ -178,7 +176,7 @@ class _HistoricoAtendentePageState extends State<HistoricoAtendentePage> {
                                   : 'Data Inicial',
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
+                              backgroundColor: AppColors.white,
                               foregroundColor: AppColors.primary,
                               side: const BorderSide(color: AppColors.primary),
                             ),
@@ -195,7 +193,7 @@ class _HistoricoAtendentePageState extends State<HistoricoAtendentePage> {
                                   : 'Data Final',
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
+                              backgroundColor: AppColors.white,
                               foregroundColor: AppColors.primary,
                               side: const BorderSide(color: AppColors.primary),
                             ),

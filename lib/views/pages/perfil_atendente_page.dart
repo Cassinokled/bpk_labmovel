@@ -140,33 +140,18 @@ class _PerfilAtendentePageState extends State<PerfilAtendentePage> {
             children: [
               UserPhotoWidget(
                 usuario: _userData,
-                size: 96,
+                size: 160,
               ),
               const SizedBox(height: 12),
               Text(
                 _userData?.nomeCompleto ?? 'Atendente',
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
               ),
               const SizedBox(height: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Atendente',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textWhite,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

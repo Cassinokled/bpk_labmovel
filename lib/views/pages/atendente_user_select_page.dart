@@ -58,7 +58,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sair', style: TextStyle(color: Colors.red)),
+            child: const Text('Sair', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -76,7 +76,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Erro ao sair: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -149,7 +149,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.white,
                             foregroundColor: AppColors.primary,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
@@ -196,7 +196,7 @@ class _AtendenteUserSelectPageState extends State<AtendenteUserSelectPage> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
+                            foregroundColor: AppColors.white,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),

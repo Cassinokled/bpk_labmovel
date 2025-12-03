@@ -13,7 +13,7 @@ class CircularCloseButton extends StatelessWidget {
     this.onPressed,
     this.size = 62,
     this.backgroundColor = AppColors.primary,
-    this.iconColor = Colors.white,
+    this.iconColor = AppColors.white,
     this.iconSize = 32,
   });
 
